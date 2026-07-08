@@ -8,89 +8,90 @@ NextGen Smart University Platform (NSUP)
 
 # Introduction
 
-NextGen Smart University Platform (NSUP) is a modern web-based university management platform designed to replace traditional university portals with a complete digital ecosystem.
+NextGen Smart University Platform (NSUP) is a modern web-based university management platform designed to replace traditional university systems with one centralized digital platform.
 
-The platform integrates academic management, student services, communication, learning management, financial services, campus activities, and AI-powered features into a single system.
+The system integrates academic management, learning management, communication, finance, student activities, food services, attendance, AI-assisted online examinations, and administrative services into a single web application.
 
 ---
 
 # Vision
 
-To build a complete, intelligent, secure, and scalable university platform that improves the experience of students, lecturers, administrators, and campus service providers.
+To build a secure, scalable, intelligent, and user-friendly university platform that simplifies academic and administrative operations while improving the experience of all university users.
 
 ---
 
 # Mission
 
-The mission of this project is to simplify university operations by providing one centralized platform for all academic and non-academic services.
+To provide one integrated platform where students, lecturers, coordinators, administrators, STAD staff, and restaurant owners can perform all university-related activities efficiently.
 
 ---
 
 # Objectives
 
 - Improve student experience.
-- Reduce manual processes.
-- Increase communication efficiency.
-- Digitize university services.
-- Improve academic management.
-- Support intelligent automation using AI.
+- Reduce manual administrative processes.
+- Improve communication between university members.
+- Digitize academic and non-academic services.
+- Simplify course registration and academic management.
+- Improve online learning experience.
+- Support AI-assisted examination monitoring.
 - Build a scalable platform for future expansion.
 
 ---
 
 # Target Users
 
-The platform is designed for:
+The platform supports:
 
 - Students
 - Lecturers
 - Coordinators
 - Administrators
-- Restaurant Owners
 - STAD Staff
+- Restaurant Owners
+
+The system also supports multiple roles for a single user.
 
 ---
 
 # System Type
 
-Enterprise Web-Based University Management Platform
+Enterprise Web-Based Smart University Management Platform
 
 ---
 
-# Platform Features
+# Core Modules
 
-The platform includes:
-
-- Student Portal
-- Lecturer Portal
-- Coordinator Portal
-- Administrator Portal
-- Restaurant Portal
+- Authentication
+- Academic Management
 - Learning Management System (LMS)
-- Smart Registration
-- QR Attendance
-- AI Exam Monitoring
+- Attendance Management
+- Assessment Management
+- AI Online Examination
+- Chat System
+- Calendar System
 - Student Activities
-- Clubs Management
 - Food Court
 - Finance
-- Notifications
-- Reports
-- Calendar
-- Messaging System
+- Download Center
+- Reporting System
+- System Administration
 
 ---
 
-# AI Features
+# Artificial Intelligence
 
-The system uses Artificial Intelligence for:
+Artificial Intelligence is used for:
 
-- Exam Monitoring
+- Identity Verification
 - Face Detection
 - Eye Tracking
-- Cheating Detection
-- Attendance Verification
-- Smart Analytics
+- Head Tracking
+- Fullscreen Detection
+- Browser Monitoring
+- AI Examination Reports
+
+The AI system assists university staff by monitoring examinations and generating reports. Final academic decisions are always made by authorized university staff.
 
 ---
 
@@ -108,4 +109,4 @@ The platform is designed to support:
 
 # Expected Outcome
 
-The final product will be a complete university management platform that is secure, scalable, maintainable, and ready for real-world deployment.
+The final product will be a secure, scalable, maintainable, and production-ready university management platform built using modern software engineering practices.

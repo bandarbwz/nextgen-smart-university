@@ -2,11 +2,11 @@
 
 ## Purpose
 
-This document defines the technologies used in the project.
+This document defines the official technology stack used for developing the NextGen Smart University Platform (NSUP).
 
-All developers and AI assistants must follow this technology stack.
+All developers and AI assistants must follow this technology stack throughout the project.
 
-Changing technologies requires updating this document first.
+Any change to the technology stack must be documented and approved before implementation.
 
 ---
 
@@ -30,15 +30,15 @@ HTTP Client
 
 Icons
 
-- Bootstrap Icons
+- Lucide React
 
 Charts
 
 - Chart.js
 
-Notifications
+Build Tool
 
-- React Toastify
+- Vite
 
 ---
 
@@ -50,27 +50,31 @@ Language
 
 Architecture
 
-- MVC
+- MVC (Model-View-Controller)
 
-API
+API Style
 
 - REST API
 
 Authentication
 
-- JWT
+- JWT Authentication
+
+Database Access
+
+- PDO
 
 File Upload
 
 - PHP Native Upload
 
+Email Service
+
+- PHPMailer
+
 PDF Generation
 
 - DomPDF
-
-Email
-
-- PHPMailer
 
 ---
 
@@ -80,9 +84,13 @@ Database Engine
 
 - MySQL 8
 
-Database Tool
+Administration Tool
 
 - phpMyAdmin
+
+Database Design
+
+- MySQL Workbench
 
 Character Set
 
@@ -94,42 +102,39 @@ Storage Engine
 
 ---
 
-# AI Services
+# Artificial Intelligence
 
 Language
 
 - Python 3.13
+
+Framework
+
+- FastAPI
 
 Libraries
 
 - OpenCV
 - MediaPipe
 - NumPy
-- Flask
 
-AI Features
+AI Functions
 
+- Identity Verification
 - Face Detection
 - Eye Tracking
 - Head Pose Detection
-- Cheating Detection
+- Browser Tab Detection
+- Fullscreen Detection
+- AI Examination Report Generation
 
 ---
 
-# Realtime Communication
+# Communication
 
-Runtime
+REST API
 
-- Node.js
-
-Library
-
-- Socket.IO
-
-Purpose
-
-- Course Chat
-- Notifications
+Communication between React and PHP is performed using REST APIs over HTTPS.
 
 ---
 
@@ -147,13 +152,9 @@ Branch
 
 # Development Tools
 
-Editor
+Code Editor
 
 - Visual Studio Code
-
-AI Assistant
-
-- OpenCode
 
 API Testing
 
@@ -163,25 +164,37 @@ Database Design
 
 - MySQL Workbench
 
+Database Management
+
+- phpMyAdmin
+
 UI Design
 
 - Figma
+
+Version Control
+
+- Git
 
 ---
 
 # Deployment
 
-Web Server
-
-- Apache
-
 Operating System
 
-- Linux
+- Ubuntu Linux
 
-Reverse Proxy
+Web Server
 
-- Nginx
+- Apache 2
+
+PHP Runtime
+
+- PHP 8.4
+
+Database Server
+
+- MySQL 8
 
 SSL
 
@@ -197,19 +210,21 @@ Frontend
 
 Backend
 
-- PSR Standards
+- PHP MVC Standards
 
 Database
 
-- Normalized Design
+- Normalized Relational Database Design
 
-AI
+Artificial Intelligence
 
-- Modular Python Code
+- Modular Python Development
 
 ---
 
 # Project Principles
+
+The project follows the following engineering principles:
 
 - Scalability
 - Security
@@ -218,3 +233,47 @@ AI
 - Clean Architecture
 - Modular Design
 - Reusable Components
+- Separation of Concerns
+
+---
+
+# Official Technology Stack Summary
+
+Frontend
+
+- React
+- Bootstrap
+- Axios
+- React Router
+- Lucide React
+- Chart.js
+
+Backend
+
+- PHP 8.4
+- MVC
+- REST API
+- JWT
+- PDO
+- PHPMailer
+- DomPDF
+
+Database
+
+- MySQL 8
+
+Artificial Intelligence
+
+- Python
+- FastAPI
+- OpenCV
+- MediaPipe
+
+Development
+
+- GitHub
+- Visual Studio Code
+- Postman
+- MySQL Workbench
+- phpMyAdmin
+- Figma

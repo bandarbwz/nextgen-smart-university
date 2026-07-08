@@ -2,21 +2,63 @@
 
 ## Purpose
 
-This document describes the overall architecture of the NextGen Smart University Platform.
+This document describes the overall architecture of the NextGen Smart University Platform (NSUP).
+
+The architecture separates responsibilities into independent layers to improve scalability, maintainability, security, and performance.
 
 ---
 
 # Architecture Style
 
-The system follows a modular multi-tier architecture.
+The system follows a Multi-Tier MVC Architecture.
 
-The application is divided into independent layers.
+The application is divided into four main layers:
 
-- Frontend
-- Backend
-- Database
-- AI Services
-- Realtime Services
+- Frontend Layer
+- Backend Layer
+- Database Layer
+- Artificial Intelligence Layer
+
+Each layer communicates only through defined interfaces.
+
+---
+
+# High-Level Architecture
+
+```
++----------------------------------------------------+
+|                  React Frontend                    |
+|----------------------------------------------------|
+| Dashboards • LMS • Attendance • Finance • Chat     |
++-------------------------▲--------------------------+
+                          |
+                     REST API (HTTPS)
+                          |
++-------------------------▼--------------------------+
+|                  PHP Backend (MVC)                 |
+|----------------------------------------------------|
+| Controllers • Services • Models • Authentication   |
+| Validation • Business Logic • File Management      |
++-------------------------▲--------------------------+
+                          |
+                      PDO (MySQL)
+                          |
++-------------------------▼--------------------------+
+|                  MySQL Database                    |
+|----------------------------------------------------|
+| Students • Courses • Attendance • Finance          |
+| LMS • Activities • Reports                         |
++-------------------------▲--------------------------+
+                          |
+                     HTTP REST API
+                          |
++-------------------------▼--------------------------+
+|            Python AI Service (FastAPI)             |
+|----------------------------------------------------|
+| Face Detection • Eye Tracking • Head Pose          |
+| Browser Monitoring • AI Reports                    |
++----------------------------------------------------+
+```
 
 ---
 
@@ -24,17 +66,19 @@ The application is divided into independent layers.
 
 Technology
 
-- React
+- React 19
 - Bootstrap 5
 - Axios
+- React Router
 
 Responsibilities
 
 - User Interface
-- Forms
 - Dashboard
-- API Requests
+- Forms
 - Authentication State
+- API Communication
+- Client-side Validation
 
 The frontend never communicates directly with the database.
 
@@ -44,16 +88,21 @@ The frontend never communicates directly with the database.
 
 Technology
 
-- PHP 8
+- PHP 8.4
 - MVC Architecture
 
 Responsibilities
 
-- Business Logic
 - Authentication
+- Authorization
+- Business Logic
+- REST API
 - Validation
-- REST APIs
 - File Management
+- PDF Generation
+- Email Services
+
+The backend is responsible for processing all requests from the frontend.
 
 ---
 
@@ -65,63 +114,65 @@ Technology
 
 Responsibilities
 
-- Store all system data
-- Relationships
-- Constraints
-- Data Integrity
+- Store application data
+- Maintain relationships
+- Enforce constraints
+- Preserve data integrity
+
+Only the PHP backend is allowed to access the database.
 
 ---
 
-# AI Layer
+# Artificial Intelligence Layer
 
 Technology
 
 - Python
+- FastAPI
 - OpenCV
 - MediaPipe
-- Flask
 
 Responsibilities
 
+- Identity Verification
 - Face Detection
 - Eye Tracking
-- AI Exam Monitoring
-- AI Reports
+- Head Pose Detection
+- Browser Tab Detection
+- Fullscreen Detection
+- AI Examination Monitoring
+- AI Report Generation
 
----
+The AI service communicates with the PHP backend using secure HTTP APIs.
 
-# Realtime Layer
-
-Technology
-
-- Node.js
-- Socket.IO
-
-Responsibilities
-
-- Course Chat
-- Notifications
+The AI system does not make academic decisions. It only generates monitoring reports.
 
 ---
 
 # File Storage
 
-Stores
+The system stores:
 
 - Student Photos
 - Lecturer Photos
 - Assignment Files
-- Chat Files
+- Course Materials
 - Event Images
 - Restaurant Images
+- Generated Reports
+- AI Examination Reports
 
-Only file paths are stored inside the database.
+Only file paths are stored in the database.
 
 ---
 
 # Communication Flow
 
-React
+Student
+
+↓
+
+React Frontend
 
 ↓
 
@@ -135,9 +186,39 @@ PHP Backend
 
 MySQL Database
 
-Python AI Services communicate with the backend through HTTP APIs.
+↓
 
-Node.js communicates with React using Socket.IO.
+Response Returned to React
+
+---
+
+AI Examination Flow
+
+React
+
+↓
+
+PHP Backend
+
+↓
+
+Python FastAPI
+
+↓
+
+AI Analysis
+
+↓
+
+PHP Backend
+
+↓
+
+Store Report in MySQL
+
+↓
+
+Return Result
 
 ---
 
@@ -145,36 +226,75 @@ Node.js communicates with React using Socket.IO.
 
 Authentication
 
-JWT
+- JWT Authentication
 
 Authorization
 
-Role-Based Access Control
+- Role-Based Access Control (RBAC)
 
-Password Hashing
+Password Security
 
-HTTPS
+- Password Hashing
 
-Input Validation
+Communication
+
+- HTTPS
+
+Validation
+
+- Server-side Validation
+- Client-side Validation
 
 ---
 
 # Scalability
 
-The system should support
+The architecture supports:
 
-- Multiple campuses
-- Multiple faculties
-- More than 50,000 users
-- Future cloud deployment
+- Multiple Faculties
+- Multiple Campuses
+- More than 50,000 Users
+- Additional Future Modules
+- Future Mobile Application Integration
 
 ---
 
-# Architecture Goals
+# Design Principles
 
-- Scalability
-- Security
-- Performance
-- Maintainability
-- Modularity
+The architecture follows:
+
+- MVC Architecture
+- Separation of Concerns
+- Modular Design
 - Reusability
+- Scalability
+- Maintainability
+- Security by Design
+
+---
+
+# Architecture Summary
+
+Frontend
+
+React + Bootstrap
+
+↓
+
+Backend
+
+PHP MVC + REST API
+
+↓
+
+Database
+
+MySQL
+
+↓
+
+Artificial Intelligence
+
+Python + FastAPI
+
+All communication between components is performed through secure REST APIs.

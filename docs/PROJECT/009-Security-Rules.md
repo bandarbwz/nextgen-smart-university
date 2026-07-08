@@ -2,42 +2,65 @@
 
 ## Purpose
 
-This document defines the security requirements for the NextGen Smart University Platform.
+This document defines the official security requirements for the NextGen Smart University Platform (NSUP).
 
-All developers and AI assistants must follow these rules.
+Every developer and AI assistant must follow these security rules throughout development, testing, and deployment.
+
+Security must never be sacrificed for convenience or development speed.
+
+---
+
+# Security Principles
+
+The system follows these security principles:
+
+- Confidentiality
+- Integrity
+- Availability
+- Least Privilege
+- Defense in Depth
+- Secure by Design
 
 ---
 
 # Authentication
 
-- Use JWT Authentication.
-- Never store plain text passwords.
-- Hash passwords using bcrypt.
-- Expire tokens after a secure period.
-- Logout must invalidate the session.
+The platform uses JWT Authentication.
+
+Requirements:
+
+- Every user must authenticate using a university account.
+- Passwords must never be stored in plain text.
+- Passwords must be hashed using PHP `password_hash()`.
+- Passwords must be verified using `password_verify()`.
+- JWT tokens must expire after a secure period.
+- Expired tokens require users to log in again.
+- Logout invalidates the current session.
 
 ---
 
 # Authorization
 
-Use Role-Based Access Control (RBAC).
+The system uses Role-Based Access Control (RBAC).
 
-Roles:
+Supported Roles
 
 - Student
 - Lecturer
 - Coordinator
 - Administrator
-- Restaurant Owner
 - STAD Staff
+- Restaurant Owner
 
-Users must only access resources they are authorized to use.
+A user may have one or more roles.
+
+Every protected request must verify that the authenticated user has permission before accessing any resource.
 
 ---
 
-# Password Rules
+# Password Policy
 
-Password must contain:
+Passwords must contain:
 
 - Minimum 8 characters
 - One uppercase letter
@@ -45,124 +68,193 @@ Password must contain:
 - One number
 - One special character
 
-Passwords must never be returned by the API.
+Temporary passwords must be changed after the first login.
+
+Passwords must never be returned in API responses.
 
 ---
 
 # Input Validation
 
-Validate every request.
+Every request must be validated.
 
 Validate:
 
 - Required fields
 - Email format
 - Phone number
-- File types
-- File size
 - Numeric values
+- Dates
+- Credit Hours
+- File Types
+- File Size
 
-Never trust frontend validation alone.
+Frontend validation improves user experience only.
 
----
-
-# SQL Injection
-
-- Always use prepared statements.
-- Never build SQL queries using string concatenation.
-
----
-
-# XSS Protection
-
-- Escape user-generated content.
-- Sanitize all HTML input.
-- Validate rich text content.
+All security validation must also be performed by the PHP backend.
 
 ---
 
-# CSRF Protection
+# SQL Injection Protection
 
-Protect all authenticated requests.
+Always use:
+
+- PDO Prepared Statements
+- Parameter Binding
+
+Never build SQL queries using string concatenation.
+
+---
+
+# Cross-Site Scripting (XSS)
+
+Protect against XSS by:
+
+- Escaping user-generated content
+- Sanitizing HTML input
+- Validating rich text content
+
+Never render raw user input directly.
+
+---
+
+# Cross-Site Request Forgery (CSRF)
+
+Protect authenticated requests using CSRF protection.
+
+Validate every authenticated request before processing.
 
 ---
 
 # File Upload Security
 
-Allow only approved file types.
+Allowed upload types include:
 
-Validate:
+- PDF
+- DOCX
+- JPG
+- JPEG
+- PNG
+
+Every uploaded file must be validated.
+
+Check:
 
 - Extension
 - MIME Type
 - File Size
 
-Rename uploaded files.
+Uploaded files must:
 
-Store uploads outside the public root when possible.
-
-Never execute uploaded files.
+- Be renamed using unique filenames.
+- Be stored outside the public web root whenever possible.
+- Never be executable.
 
 ---
 
 # API Security
 
-- Protect private endpoints.
-- Return proper HTTP status codes.
-- Never expose internal errors.
-- Validate JWT on every protected request.
+Every protected endpoint must:
+
+- Validate JWT
+- Validate User Role
+- Validate Request Data
+
+Return appropriate HTTP status codes.
+
+Never expose internal server errors.
+
+---
+
+# AI Security
+
+The AI service communicates only with the PHP backend.
+
+React must never communicate directly with the AI service.
+
+AI examination reports are accessible only to authorized users.
+
+The AI system generates monitoring reports only.
+
+Academic decisions are always made by authorized university staff.
 
 ---
 
 # Logging
 
-Log:
+Log important security events:
 
-- Login attempts
-- Failed logins
-- Password changes
-- User creation
-- User deletion
-- Permission changes
-- AI exam violations
+- Login
+- Failed Login
+- Password Change
+- User Creation
+- User Deletion
+- Permission Changes
+- Course Registration
+- Grade Submission
+- AI Examination Violations
 
-Do not log passwords or sensitive personal data.
+Never log:
+
+- Passwords
+- JWT Tokens
+- Sensitive Personal Information
 
 ---
 
 # Session Security
 
-- Logout invalidates the session.
-- Expired tokens require re-login.
+- Logout invalidates the current session.
+- Expired JWT tokens require re-authentication.
 - Protect against session hijacking.
+- Automatically terminate inactive sessions after the configured timeout.
 
 ---
 
 # Data Protection
 
-Protect:
+Protect all sensitive information including:
 
-- Student information
-- Lecturer information
-- Financial data
-- Grades
-- Exam records
-- Restaurant orders
+- Student Records
+- Lecturer Records
+- Academic Results
+- Attendance Records
+- Financial Records
+- Examination Reports
+- Restaurant Orders
 
-Sensitive data must never be exposed.
+Sensitive information must never be exposed to unauthorized users.
 
 ---
 
-# Backup
+# Backup and Recovery
 
 Back up the database regularly.
 
-Verify backups can be restored successfully.
+Backups should be encrypted.
+
+Verify that backups can be restored successfully before production deployment.
+
+---
+
+# Security Testing
+
+Before deployment perform:
+
+- Authentication Testing
+- Authorization Testing
+- SQL Injection Testing
+- XSS Testing
+- CSRF Testing
+- File Upload Testing
+- API Security Testing
+
+All critical vulnerabilities must be resolved before release.
 
 ---
 
 # Final Rule
 
-Security is mandatory.
+Security is mandatory throughout the entire project.
 
-Never sacrifice security for convenience.
+Every feature must comply with these security requirements before it is considered complete.

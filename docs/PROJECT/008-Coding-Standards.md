@@ -2,31 +2,36 @@
 
 ## Purpose
 
-This document defines the coding standards for the NextGen Smart University Platform.
+This document defines the official coding standards for the NextGen Smart University Platform (NSUP).
 
-Every developer and AI assistant must follow these standards.
+All developers and AI assistants must follow these standards to ensure consistency, readability, maintainability, security, and high code quality.
 
 ---
 
 # General Principles
 
-- Write clean code.
-- Keep code simple.
-- Avoid duplicate code.
-- Use meaningful names.
-- Write reusable code.
-- Keep files organized.
+Always write code that is:
+
+- Clean
+- Readable
+- Simple
+- Reusable
+- Maintainable
+- Secure
+
+Avoid duplicate code whenever possible.
 
 ---
 
-# Clean Code
+# Software Engineering Principles
 
-Always follow:
+The project follows these principles:
 
-- SOLID Principles
+- SOLID
 - DRY (Don't Repeat Yourself)
 - KISS (Keep It Simple)
 - Separation of Concerns
+- Single Responsibility Principle
 
 ---
 
@@ -36,13 +41,14 @@ Always follow:
 
 Use camelCase.
 
-Example:
+Examples
 
+```php
 studentName
-
 courseCode
-
 totalCredits
+attendancePercentage
+```
 
 ---
 
@@ -50,17 +56,21 @@ totalCredits
 
 Use camelCase.
 
-Function names must describe the action.
+Function names must clearly describe the performed action.
 
-Examples:
+Examples
 
-getStudent()
+```php
+loginUser()
 
-createCourse()
+registerCourse()
 
 calculateGPA()
 
-sendNotification()
+generateTranscript()
+
+submitAssignment()
+```
 
 ---
 
@@ -68,82 +78,204 @@ sendNotification()
 
 Use PascalCase.
 
-Examples:
+Examples
 
+```php
 StudentController
 
 CourseService
 
 AttendanceModel
 
-RestaurantRepository
+FinanceController
+
+ChatService
+```
 
 ---
 
 ## Files
 
-Use PascalCase for React components.
+### React Components
 
-Examples:
+Use PascalCase.
+
+Examples
+
+```text
+Dashboard.jsx
 
 StudentCard.jsx
 
-DashboardLayout.jsx
-
 AttendanceTable.jsx
 
-Use lowercase for configuration files.
+FinancePage.jsx
+```
+
+---
+
+### PHP Files
+
+Use PascalCase.
+
+Examples
+
+```text
+StudentController.php
+
+CourseService.php
+
+AttendanceModel.php
+
+FinanceController.php
+```
+
+---
+
+### Configuration Files
+
+Use lowercase.
+
+Examples
+
+```text
+config.php
+
+database.php
+
+routes.php
+```
+
+---
+
+# Folder Organization
+
+Keep project files organized by module.
+
+Example
+
+```text
+controllers/
+models/
+services/
+middleware/
+routes/
+config/
+helpers/
+validation/
+uploads/
+```
+
+Do not duplicate files or business logic.
 
 ---
 
 # React Standards
 
 - One component per file.
+- Use Functional Components only.
+- Use React Hooks.
 - Keep components small.
-- Use reusable components.
-- Avoid duplicate UI.
-- Keep state organized.
-- Use functional components only.
-- Use hooks.
+- Create reusable UI components.
+- Avoid duplicated layouts.
+- Organize state properly.
+- Validate forms before submission.
+
+React communicates only with REST APIs.
+
+React must never communicate directly with the database.
 
 ---
 
 # PHP Standards
 
-- MVC Architecture
-- Controllers should stay thin.
-- Business logic belongs in Services.
-- Database access belongs in Models.
-- Validate all requests.
-- Return JSON responses only.
+The backend follows MVC Architecture.
+
+Controllers
+
+- Receive requests.
+- Validate requests.
+- Call services.
+- Return JSON responses.
+
+Controllers should remain lightweight.
 
 ---
 
-# Python Standards
+Models
 
-- Modular scripts.
-- One responsibility per module.
-- Keep AI logic separated from backend.
-- Document AI models.
-- Handle exceptions.
+Responsible for:
+
+- Database Operations
+- Data Relationships
+- Data Persistence
+
+---
+
+Services
+
+Responsible for:
+
+- Business Logic
+- Calculations
+- Reusable Operations
+- Complex Processing
+
+Business logic must never be placed inside Controllers.
+
+---
+
+Routes
+
+Each endpoint should include:
+
+- Authentication
+- Authorization
+- Validation
+
+---
+
+# Database Standards
+
+Always use:
+
+- Primary Keys
+- Foreign Keys
+- Indexes
+
+Table names should be meaningful.
+
+Maintain referential integrity.
+
+Avoid duplicate data.
 
 ---
 
 # SQL Standards
 
-- Use clear table names.
-- Use singular table names.
-- Use foreign keys.
-- Index searchable columns.
-- Avoid duplicate data.
+- Use PDO Prepared Statements.
+- Never concatenate SQL queries.
+- Validate all user input.
+- Optimize database queries.
+- Return only required data.
 
 ---
 
-# Comments
+# Artificial Intelligence Standards
 
-Write comments only when necessary.
+The AI module must remain independent from the PHP backend.
 
-Do not explain obvious code.
+Responsibilities include:
+
+- Identity Verification
+- Face Detection
+- Eye Tracking
+- Head Pose Detection
+- Browser Tab Detection
+- Fullscreen Detection
+- AI Report Generation
+
+Communication between PHP and AI must occur through secure REST APIs.
 
 ---
 
@@ -151,41 +283,61 @@ Do not explain obvious code.
 
 Always handle:
 
-- Invalid input
-- Database errors
-- API errors
-- File upload errors
-- Authentication errors
+- Invalid Input
+- Authentication Errors
+- Authorization Errors
+- Database Errors
+- API Errors
+- File Upload Errors
+- AI Service Errors
+
+Return meaningful error messages.
+
+Never expose internal server errors.
 
 ---
 
 # Logging
 
-Log important events.
+Log important events:
 
-Examples:
-
-- Login
-- Logout
-- User creation
-- Payment
+- User Login
+- User Logout
+- Password Change
+- Course Registration
 - Attendance
-- Exam violations
+- Grade Submission
+- Finance Transactions
+- AI Examination Violations
+
+Sensitive information must never be logged.
 
 ---
 
 # Performance
 
-- Optimize database queries.
-- Use pagination.
-- Avoid unnecessary API calls.
-- Reuse components.
-- Cache reusable data when appropriate.
+Improve performance by:
+
+- Optimizing SQL queries
+- Using pagination
+- Returning only required API data
+- Reusing React components
+- Minimizing unnecessary API requests
+
+---
+
+# Documentation
+
+Document public APIs before implementation.
+
+Document complex functions when necessary.
+
+Keep documentation synchronized with implementation.
 
 ---
 
 # Final Rule
 
-Always write production-ready code.
+Every source file committed to the project must be production-ready.
 
-Never generate demo code or placeholder implementations.
+Do not commit incomplete implementations, temporary code, or placeholder logic.

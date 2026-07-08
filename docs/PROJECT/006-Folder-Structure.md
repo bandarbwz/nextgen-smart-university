@@ -2,173 +2,207 @@
 
 ## Purpose
 
-This document defines the project folder structure.
+This document defines the official folder structure for the NextGen Smart University Platform (NSUP).
 
-Every developer and AI assistant must follow this structure.
+All developers and AI assistants must follow this structure to maintain a clean, organized, and scalable project.
 
 ---
 
-# Root Directory
+# Project Structure
 
 ```
 nextgen-smart-university/
-
-.github/
-docs/
-frontend/
-backend/
-database/
-uploads/
-scripts/
+│
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── assets/
+│   │   ├── components/
+│   │   ├── layouts/
+│   │   ├── pages/
+│   │   ├── hooks/
+│   │   ├── services/
+│   │   ├── contexts/
+│   │   ├── routes/
+│   │   ├── utils/
+│   │   ├── styles/
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   ├── package.json
+│   └── vite.config.js
+│
+├── backend/
+│   ├── app/
+│   │   ├── Controllers/
+│   │   ├── Models/
+│   │   ├── Services/
+│   │   ├── Middleware/
+│   │   ├── Helpers/
+│   │   └── Validation/
+│   │
+│   ├── config/
+│   ├── routes/
+│   ├── storage/
+│   │   ├── uploads/
+│   │   ├── reports/
+│   │   └── temp/
+│   ├── public/
+│   ├── vendor/
+│   ├── composer.json
+│   └── index.php
+│
+├── ai/
+│   ├── api/
+│   ├── models/
+│   ├── services/
+│   ├── utils/
+│   ├── requirements.txt
+│   └── main.py
+│
+├── database/
+│   ├── schema/
+│   ├── migrations/
+│   ├── seed/
+│   └── backups/
+│
+├── docs/
+│   ├── PROJECT/
+│   ├── FEATURES/
+│   ├── DATABASE/
+│   ├── API/
+│   ├── ARCHITECTURE/
+│   ├── DEPLOYMENT/
+│   └── TASKS/
+│
+├── .gitignore
+├── README.md
+└── LICENSE
 ```
 
 ---
 
-# Documentation
+# Frontend Structure
 
-```
-docs/
+The frontend contains:
 
-PROJECT/
-FEATURES/
-DATABASE/
-API/
-ARCHITECTURE/
-UI/
-TASKS/
-DEPLOYMENT/
-ADR/
-PROMPTS/
-```
+- Pages
+- Components
+- Layouts
+- Assets
+- Routes
+- Services
+- Contexts
+- Hooks
+- Utilities
+- Styles
 
----
-
-# Frontend
-
-```
-frontend/
-
-public/
-
-src/
-
-components/
-
-pages/
-
-layouts/
-
-hooks/
-
-services/
-
-context/
-
-routes/
-
-assets/
-
-utils/
-
-styles/
-```
+React components must remain reusable.
 
 ---
 
-# Backend
+# Backend Structure
 
-```
-backend/
+The backend follows the MVC architecture.
 
-app/
+Controllers
 
-Controllers/
+- Receive HTTP requests.
+- Validate requests.
+- Call Services.
+- Return API responses.
 
-Models/
+Models
 
-Services/
+- Handle database operations.
 
-Middleware/
+Services
 
-Helpers/
+- Contain business logic.
 
-Routes/
+Middleware
 
-Config/
+- Authentication
+- Authorization
+- Request Filtering
 
-Storage/
+Validation
 
-Uploads/
-```
+- Request validation rules.
 
----
+Helpers
 
-# Database
-
-```
-database/
-
-migrations/
-
-seeds/
-
-backups/
-
-sql/
-```
+- Reusable utility functions.
 
 ---
 
-# Uploads
+# AI Structure
 
-```
-uploads/
+The AI module is completely independent.
 
-students/
+It contains:
 
-lecturers/
+- FastAPI APIs
+- AI Models
+- Detection Services
+- Utility Functions
 
-restaurants/
-
-assignments/
-
-messages/
-
-events/
-
-clubs/
-
-certificates/
-
-temp/
-```
+The AI communicates only with the PHP backend.
 
 ---
 
-# Scripts
+# Database Structure
 
-```
-scripts/
+Database files include:
 
-setup/
+- SQL Schema
+- Migrations
+- Seed Data
+- Backups
 
-backup/
-
-deployment/
-```
-
----
-
-# Naming Rules
-
-- Use lowercase folder names.
-- Use PascalCase for React components.
-- Use camelCase for variables and functions.
-- Use meaningful file names.
-- Avoid abbreviations unless commonly accepted.
+Database scripts must never be placed inside the frontend.
 
 ---
 
-# Future Expansion
+# Documentation Structure
 
-The folder structure must support future modules without major restructuring.
+Documentation is organized into:
+
+- PROJECT
+- FEATURES
+- DATABASE
+- API
+- ARCHITECTURE
+- DEPLOYMENT
+- TASKS
+
+Every new feature must have documentation before implementation.
+
+---
+
+# Storage
+
+The storage directory contains:
+
+- Uploaded Files
+- Generated Reports
+- Temporary Files
+
+Sensitive files should not be publicly accessible.
+
+---
+
+# Folder Rules
+
+- Keep related files together.
+- Do not create unnecessary folders.
+- Do not duplicate functionality.
+- Use clear folder names.
+- Follow the project architecture.
+
+---
+
+# Final Rule
+
+Every developer must follow this folder structure throughout the project.
+
+Any structural changes must be documented before implementation.

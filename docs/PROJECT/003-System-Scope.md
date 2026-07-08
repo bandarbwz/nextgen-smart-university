@@ -2,15 +2,17 @@
 
 ## Purpose
 
-This document defines the boundaries of the NextGen Smart University Platform (NSUP).
+This document defines the scope and boundaries of the NextGen Smart University Platform (NSUP).
 
-It describes what is included in the project and what is outside the project scope.
+It specifies what is included in the current version of the project and what is intentionally excluded.
 
 ---
 
 # In Scope
 
 The following modules are included in this project.
+
+---
 
 ## Authentication
 
@@ -20,6 +22,7 @@ The following modules are included in this project.
 - Change Password
 - JWT Authentication
 - Role-Based Access Control
+- Multiple Role Support
 
 ---
 
@@ -27,21 +30,22 @@ The following modules are included in this project.
 
 - Dashboard
 - Student Profile
-- Animated Student ID Card
+- Digital Student ID
 - Course Registration
 - Class Schedule
 - QR Attendance
-- LMS
-- Assignments
+- Learning Management System (LMS)
+- Assessment Management
 - Course Chat
-- Online Exams
-- Finance
-- Notifications
+- AI Online Examination
 - Calendar
 - Student Requests
 - Event Registration
 - Club Membership
 - Food Court
+- Finance
+- Download Center
+- Notification Center
 - Exam Results
 
 ---
@@ -50,21 +54,25 @@ The following modules are included in this project.
 
 - Dashboard
 - Course Management
+- Assessment Management
 - Attendance Management
-- Assignment Management
-- Student Grades
+- Grade Management
 - Course Chat
-- Online Classes
+- Calendar
 - Reports
+- Download Center
 
 ---
 
 ## Coordinator Portal
 
+- Registration Management
 - Registration Approval
+- Grade Approval
 - Course Sections
 - Student Management
 - Lecturer Assignment
+- Calendar
 - Reports
 
 ---
@@ -76,12 +84,12 @@ The following modules are included in this project.
 - Faculty Management
 - Department Management
 - Course Management
+- Final Examination Management
 - Restaurant Management
 - Club Management
 - Event Management
 - Finance Management
 - Reports
-- Audit Logs
 
 ---
 
@@ -89,9 +97,9 @@ The following modules are included in this project.
 
 - Restaurant Registration
 - Menu Management
-- Orders
+- Order Management
 - Payment Status
-- Sales Reports
+- Revenue Reports
 
 ---
 
@@ -106,32 +114,56 @@ The following modules are included in this project.
 
 ---
 
-## Learning Management System
+## Learning Management System (LMS)
 
 - Course Materials
 - Video Lessons
-- Assignments
+- Assessment Management
+- Assignment Submission
+- Online Quizzes
 - Announcements
 - Discussion Board
 
 ---
 
-## AI Services
+## AI Online Examination
 
-- AI Exam Monitoring
+- Identity Verification
 - Face Detection
 - Eye Tracking
+- Head Tracking
 - Multiple Face Detection
 - Tab Switching Detection
-- AI Violation Reports
+- Fullscreen Detection
+- AI Examination Reports
+
+The AI system monitors examinations, records evidence, and generates reports. Final academic decisions are made by authorized university staff.
 
 ---
 
 ## Communication
 
 - Course Chat
-- Notifications
+- Private Messaging
+- Group Messaging
 - Announcements
+- Notification Center
+
+---
+
+## Calendar
+
+- Academic Calendar
+- Lecture Schedule
+- Assignment Deadlines
+- Quiz Schedule
+- Midterm Schedule
+- Final Examination Schedule
+- University Events
+- Registration Period
+- Add/Drop Period
+- Reset Exam Period
+- Personal Reminders
 
 ---
 
@@ -140,6 +172,22 @@ The following modules are included in this project.
 - Tuition Fees
 - Online Payments
 - Payment History
+- Invoices
+- Receipts
+
+---
+
+## Download Center
+
+- Academic Transcript
+- Attendance Report
+- Grade Report
+- Registration Slip
+- Student ID
+- Certificates
+- Excuse Letters
+- Payment Receipt
+- Tuition Invoice
 
 ---
 
@@ -149,7 +197,7 @@ The following features are NOT included in this version.
 
 - Native Mobile Applications
 - Library Management System
-- HR Management
+- Human Resource Management
 - Payroll System
 - Alumni Portal
 - Public Admission Website
@@ -158,24 +206,33 @@ The following features are NOT included in this version.
 
 # Target Users
 
+The platform supports the following users:
+
 - Students
 - Lecturers
 - Coordinators
 - Administrators
-- Restaurant Owners
 - STAD Staff
+- Restaurant Owners
 
 ---
 
 # Future Expansion
 
-The architecture should support future modules without major redesign.
+The platform architecture is designed to support future modules without requiring major redesign.
 
 Possible future modules include:
 
 - Mobile Application
 - AI Academic Advisor
-- Smart Parking
 - Library Integration
 - Hostel Management
+- Transportation Management
 - Research Management
+- Cloud Deployment Enhancements
+
+---
+
+# Expected Result
+
+The project delivers a centralized university management platform that integrates academic, administrative, financial, communication, and student services into a single secure and scalable web application.

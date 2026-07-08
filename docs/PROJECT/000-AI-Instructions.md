@@ -77,7 +77,9 @@ Always keep modules independent.
 
 Frontend must communicate only through REST APIs.
 
-Business logic belongs to the backend.
+Business logic belongs to the PHP backend.
+
+React is responsible only for the user interface and API communication.
 
 Never place SQL queries inside React components.
 

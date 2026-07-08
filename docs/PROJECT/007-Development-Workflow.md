@@ -2,129 +2,185 @@
 
 ## Purpose
 
-This document defines the official development workflow for the project.
+This document defines the official development workflow for the NextGen Smart University Platform (NSUP).
 
-Every developer and AI assistant must follow these steps.
+Every developer and AI assistant must follow this workflow to ensure consistent development, maintainable code, and high software quality.
 
 ---
 
-# Phase 1 - Documentation
+# Development Lifecycle
+
+The project is developed in the following phases:
+
+1. Documentation
+2. Database Design
+3. Backend Development
+4. Frontend Development
+5. AI Development
+6. System Integration
+7. Testing
+8. Deployment
+
+Each phase must be completed before moving to the next.
+
+---
+
+# Phase 1 – Documentation
 
 Before writing any code:
 
 - Read README.md
-- Read AI Instructions
+- Read AI Development Instructions
 - Read Project Rules
-- Read the related feature documentation
-- Understand the requirements
+- Read Business Rules
+- Read Feature Documentation
+- Read Database Documentation
+- Read API Documentation
 
-No code should be written before documentation is complete.
+Understand the complete feature before implementation.
 
----
-
-# Phase 2 - Database Design
-
-Design the database before backend development.
-
-Tasks:
-
-- Create tables
-- Define relationships
-- Create indexes
-- Define constraints
-- Review database design
+No code should be written until the required documentation is complete.
 
 ---
 
-# Phase 3 - Backend Development
+# Phase 2 – Database Design
 
-Develop backend features in small tasks.
+Database development begins before backend implementation.
 
-Each feature must include:
+Tasks include:
+
+- Design the database schema.
+- Create tables.
+- Define primary keys.
+- Define foreign keys.
+- Create indexes.
+- Verify relationships.
+- Normalize tables.
+
+Review and approve the database before continuing.
+
+---
+
+# Phase 3 – Backend Development
+
+Develop one feature at a time.
+
+Each backend feature should include:
 
 - Models
-- Services
 - Controllers
-- Routes
+- Services
+- REST API Endpoints
 - Validation
 - Authentication
 - Authorization
+- Error Handling
 
-Test every endpoint before continuing.
-
----
-
-# Phase 4 - Frontend Development
-
-Develop frontend after backend APIs are completed.
-
-Each page must include:
-
-- Responsive design
-- Validation
-- Error handling
-- Loading state
-- Success messages
+Every API endpoint must be tested before moving to the next feature.
 
 ---
 
-# Phase 5 - Integration
+# Phase 4 – Frontend Development
 
-Connect frontend with backend.
+Frontend development begins after backend APIs are available.
+
+Each page should include:
+
+- Responsive Design
+- Form Validation
+- Loading Indicators
+- Success Messages
+- Error Messages
+- API Integration
+
+React communicates only with REST APIs.
+
+React must never communicate directly with the database.
+
+---
+
+# Phase 5 – AI Development
+
+Develop AI features after backend integration.
+
+Tasks include:
+
+- Identity Verification
+- Face Detection
+- Eye Tracking
+- Head Pose Detection
+- Browser Tab Detection
+- Fullscreen Detection
+- AI Examination Report Generation
+
+The AI service communicates only with the PHP backend using secure REST APIs.
+
+---
+
+# Phase 6 – System Integration
+
+Connect all project modules.
 
 Verify:
 
-- API requests
 - Authentication
-- Data validation
-- File uploads
-- Realtime communication
+- API Communication
+- Database Operations
+- File Upload
+- AI Communication
+- Notification Delivery
+- Report Generation
+
+Resolve integration issues before testing.
 
 ---
 
-# Phase 6 - Testing
+# Phase 7 – Testing
 
-Test every module.
+Every completed feature must be tested.
 
 Testing includes:
 
-- Functional testing
-- Validation testing
-- Security testing
-- Performance testing
-- UI testing
+- Functional Testing
+- Integration Testing
+- Validation Testing
+- Security Testing
+- Performance Testing
+- User Interface Testing
 
-Fix all critical bugs before moving forward.
-
----
-
-# Phase 7 - Deployment
-
-Prepare production environment.
-
-Tasks:
-
-- Environment configuration
-- Database setup
-- Server configuration
-- SSL
-- Backup
-- Monitoring
+Critical issues must be resolved before deployment.
 
 ---
 
-# AI Workflow
+# Phase 8 – Deployment
 
-Before every task:
+Deployment tasks include:
+
+- Configure Apache
+- Configure PHP
+- Configure MySQL
+- Configure AI Service
+- Configure HTTPS
+- Restore Initial Database
+- Verify System Functionality
+
+Deployment is complete only after all modules have been verified.
+
+---
+
+# AI Development Workflow
+
+Before generating any code:
 
 1. Read documentation.
 2. Analyze requirements.
-3. Generate implementation.
-4. Review generated code.
-5. Fix detected issues.
-6. Wait for approval.
+3. Identify dependencies.
+4. Generate implementation.
+5. Review generated code.
+6. Fix detected issues.
+7. Wait for approval before continuing.
 
-Never continue automatically.
+Never skip any step.
 
 ---
 
@@ -132,16 +188,36 @@ Never continue automatically.
 
 For every completed task:
 
-- git add .
-- git commit
-- git push
+```bash
+git add .
+git commit -m "Meaningful commit message"
+git push
+```
 
-Use clear and simple commit messages.
+Commit only completed and tested work.
+
+Never commit unfinished features.
+
+---
+
+# Code Review Checklist
+
+Before completing any feature, verify:
+
+- Documentation followed
+- Business rules implemented
+- Validation completed
+- Security verified
+- Error handling completed
+- Database updated correctly
+- APIs tested
+- Responsive UI completed
+- Code reviewed
 
 ---
 
 # Final Rule
 
-Complete one task at a time.
+Develop one feature at a time.
 
-Do not start a new task until the current task is approved.
+Complete, test, review, and obtain approval before starting the next feature.
