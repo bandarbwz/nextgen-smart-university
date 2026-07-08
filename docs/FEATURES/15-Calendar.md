@@ -45,6 +45,11 @@ Students can view:
 - STAD Events
 - Personal Reminders
 
+Students can also create:
+
+- Personal Notes
+- Personal Reminders
+
 ---
 
 # Lecturer Calendar
@@ -60,88 +65,106 @@ Lecturers can view:
 - Department Meetings
 - Office Hours
 
+Lecturers can create:
+
+- Assignment Events
+- Quiz Events
+- Office Hour Events
+
 ---
 
 # Coordinator Calendar
 
-Coordinators can view:
+Coordinators can manage:
 
 - Registration Opening
 - Registration Closing
 - Grade Approval Deadlines
-- Semester Timeline
 - Graduation Timeline
+- Semester Timeline
 - Department Meetings
 
 ---
 
 # Administrator Calendar
 
-Administrators can view:
+Administrators can manage:
 
 - Academic Calendar
 - University Events
-- System Maintenance
+- Maintenance Schedule
 - Backup Schedule
-- Semester Timeline
 - Registration Timeline
+- Semester Timeline
 
 ---
 
 # Calendar Views
 
-The calendar supports:
+Supported Views
 
-- Daily View
-- Weekly View
-- Monthly View
+- Day View
+- Week View
+- Month View
 - Agenda View
 
 ---
 
 # Event Categories
 
-Events are categorized as:
+Academic
 
-- Academic
-- Examination
-- Assignment
-- Meeting
-- Student Activity
-- Registration
-- Finance
-- System
-- Personal
+Assignments
+
+Quizzes
+
+Midterm Exams
+
+Final Exams
+
+Meetings
+
+Student Activities
+
+Registration
+
+Finance
+
+System
+
+Personal
 
 ---
 
-# Event Details
+# Event Information
 
 Each event contains:
 
 - Title
 - Description
-- Date
-- Time
-- Location
 - Category
+- Date
+- Start Time
+- End Time
+- Location
 - Related Course
+- Related Lecturer
 - Status
+
+---
+
+# Event Status
+
+- Upcoming
+- In Progress
+- Completed
+- Cancelled
 
 ---
 
 # Notifications
 
-The system automatically reminds users before:
-
-- Assignment Deadlines
-- Quiz Dates
-- Midterm Exams
-- Final Exams
-- Registration Closing
-- University Events
-
-Reminder intervals:
+Automatic reminders are sent:
 
 - 24 Hours Before
 - 1 Hour Before
@@ -149,25 +172,25 @@ Reminder intervals:
 
 ---
 
-# Permissions
+# Calendar Permissions
 
-Students can:
+Student
 
-- View personal calendar
-- Add personal reminders
+- View Calendar
+- Add Personal Reminder
 
-Lecturers can:
+Lecturer
 
-- Create course-related events
-- Update teaching schedule
+- Create Course Events
+- Edit Course Events
 
-Coordinators can:
+Coordinator
 
-- Manage academic calendar
+- Manage Academic Calendar
 
-Administrators can:
+Administrator
 
-- Manage all calendar events
+- Full Calendar Access
 
 ---
 
@@ -179,22 +202,20 @@ The Calendar System integrates with:
 - LMS Module
 - Attendance Module
 - Student Activities Module
-- Notification Module
 - Finance Module
+- Notification Module
 
 ---
 
 # Future Enhancements
 
-Future versions may include:
-
-- Google Calendar Synchronization
-- Microsoft Outlook Synchronization
-- Apple Calendar Synchronization
-- Mobile Calendar Integration
+- Google Calendar Sync
+- Microsoft Outlook Sync
+- Apple Calendar Sync
+- Mobile Calendar Support
 
 ---
 
 # Success Criteria
 
-The Calendar System is complete when every user can manage academic and personal schedules from one centralized calendar.
+The Calendar System is considered complete when every user can manage academic schedules, university events, and personal reminders through one centralized calendar.
