@@ -1,41 +1,37 @@
 # NextGen Smart University Platform
 
-A modern web-based Smart University Management Platform designed to centralize academic, administrative, and student services into a single integrated system.
+Version: 2.0.0
 
-This project is developed as a Final Year Project and follows modern software engineering practices, scalable architecture, and modular system design.
+**Status:** Documentation Complete  
+**Development Status:** Ready for Development
+
+---
+
+# Overview
+
+NextGen Smart University Platform is a modern web-based university management system that centralizes academic, administrative, financial, and student services into one integrated platform.
+
+The platform is designed as a Final Year Project while following real-world software engineering principles, scalable architecture, modular development, and modern UI/UX practices.
 
 ---
 
 # Project Vision
 
-The goal of this project is to replace multiple disconnected university systems with one centralized platform that provides academic management, learning management, communication, student services, food ordering, AI-powered online examinations, and administrative tools.
+The goal of this project is to replace multiple disconnected university systems with one centralized platform where students, lecturers, coordinators, administrators, STAD staff, and restaurant owners can perform all university-related tasks from a single web application.
 
-The platform focuses on usability, scalability, security, and future expansion.
+The system focuses on:
 
----
-
-# Main Modules
-
-- Authentication & Authorization
-- Academic Management
-- Learning Management System (LMS)
-- Attendance Management
-- AI Online Examination
-- Course Chat
-- Student Activities (STAD)
-- Food Court
-- Finance
-- Calendar
-- Download Center
-- Notification Center
-- Reporting System
-- System Administration
+- Simplicity
+- Security
+- Scalability
+- Performance
+- User Experience
 
 ---
 
 # User Roles
 
-The platform supports the following user roles:
+The platform supports the following roles:
 
 - Student
 - Lecturer
@@ -44,76 +40,169 @@ The platform supports the following user roles:
 - STAD Staff
 - Restaurant Owner
 
-The system also supports multiple roles for a single user.
+The system supports multiple roles for a single user.
 
-Example:
+Examples:
 
 - Lecturer + Coordinator
 - Administrator + Lecturer
 
-Users with multiple roles can switch between workspaces after login.
+When users have multiple roles, they choose the workspace after login.
 
 ---
 
-# Core Features
+# Core Modules
 
-## Academic
-
-- Course Registration
-- Course Approval
-- Timetable
-- Study Plan
-- Transcript
-- GPA & CGPA
-- Graduation Tracking
-
----
-
-## Learning Management
-
-- Course Materials
-- Assignments
-- Quizzes
-- Midterm Exams
-- Final Exams
-- Grade Management
-- Course Announcements
+- Authentication
+- Academic Management
+- Learning Management System (LMS)
+- Attendance Management
+- Assessment Management
+- AI Online Examination
+- Chat System
+- Calendar System
+- Student Activities
+- Food Court
+- Finance
+- Download Center
+- Reporting System
+- System Administration
 
 ---
 
-## AI Online Examination
+# Academic Workflow
+
+Course Registration Process
+
+Coordinator Opens Registration
+
+↓
+
+Student Selects Courses
+
+↓
+
+System Validation
+
+- Schedule Clash
+- Credit Hours
+- Registration Period
+- Outstanding Tuition
+
+↓
+
+Coordinator Approval
+
+↓
+
+Student Enrolled
+
+↓
+
+Automatically Added To
+
+- LMS
+- Attendance
+- Course Chat
+- Grade Book
+- AI Examination (when applicable)
+
+---
+
+# Assessment Workflow
+
+Lecturers may create unlimited assessments.
+
+Supported assessment types include:
+
+- Assignment
+- Quiz
+- Midterm
+- Final
+- Project
+- Laboratory
+- Presentation
+- Participation
+- Practical
+- Other
+
+Each course defines its own grading distribution.
+
+Final examinations are created by the Administrator.
+
+---
+
+# Grade Approval Workflow
+
+Lecturer
+
+↓
+
+Submit Grades
+
+↓
+
+Coordinator Review
+
+↓
+
+Approve / Reject
+
+↓
+
+Student Notification
+
+↓
+
+Grades Published
+
+Students cannot view grades before approval.
+
+---
+
+# AI Examination
+
+The AI Examination System provides:
 
 - Identity Verification
 - Camera Monitoring
+- Face Detection
 - Eye Tracking
 - Head Tracking
 - Fullscreen Detection
 - Browser Detection
 - AI Violation Reports
 - Exam Recording
-- Lecturer Review
 
-The AI system assists lecturers by collecting evidence and generating reports. Final academic decisions are always made by authorized university staff.
+The AI system only monitors examinations and generates evidence.
+
+Final academic decisions are always made by authorized university staff.
 
 ---
 
-## Student Services
+# Student Services
 
-- Digital Student ID
+Students can access:
+
+- Academic Portal
+- LMS
 - Attendance
 - Calendar
-- Download Center
-- Notifications
-- Finance
+- Chat
 - Food Court
+- Finance
+- Download Center
 - Student Activities
 
 ---
 
-## Communication
+# Communication
+
+The Chat System supports:
 
 - Course Chat
-- Private Messaging
+- Private Chat
+- Group Chat
 - File Sharing
 - Image Sharing
 - Video Sharing
@@ -127,8 +216,8 @@ The AI system assists lecturers by collecting evidence and generating reports. F
 
 - React
 - Bootstrap
-- Axios
 - React Router
+- Axios
 - Socket.IO Client
 
 ---
@@ -149,70 +238,78 @@ The AI system assists lecturers by collecting evidence and generating reports. F
 
 ---
 
-## Artificial Intelligence
+## AI Services
 
 - Python
 - FastAPI
 - OpenCV
 - MediaPipe
 
-Future versions may integrate additional AI models for advanced monitoring.
-
----
-
-# Project Structure
-
-```
-docs/
-
-├── PROJECT/
-├── DATABASE/
-├── FEATURES/
-├── API/
-├── ARCHITECTURE/
-├── UI/
-├── DEPLOYMENT/
-└── TASKS/
-```
+Future versions may integrate additional AI models.
 
 ---
 
 # Design System
 
-## Colors
+## Light Theme
 
-### Light Mode
+Primary
 
-- Primary: University Red
-- Background: White
-- Text: Black
+University Red
 
-### Dark Mode
+Background
 
-- Primary: University Red
-- Background: Black
-- Text: White
+White
+
+Text
+
+Black
+
+---
+
+## Dark Theme
+
+Primary
+
+University Red
+
+Background
+
+Black
+
+Text
+
+White
 
 ---
 
 ## Status Colors
 
-- Success
-- Warning
-- Error
-- Information
+Success
+
+Green
+
+Warning
+
+Orange
+
+Error
+
+Dark Red
+
+Information
+
+Blue
 
 ---
 
 ## Icons
 
-The project uses Lucide React icons across all interfaces for a modern and consistent user experience.
+Lucide React
 
 ---
 
 # Dashboard Navigation
-
-The main navigation includes:
 
 - Dashboard
 - Academic
@@ -224,13 +321,31 @@ The main navigation includes:
 - Food Court
 - Finance
 - Download Center
+- Reports
 - Settings
+
+---
+
+# Project Structure
+
+```
+docs/
+
+├── PROJECT
+├── DATABASE
+├── FEATURES
+├── API
+├── ARCHITECTURE
+├── UI
+├── DEPLOYMENT
+└── TASKS
+```
 
 ---
 
 # Documentation
 
-Project documentation is organized into:
+The project documentation includes:
 
 - Project Documentation
 - Database Documentation
@@ -250,8 +365,8 @@ Project documentation is organized into:
 | Documentation | Complete |
 | Database Design | Complete |
 | Architecture | Complete |
-| Backend Development | Not Started |
-| Frontend Development | Not Started |
+| Backend | Not Started |
+| Frontend | Not Started |
 | AI Development | Not Started |
 | Testing | Not Started |
 | Deployment | Not Started |
@@ -302,4 +417,4 @@ Deployment
 
 This project is developed for academic purposes as a Final Year Project.
 
-Future versions may be expanded into a production-ready university management platform.
+The architecture and documentation are designed to support future expansion into a production-ready university management platform.
