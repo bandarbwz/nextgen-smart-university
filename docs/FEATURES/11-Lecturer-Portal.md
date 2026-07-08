@@ -1,241 +1,174 @@
-# Lecturer Portal
+# Lecturer Portal Module
 
-## Overview
+## Purpose
 
-The Lecturer Portal provides academic staff with all tools required to manage teaching, students, learning materials, attendance, assessments, communication, and AI-monitored online examinations.
+The Lecturer Portal provides lecturers with a centralized workspace to manage teaching activities, student assessments, attendance, learning materials, communication, and academic records.
 
-The portal is designed to reduce administrative work and improve teaching efficiency through a centralized dashboard.
+It integrates all lecturer responsibilities into a single secure platform.
 
 ---
 
 # Objectives
 
-The Lecturer Portal allows lecturers to:
-
-- View Dashboard
-- Manage Courses
-- Manage Sections
-- Upload Learning Materials
-- Create Assignments
-- Create Quizzes
-- Create Online Exams
-- Record Attendance
-- Grade Students
-- View Student Progress
-- Communicate with Students
-- Review AI Exam Reports
-- Publish Announcements
-- Generate Reports
+- Manage assigned courses.
+- Manage student attendance.
+- Upload learning materials.
+- Create assignments and quizzes.
+- Grade students.
+- Communicate with students.
+- Monitor AI examination reports.
+- Generate academic reports.
 
 ---
 
-# Lecturer Dashboard
+# Scope
 
-Displayed immediately after login.
+The Lecturer Portal includes:
 
-Dashboard Widgets
+- Dashboard
+- My Courses
+- Class Schedule
+- Attendance
+- Learning Management System
+- Assessment Management
+- AI Examination
+- Student Grades
+- Course Chat
+- Reports
+- Notifications
+- Calendar
+- Profile Settings
 
+---
+
+# Actors
+
+- Lecturer
+
+---
+
+# Features
+
+Lecturers can:
+
+- View Dashboard
+- View Teaching Schedule
+- Manage Assigned Courses
+- Upload Course Materials
+- Create Assignments
+- Create Quizzes
+- Grade Students
+- Record Attendance
+- Generate QR Attendance
+- Review AI Exam Reports
+- Publish Grades
+- Send Announcements
+- Communicate with Students
+- Generate Reports
+- Update Profile
+
+---
+
+# Dashboard Widgets
+
+The dashboard displays:
+
+- Teaching Schedule
 - Today's Classes
-- Current Courses
-- Upcoming Exams
-- Assignment Statistics
+- Upcoming Assignments
+- Pending Grading
 - Attendance Summary
-- Student Performance
-- Recent Notifications
 - AI Exam Alerts
+- Student Notifications
 - Recent Messages
 
 ---
 
-# My Courses
+# Teaching Services
 
-Lecturers can:
+## Academic
 
-- View Assigned Courses
-- View Sections
-- View Course Information
-- View Student List
-- View Course Statistics
-
-Each course displays:
-
-- Course Code
-- Course Name
-- Credit Hours
-- Number of Students
-- Semester
-- Section
+- Assigned Courses
+- Class Schedule
+- Student List
+- Course Information
 
 ---
 
-# Student Management
+## Attendance
 
-Lecturers can:
-
-- View Student Profiles
-- View Student Attendance
-- View Grades
-- View Assignment Submissions
-- View Academic Progress
-
-Lecturers cannot modify:
-
-- Student Personal Information
-- Student Financial Records
+- Generate QR Code
+- Manual Attendance
+- Attendance Reports
+- Attendance Excuses
 
 ---
 
-# Learning Management System
+## Learning Management
 
-Lecturers can:
-
-- Upload Lecture Notes
-- Upload Videos
-- Upload Course Files
-- Publish Learning Resources
-- Delete Uploaded Files
-- Organize Weekly Content
-
-Supported Files
-
-- PDF
-- PPTX
-- DOCX
-- XLSX
-- ZIP
-- Images
-- Videos
+- Upload Materials
+- Create Assignments
+- Create Quizzes
+- Publish Announcements
+- Manage Resources
 
 ---
 
-# Assignment Management
-
-Lecturers can:
-
-- Create Assignment
-- Edit Assignment
-- Delete Assignment
-- Set Due Date
-- Enable Late Submission
-- Download Student Submissions
-- Grade Assignments
-- Provide Feedback
-
----
-
-# Quiz Management
-
-Lecturers can:
-
-- Create Quiz
-- Add Questions
-- Set Time Limit
-- Set Attempts
-- Publish Quiz
-- View Quiz Results
-
-Question Types
-
-- Multiple Choice
-- True / False
-- Short Answer
-- Essay
-
----
-
-# Online Examination
-
-Lecturers can:
-
-- Create Online Exams
-- Configure Exam Duration
-- Enable AI Monitoring
-- Set Exam Availability
-- Publish Exams
-- Review Student Results
-
----
-
-# AI Monitoring
-
-During AI-monitored exams, lecturers can:
-
-- View Live Sessions
-- Monitor Active Students
-- View AI Warnings
-- View Violation Timeline
-- Review Screenshots
-- Watch Recordings
-- Approve or Reject AI Violations
-- Decide Whether to Invalidate an Exam
-
----
-
-# Attendance Management
-
-Lecturers can:
-
-- Generate QR Attendance
-- Open Attendance Session
-- Close Attendance Session
-- Record Manual Attendance
-- Approve Attendance Excuses
-- Export Attendance Reports
-
----
-
-# Grading
-
-Lecturers can:
+## Assessment
 
 - Grade Assignments
 - Grade Quizzes
-- Grade Midterm Exams
-- Grade Final Exams
-- Publish Grades
-- Update Grades before Final Approval
+- Grade Exams
+- Publish Results
 
 ---
 
-# Course Chat
+## AI Examination
 
-Lecturers can:
-
-- Send Messages
-- Pin Messages
-- Share Files
-- Share Videos
-- Reply to Students
-- Remove Inappropriate Messages
+- Monitor Active Exams
+- Review AI Violations
+- Download AI Reports
 
 ---
 
-# Announcements
+## Communication
 
-Lecturers can:
-
-- Publish Course Announcements
-- Edit Announcements
-- Delete Announcements
-- Schedule Announcements
+- Course Chat
+- Student Messages
+- Announcements
 
 ---
 
-# Reports
+# Business Rules
 
-Lecturers can generate:
+- Lecturers manage only assigned courses.
+- Attendance can only be recorded during active sessions.
+- Grades cannot be modified after final approval.
+- AI violation reports are read-only.
 
-- Attendance Report
-- Grade Report
-- Assignment Report
-- Student Performance Report
-- AI Exam Report
-- Course Statistics
+---
 
-Reports can be exported as:
+# Validation Rules
 
-- PDF
-- Excel
+- Lecturer account must be active.
+- Course must be assigned.
+- Assessment marks cannot exceed total marks.
+- Attendance sessions must be active.
+
+---
+
+# Permissions
+
+Lecturer permissions include:
+
+- Manage Courses
+- Upload Materials
+- Create Assignments
+- Grade Students
+- Record Attendance
+- View AI Reports
+- Send Announcements
+- View Reports
 
 ---
 
@@ -244,72 +177,96 @@ Reports can be exported as:
 Lecturers receive notifications for:
 
 - Assignment Submission
+- Quiz Submission
+- AI Violations
 - Student Messages
-- AI Exam Alerts
 - Attendance Requests
 - System Announcements
 
 ---
 
-# Settings
+# Security
 
-Lecturers can manage:
-
-- Profile
-- Password
-- Office Information
-- Notification Preferences
-- Language
-- Theme
+- JWT Authentication
+- Role-Based Access Control
+- Secure Grade Management
+- Secure File Upload
+- Audit Logging
 
 ---
 
-# Permissions
+# Performance
 
-Lecturers are allowed to:
-
-- Manage assigned courses.
-- Manage course materials.
-- Manage attendance.
-- Grade students.
-- Create assessments.
-- Review AI exam reports.
-
-Lecturers cannot:
-
-- Modify student financial records.
-- Modify administrator settings.
-- Access unrelated courses.
+- Cache course information.
+- Optimize student lists.
+- Load reports asynchronously.
+- Support large class sizes.
 
 ---
 
-# Integrations
+# API Mapping
 
-The Lecturer Portal integrates with:
+GET /api/lecturer/dashboard
+
+GET /api/lecturer/courses
+
+GET /api/lecturer/schedule
+
+POST /api/lecturer/materials
+
+POST /api/lecturer/assignments
+
+POST /api/lecturer/quizzes
+
+POST /api/lecturer/attendance
+
+POST /api/lecturer/grades
+
+GET /api/lecturer/reports
+
+---
+
+# UI Pages
+
+- Dashboard
+- My Courses
+- Course Details
+- Attendance
+- LMS
+- Assessments
+- AI Examination
+- Reports
+- Chat
+- Notifications
+- Calendar
+- Settings
+
+---
+
+# Dependencies
+
+This module depends on:
 
 - Authentication Module
 - Academic Module
 - Attendance Module
 - LMS Module
+- AI Examination Module
 - Chat Module
-- AI Exam Module
 - Notification Module
 
 ---
 
-# Future Enhancements
-
-Future versions may include:
+# Future Expansion
 
 - AI Teaching Assistant
 - AI Grade Prediction
 - AI Attendance Analytics
-- AI Student Performance Insights
-- Live Online Classes
-- Virtual Office Hours
+- Lecture Recording
+- Online Live Classes
 
 ---
 
-# Success Criteria
+# Notes
 
-The Lecturer Portal is considered complete when lecturers can manage all teaching activities from one centralized platform without requiring external systems.
+The Lecturer Portal integrates with all academic services and provides lecturers with a unified platform for teaching, assessment, communication, and classroom management.

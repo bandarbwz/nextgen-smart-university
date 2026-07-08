@@ -1,246 +1,171 @@
-# Administrator Portal
+# Administrator Portal Module
 
-## Overview
+## Purpose
 
-The Administrator Portal is the central management interface of the NextGen Smart University Platform.
+The Administrator Portal is the central management interface for the NextGen Smart University Platform.
 
-It allows administrators to manage users, academic structure, system settings, security, reports, notifications, AI services, restaurants, student activities, and all platform modules from one centralized dashboard.
-
-Only authorized administrators can access this portal.
+It allows administrators to manage users, academic structures, system settings, security, reports, and all university services from a single secure dashboard.
 
 ---
 
 # Objectives
 
-The Administrator Portal allows administrators to:
+- Manage system users.
+- Manage university structure.
+- Manage roles and permissions.
+- Monitor system activities.
+- Configure platform settings.
+- Review reports and analytics.
+- Maintain system security.
+- Support platform administration.
+
+---
+
+# Scope
+
+The Administrator Portal includes:
+
+- Dashboard
+- User Management
+- Academic Management
+- Role Management
+- System Settings
+- Security Management
+- Reports
+- Notifications
+- Calendar
+- Audit Logs
+
+---
+
+# Actors
+
+- Administrator
+
+---
+
+# Features
+
+Administrators can:
 
 - Manage Users
-- Manage Roles & Permissions
+- Manage Roles
+- Manage Permissions
 - Manage Faculties
 - Manage Departments
-- Manage Academic Programs
+- Manage Programs
 - Manage Courses
 - Manage Semesters
+- View System Statistics
+- Monitor User Activities
+- Configure System Settings
+- Generate Reports
+- Review Audit Logs
 - Manage Notifications
-- Manage AI Services
-- Manage Food Court
-- Manage Student Activities
-- Manage System Settings
-- Monitor System Health
-- View Reports
-- Manage File Storage
+- Backup System Data
 
 ---
 
-# Administrator Dashboard
+# Dashboard Widgets
 
-Displayed immediately after login.
+The dashboard displays:
 
-Dashboard Widgets
-
-- Total Students
-- Total Lecturers
-- Total Coordinators
-- Total Restaurants
-- Total Clubs
-- Active Courses
-- Active Exams
-- Today's Attendance
+- Total Users
+- Active Students
+- Active Lecturers
 - System Status
-- AI Alerts
-- Recent Notifications
+- Server Health
+- Security Alerts
+- Recent Activities
+- Pending Approvals
+- Latest Notifications
 
 ---
 
-# User Management
+# Administration Services
 
-Administrators can:
+## User Management
 
 - Create Users
-- Edit Users
-- Delete Users
+- Update Users
+- Disable Users
 - Reset Passwords
-- Lock Accounts
-- Unlock Accounts
-- Activate Accounts
-- Deactivate Accounts
-
-Supported User Types
-
-- Student
-- Lecturer
-- Coordinator
-- Administrator
-- Restaurant Owner
-- STAD Staff
+- Assign Roles
 
 ---
 
-# Role Management
+## Academic Management
 
-Administrators can:
-
-- Create Roles
-- Edit Roles
-- Delete Roles
-- Assign Permissions
-- Remove Permissions
-
----
-
-# Academic Management
-
-Administrators can:
-
-- Create Faculties
-- Create Departments
-- Create Programs
-- Create Courses
-- Manage Semesters
-- Configure Credit Hour Limits
-- Configure Registration Periods
+- Faculties
+- Departments
+- Programs
+- Courses
+- Sections
+- Semesters
 
 ---
 
-# AI Exam Management
+## Security Management
 
-Administrators can:
-
-- Enable AI Monitoring
-- Disable AI Monitoring
-- Configure AI Rules
-- View AI Statistics
-- Review AI Logs
-- Monitor Active Exams
+- User Sessions
+- Authentication Logs
+- Permission Management
+- Audit Logs
+- Failed Login Attempts
 
 ---
 
-# Student Activities Management
+## System Management
 
-Administrators can:
-
-- Approve Clubs
-- Approve Events
-- Manage Reward Points
-- Configure Certificates
-- Configure Excuse Letter Rules
+- General Settings
+- Email Configuration
+- Notification Settings
+- Backup Management
+- File Storage Settings
 
 ---
 
-# Food Court Management
+## Reports
 
-Administrators can:
-
-- Approve Restaurants
-- Suspend Restaurants
-- View Orders
-- View Sales Reports
-- Configure Payment Methods
-
----
-
-# Notification Management
-
-Administrators can:
-
-- Send Notifications
-- Schedule Notifications
-- Broadcast Messages
-- Send Emergency Alerts
-
-Recipients
-
-- All Users
-- Students
-- Lecturers
-- Coordinators
-- Restaurant Owners
-- STAD Staff
-
----
-
-# Reports
-
-Administrators can generate:
-
-- Student Reports
-- Lecturer Reports
-- Attendance Reports
+- User Reports
 - Academic Reports
 - Financial Reports
-- Restaurant Reports
+- Attendance Reports
 - AI Reports
-- Event Reports
 - System Reports
 
-Export Formats
+---
 
-- PDF
-- Excel
+# Business Rules
+
+- Only administrators have full system access.
+- Every action is recorded in the audit log.
+- Critical settings require administrator privileges.
+- Deleted records follow system retention policies.
+- System backups must be created before major updates.
 
 ---
 
-# Audit Logs
+# Validation Rules
 
-Administrators can:
-
-- View Login History
-- View User Activity
-- View System Activity
-- Search Audit Logs
-- Export Audit Logs
+- Administrator account must be active.
+- Role assignments must be valid.
+- Required fields cannot be empty.
+- Duplicate system configurations are not allowed.
 
 ---
 
-# System Monitoring
+# Permissions
 
-Monitor:
+Administrator permissions include:
 
-- Server Status
-- Database Status
-- Storage Usage
-- CPU Usage
-- Memory Usage
-- API Status
-- Active Users
-
----
-
-# System Settings
-
-Administrators can configure:
-
-- University Information
-- Semester Settings
-- Registration Rules
-- Attendance Rules
-- AI Rules
-- File Upload Limits
-- Notification Settings
-- Security Settings
-
----
-
-# File Management
-
-Administrators can:
-
-- View Uploaded Files
-- Delete Files
-- Restore Files
-- Monitor Storage Usage
-
----
-
-# Security
-
-Administrators can:
-
-- View Failed Login Attempts
-- Lock Accounts
-- Force Password Reset
-- Review Security Logs
-- Configure Authentication Policies
+- Full User Management
+- Full Academic Management
+- Full Security Management
+- Full System Configuration
+- Full Report Access
+- Full Notification Management
+- Full Audit Log Access
 
 ---
 
@@ -248,58 +173,103 @@ Administrators can:
 
 Administrators receive notifications for:
 
-- System Errors
-- AI Alerts
-- Security Incidents
-- Server Issues
-- Database Issues
-- Payment Failures
+- Critical System Errors
+- Failed Login Attempts
+- Security Alerts
+- Backup Status
+- Database Errors
+- Server Warnings
+- AI Service Alerts
 
 ---
 
-# Permissions
+# Security
 
-Administrators have full access to all platform modules.
-
-Only Super Administrators can:
-
-- Delete Administrator Accounts
-- Modify Critical Security Settings
-- Configure Backup Settings
-- Restore System Backups
+- JWT Authentication
+- Role-Based Access Control
+- Multi-Factor Authentication (Future)
+- Audit Logging
+- Session Management
+- Secure Configuration Management
 
 ---
 
-# Integrations
+# Performance
 
-The Administrator Portal integrates with every module of the platform, including:
+- Cache dashboard statistics.
+- Optimize large reports.
+- Load analytics asynchronously.
+- Monitor system resources continuously.
+
+---
+
+# API Mapping
+
+GET /api/admin/dashboard
+
+GET /api/admin/users
+
+POST /api/admin/users
+
+PUT /api/admin/users/{id}
+
+DELETE /api/admin/users/{id}
+
+GET /api/admin/settings
+
+PUT /api/admin/settings
+
+GET /api/admin/reports
+
+GET /api/admin/audit-logs
+
+GET /api/admin/statistics
+
+---
+
+# UI Pages
+
+- Dashboard
+- User Management
+- Role Management
+- Academic Management
+- Reports
+- Security
+- Audit Logs
+- Notifications
+- Calendar
+- System Settings
+
+---
+
+# Dependencies
+
+This module depends on:
 
 - Authentication Module
 - Academic Module
-- Attendance Module
-- LMS Module
-- Chat Module
-- Student Activities Module
-- Food Court Module
-- AI Exam Module
 - Finance Module
+- Attendance Module
 - Notification Module
-- Reporting Module
+- Reports Module
+
+The following modules depend on this module:
+
+- All System Modules
 
 ---
 
-# Future Enhancements
+# Future Expansion
 
-Future versions may include:
-
-- AI System Analytics
-- AI Security Monitoring
-- Real-time Performance Dashboard
-- Multi-Campus Management
-- Multi-University Support
+- AI System Monitoring
+- AI Security Analysis
+- Predictive System Analytics
+- Multi-Campus Administration
+- Advanced Audit Dashboard
+- Cloud Infrastructure Monitoring
 
 ---
 
-# Success Criteria
+# Notes
 
-The Administrator Portal is considered complete when administrators can manage every operational aspect of the university platform from a single secure dashboard.
+The Administrator Portal is the highest-level management interface in the platform. It integrates with every major module and provides complete administrative control, security oversight, reporting, and system configuration while maintaining strict role-based access control.

@@ -2,24 +2,43 @@
 
 ## Purpose
 
-The Finance Module manages all financial operations within the NextGen Smart University Platform.
+The Finance Module manages student financial records, tuition fees, invoices, payments, scholarships, financial holds, and financial reporting within the NextGen Smart University Platform.
 
-It handles tuition fees, student payments, restaurant payments, invoices, refunds, scholarships, financial reports, and transaction history.
-
-The module provides secure and transparent financial management for students, administrators, and restaurant owners.
+It provides secure and accurate financial management for students and administrators.
 
 ---
 
 # Objectives
 
 - Manage tuition fees.
+- Manage invoices.
 - Process student payments.
-- Process restaurant payments.
-- Generate invoices.
-- Record transactions.
 - Manage scholarships.
-- Handle refunds.
+- Apply financial holds.
 - Generate financial reports.
+- Maintain secure financial records.
+
+---
+
+# Scope
+
+The Finance Module manages:
+
+- Tuition Fees
+- Student Invoices
+- Student Payments
+- Scholarships
+- Financial Holds
+- Refund Requests
+- Financial Reports
+
+---
+
+# Actors
+
+- Student
+- Finance Staff
+- Administrator
 
 ---
 
@@ -29,62 +48,17 @@ The module provides secure and transparent financial management for students, ad
 
 Purpose
 
-Stores tuition fee information.
+Stores tuition fee structures.
 
-Columns
+### Columns
 
 - id
-- student_id
+- program_id
 - semester_id
-- total_amount
-- paid_amount
-- remaining_amount
-- payment_status
-- due_date
+- fee_type
+- amount
 - created_at
 - updated_at
-
-Payment Status
-
-- Pending
-- Partially Paid
-- Paid
-- Overdue
-
----
-
-## PaymentTransaction
-
-Purpose
-
-Stores every payment transaction.
-
-Columns
-
-- id
-- student_id
-- order_id
-- transaction_reference
-- payment_type
-- payment_method
-- amount
-- currency
-- payment_status
-- transaction_date
-
-Payment Types
-
-- Tuition
-- Food Court
-- Event
-- Other
-
-Payment Status
-
-- Pending
-- Successful
-- Failed
-- Refunded
 
 ---
 
@@ -92,26 +66,54 @@ Payment Status
 
 Purpose
 
-Stores generated invoices.
+Stores student invoices.
 
-Columns
+### Columns
 
 - id
-- invoice_number
 - student_id
-- transaction_id
-- invoice_type
+- semester_id
+- invoice_number
 - total_amount
-- issue_date
+- paid_amount
+- balance
 - due_date
-- pdf_path
+- status
+- created_at
 
-Invoice Types
+### Status
 
-- Tuition
-- Food
-- Event
-- Miscellaneous
+- Pending
+- Partially Paid
+- Paid
+- Overdue
+- Cancelled
+
+---
+
+## Payment
+
+Purpose
+
+Stores payment transactions.
+
+### Columns
+
+- id
+- invoice_id
+- payment_reference
+- payment_method
+- amount
+- payment_date
+- payment_status
+
+### Payment Methods
+
+- Cash
+- Online Banking
+- Credit Card
+- Debit Card
+- E-Wallet
 
 ---
 
@@ -121,48 +123,32 @@ Purpose
 
 Stores scholarship information.
 
-Columns
+### Columns
 
 - id
 - student_id
 - scholarship_name
-- sponsor
 - amount
-- semester_id
+- start_date
+- end_date
 - status
-- approved_at
-
-Status
-
-- Pending
-- Approved
-- Rejected
 
 ---
 
-## Refund
+## FinancialHold
 
 Purpose
 
-Stores refund requests.
+Stores student financial restrictions.
 
-Columns
+### Columns
 
 - id
-- transaction_id
 - student_id
 - reason
-- refund_amount
-- refund_status
-- requested_at
-- processed_at
-
-Refund Status
-
-- Pending
-- Approved
-- Rejected
-- Completed
+- applied_date
+- released_date
+- status
 
 ---
 
@@ -172,15 +158,11 @@ Student
 
 ↓
 
-Tuition Fee
-
-↓
-
-Payment Transaction
-
-↓
-
 Invoice
+
+↓
+
+Payment
 
 ---
 
@@ -192,109 +174,215 @@ Scholarship
 
 ---
 
-Payment Transaction
+Student
 
 ↓
 
-Refund
+Financial Hold
 
 ---
 
 # Business Rules
 
-- Every payment generates a transaction.
-- Every successful payment generates an invoice.
-- Students cannot register for new courses if unpaid tuition exceeds university policy.
-- Refunds require administrator approval.
-- Scholarships reduce tuition automatically.
-
----
-
-# Payment Methods
-
-Supported methods
-
-- Cash
-- Credit Card
-- Debit Card
-- Online Banking
-- E-Wallet
-
----
-
-# Financial Reports
-
-Students
-
-- Tuition Summary
-- Payment History
-- Outstanding Balance
-
-Administrators
-
-- Daily Revenue
-- Monthly Revenue
-- Tuition Collection
-- Restaurant Sales
-- Refund Reports
-
-Restaurant Owners
-
-- Daily Orders
-- Revenue
-- Payment History
+- Every invoice belongs to one student.
+- Payments cannot exceed the invoice balance.
+- Scholarships automatically reduce tuition fees.
+- Students with active financial holds cannot register for courses.
+- Payment history cannot be deleted.
 
 ---
 
 # Validation Rules
 
-Payments
+Invoice
+
+- Amount must be greater than zero.
+- Due date is required.
+
+Payment
 
 - Amount must be greater than zero.
 - Payment reference must be unique.
 
-Invoices
-
-- Invoice number must be unique.
-
-Scholarships
+Scholarship
 
 - Amount cannot exceed tuition fees.
 
 ---
 
+# Permissions
+
+## Student
+
+- View Invoices
+- Make Payments
+- View Payment History
+- View Scholarships
+
+## Finance Staff
+
+- Generate Invoices
+- Record Payments
+- Manage Scholarships
+- Apply Financial Holds
+
+## Administrator
+
+- Full Finance Access
+
+---
+
+# Payment Workflow
+
+Invoice Generated
+
+↓
+
+Student Views Invoice
+
+↓
+
+Payment Submitted
+
+↓
+
+Payment Verified
+
+↓
+
+Invoice Updated
+
+↓
+
+Receipt Generated
+
+↓
+
+Student Notified
+
+---
+
+# Notifications
+
+Students receive:
+
+- New Invoice
+- Payment Successful
+- Payment Failed
+- Invoice Due Reminder
+- Financial Hold Applied
+
+Finance Staff receive:
+
+- Payment Received
+- Refund Request
+
+---
+
+# Security
+
+- Encrypt financial records.
+- Protect payment information.
+- Validate payment transactions.
+- Log all financial activities.
+- Restrict access based on user roles.
+
+---
+
+# Indexes
+
+Invoice
+
+- student_id
+- invoice_number
+
+Payment
+
+- invoice_id
+
+Scholarship
+
+- student_id
+
+FinancialHold
+
+- student_id
+
+---
+
+# Reports
+
+Finance Reports
+
+- Student Balance Report
+- Payment Report
+- Outstanding Invoice Report
+- Scholarship Report
+- Revenue Report
+- Financial Hold Report
+
+---
+
+# Performance
+
+- Index invoice lookups.
+- Cache fee structures.
+- Optimize financial reports.
+- Archive historical payment records.
+
+---
+
 # API Mapping
 
-Finance APIs
+GET /api/finance/invoices
 
-- View Tuition
-- Pay Tuition
-- View Invoice
-- Download Invoice
-- Request Refund
-- View Payment History
-- Manage Scholarships
+GET /api/finance/payments
+
+POST /api/finance/payments
+
+GET /api/finance/scholarships
+
+GET /api/finance/holds
+
+GET /api/finance/reports
+
+---
+
+# UI Pages
+
+- Finance Dashboard
+- My Invoices
+- Payment History
+- Scholarships
+- Financial Holds
+- Finance Administration
+
+---
+
+# Dependencies
+
+This module depends on:
+
+- Authentication Module
+- Academic Module
+
+The following modules depend on this module:
+
+- Student Portal
+- Reports Module
 
 ---
 
 # Future Expansion
 
-Future improvements
-
+- Online Payment Gateway
 - Installment Plans
-- Automatic Payment Reminders
-- Multiple Currency Support
-- Financial Analytics Dashboard
+- Refund Management
 - AI Financial Assistant
+- Budget Analytics
 
 ---
 
 # Notes
 
-The Finance Module integrates with:
-
-- Academic Module
-- Food Court Module
-- Student Dashboard
-- Administrator Dashboard
-- Notification Module
+The Finance Module integrates with the Academic Module for semester billing, the Student Portal for payment services, and the Reports Module for financial analytics.

@@ -2,22 +2,48 @@
 
 ## Purpose
 
-The Student Activities Module manages all extracurricular activities within the university.
+The Student Activities Module manages university clubs, student organizations, competitions, workshops, seminars, volunteering activities, and university events.
 
-It allows students to join clubs, register for events, earn reward points, receive certificates, and automatically generate attendance excuses when university events conflict with scheduled classes.
+It allows students to participate in extracurricular activities while enabling STAD staff to organize and manage events efficiently.
 
 ---
 
 # Objectives
 
-- Manage student clubs.
-- Organize university events.
-- Register students for events.
-- Track event attendance.
-- Reward active students.
-- Generate certificates.
-- Generate automatic class excuses.
-- Support STAD administration.
+- Manage university clubs.
+- Manage student activities.
+- Manage university events.
+- Support event registration.
+- Track student participation.
+- Generate participation reports.
+- Award participation points.
+- Integrate event attendance with QR attendance.
+
+---
+
+# Scope
+
+This module manages all non-academic student activities within the university.
+
+It includes:
+
+- Clubs
+- Events
+- Competitions
+- Workshops
+- Seminars
+- Student Registrations
+- Event Attendance
+- Participation Records
+- Student Activity Points
+
+---
+
+# Actors
+
+- Student
+- STAD Staff
+- Administrator
 
 ---
 
@@ -29,42 +55,17 @@ Purpose
 
 Stores university clubs.
 
-Columns
+### Columns
 
 - id
-- name
-- category
+- club_name
 - description
-- logo
-- president_id
+- category
 - advisor_id
+- president_id
 - status
 - created_at
 - updated_at
-
----
-
-## ClubMember
-
-Purpose
-
-Stores club memberships.
-
-Columns
-
-- id
-- club_id
-- student_id
-- position
-- joined_at
-- status
-
-Positions
-
-- Member
-- Vice President
-- President
-- Committee
 
 ---
 
@@ -74,22 +75,20 @@ Purpose
 
 Stores university events.
 
-Columns
+### Columns
 
 - id
 - club_id
-- title
+- event_name
 - description
-- event_type
-- location
-- start_datetime
-- end_datetime
-- capacity
-- qr_code
-- points
-- certificate_available
-- created_by
-- created_at
+- venue
+- event_date
+- start_time
+- end_time
+- registration_deadline
+- maximum_participants
+- qr_enabled
+- status
 
 ---
 
@@ -99,7 +98,7 @@ Purpose
 
 Stores student registrations.
 
-Columns
+### Columns
 
 - id
 - event_id
@@ -107,12 +106,12 @@ Columns
 - registration_date
 - status
 
-Status
+### Status
 
-- Registered
+- Pending
+- Approved
+- Rejected
 - Cancelled
-- Attended
-- Absent
 
 ---
 
@@ -120,84 +119,35 @@ Status
 
 Purpose
 
-Stores QR attendance records.
+Stores attendance records.
 
-Columns
+### Columns
 
 - id
-- event_id
-- student_id
+- registration_id
 - attendance_time
 - attendance_method
 - verified_by
 
 ---
 
-## RewardPoint
+## ActivityPoint
 
 Purpose
 
-Stores student reward points.
+Stores student activity points.
 
-Columns
+### Columns
 
 - id
 - student_id
 - event_id
 - points
-- earned_at
-
----
-
-## Certificate
-
-Purpose
-
-Stores issued certificates.
-
-Columns
-
-- id
-- student_id
-- event_id
-- certificate_number
-- file_path
-- issued_at
-
----
-
-## ExcuseLetter
-
-Purpose
-
-Stores automatically generated excuse letters.
-
-Columns
-
-- id
-- student_id
-- event_id
-- section_id
-- generated_at
-- approved_by
-- file_path
-- status
+- awarded_date
 
 ---
 
 # Relationships
-
-Club
-
-↓
-
-ClubMember
-
-↓
-
-Student
-
----
 
 Club
 
@@ -211,120 +161,207 @@ Event Registration
 
 ↓
 
+Student
+
+↓
+
 Event Attendance
 
 ↓
 
-Reward Points
-
-↓
-
-Certificate
-
----
-
-Event
-
-↓
-
-Excuse Letter
-
-↓
-
-Attendance Module
+Activity Points
 
 ---
 
 # Business Rules
 
-- Students must register before attending.
-- QR attendance is required.
-- One attendance per student.
-- Reward points are added automatically.
-- Certificates are generated automatically when eligible.
-- Excuse letters are generated automatically if an event overlaps with a scheduled class.
-- Only approved events can generate excuses.
-
----
-
-# Reward System
-
-Students earn points for:
-
-- Attending events
-- Organizing events
-- Volunteering
-- Winning competitions
-- Leading clubs
-
----
-
-# Certificate Rules
-
-Certificates are available only when:
-
-- Event attendance is confirmed.
-- Minimum participation requirements are met.
-
----
-
-# Excuse Letter Rules
-
-The system checks:
-
-- Student timetable.
-- Event timing.
-- Event approval.
-- Attendance confirmation.
-
-If all conditions are satisfied, an excuse letter is generated automatically.
+- Students may only register once per event.
+- Registration closes after the deadline.
+- Maximum participant limit cannot be exceeded.
+- QR attendance is available only during active events.
+- Students earn activity points only after verified attendance.
+- Event organizers can approve or reject registrations.
 
 ---
 
 # Validation Rules
 
-- Student must be registered.
-- Event capacity must not be exceeded.
-- Event dates must be valid.
-- QR code must be active.
+Club
+
+- Club name is required.
+- Club name must be unique.
+
+Event
+
+- Event name required.
+- Event date required.
+- Registration deadline must be before the event date.
+- Maximum participants must be greater than zero.
+
+Registration
+
+- Student must be active.
+- Duplicate registrations are not allowed.
+
+---
+
+# Permissions
+
+## Student
+
+- View Clubs
+- View Events
+- Register for Events
+- Cancel Registration
+- View Participation History
+
+## STAD Staff
+
+- Create Clubs
+- Manage Clubs
+- Create Events
+- Approve Registrations
+- Generate QR Attendance
+- Award Activity Points
+
+## Administrator
+
+- Full Student Activities Access
+
+---
+
+# Notifications
+
+Students receive notifications for:
+
+- Event Registration Approved
+- Event Registration Rejected
+- Event Reminder
+- Event Cancelled
+- Activity Points Awarded
+
+STAD Staff receive notifications for:
+
+- New Registration
+- Event Attendance Completed
+
+---
+
+# Security
+
+- Only registered students may attend events.
+- QR attendance expires automatically.
+- Attendance records cannot be modified by students.
+- All approvals are logged.
+
+---
+
+# Indexes
+
+Club
+
+- club_name
+
+Event
+
+- event_date
+- club_id
+
+EventRegistration
+
+- student_id
+- event_id
+
+ActivityPoint
+
+- student_id
+
+---
+
+# Reports
+
+Student Activities Reports
+
+- Event Attendance Report
+- Club Membership Report
+- Student Participation Report
+- Activity Points Report
+- Event Performance Report
+
+---
+
+# Performance
+
+- Cache active events.
+- Index event registrations.
+- Optimize participation reports.
+- Archive completed events.
 
 ---
 
 # API Mapping
 
-Student Activities APIs
+GET /api/activities/clubs
 
-- View Clubs
-- Join Club
-- Leave Club
-- Register Event
-- Cancel Registration
-- Scan Event QR
-- View Points
-- Download Certificate
-- Download Excuse Letter
+POST /api/activities/clubs
+
+GET /api/activities/events
+
+POST /api/activities/events
+
+POST /api/activities/register
+
+POST /api/activities/attendance
+
+GET /api/activities/points
+
+GET /api/activities/reports
+
+---
+
+# UI Pages
+
+- Student Activities Dashboard
+- Club Directory
+- Event List
+- Event Details
+- My Registrations
+- My Activity Points
+- STAD Event Management
+- Club Management
+
+---
+
+# Dependencies
+
+This module depends on:
+
+- Authentication Module
+- Academic Module
+- Attendance Module
+- Notification Module
+
+The following modules depend on this module:
+
+- Student Portal
+- STAD Portal
+- Reports Module
 
 ---
 
 # Future Expansion
 
-Future improvements
-
+- Online Event Registration
+- Digital Student Certificates
+- Volunteer Hour Tracking
 - Club Elections
-- Volunteer Hours
-- Community Service Tracking
-- Digital Badges
-- Student Ranking
-- AI Event Recommendations
+- AI Event Recommendation
+- Alumni Activities
 
 ---
 
 # Notes
 
-The Student Activities Module integrates with:
+The Student Activities Module integrates with the Attendance Module through QR attendance, the Notification Module for reminders, and the Student Portal for student participation management.
 
-- Academic Module
-- Attendance Module
-- Student Dashboard
-- STAD Dashboard
-- Notification Module
+If an approved university event conflicts with a student's scheduled class, the system can automatically generate an attendance excuse according to university policy.

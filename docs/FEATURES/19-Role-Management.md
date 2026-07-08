@@ -1,62 +1,86 @@
-# Role Management Database
+# Role Management Module
 
 ## Purpose
 
-This document defines the database structure for user roles and permissions.
+The Role Management Module controls user roles and permissions across the NextGen Smart University Platform.
 
-The platform supports multiple roles for a single user.
+It ensures that every user can access only the resources and functions authorized for their assigned role by implementing Role-Based Access Control (RBAC).
 
 ---
 
-# Overview
+# Objectives
 
-Examples
+- Manage system roles.
+- Manage permissions.
+- Assign permissions to roles.
+- Control system access.
+- Improve platform security.
+- Maintain authorization policies.
+- Record permission changes.
 
-- Student
-- Lecturer
-- Coordinator
+---
+
+# Scope
+
+The Role Management Module includes:
+
+- Role Management
+- Permission Management
+- Role Permission Assignment
+- User Role Assignment
+- Access Control
+- Authorization Audit Logs
+
+---
+
+# Actors
+
 - Administrator
-- STAD Staff
-- Restaurant Owner
-
-One user may have multiple roles.
-
-Example
-
-Ahmed
-
-- Lecturer
-- Coordinator
 
 ---
 
-# Tables
+# Database Tables
 
-## roles
+## Role
 
-Fields
+Purpose
+
+Stores system roles.
+
+### Columns
 
 - id
 - name
+- description
+- status
+- created_at
+- updated_at
+
+---
+
+## Permission
+
+Purpose
+
+Stores system permissions.
+
+### Columns
+
+- id
+- module
+- permission_name
 - description
 - created_at
 
 ---
 
-## permissions
+## RolePermission
 
-Fields
+Purpose
 
-- id
-- name
-- module
-- description
+Links roles with permissions.
 
----
-
-## role_permissions
-
-Fields
+### Columns
 
 - id
 - role_id
@@ -64,9 +88,13 @@ Fields
 
 ---
 
-## user_roles
+## UserRole
 
-Fields
+Purpose
+
+Stores user role assignments.
+
+### Columns
 
 - id
 - user_id
@@ -78,35 +106,177 @@ Fields
 
 # Relationships
 
-roles
+Role
 
-Many → Many
+↓
 
-permissions
+RolePermission
 
-using role_permissions
+↓
+
+Permission
 
 ---
 
-users
+User
 
-Many → Many
+↓
 
-roles
+UserRole
 
-using user_roles
+↓
+
+Role
+
+---
+
+# Default Roles
+
+- Student
+- Lecturer
+- Coordinator
+- Administrator
+- Restaurant Owner
+- STAD Staff
 
 ---
 
 # Business Rules
 
-- Users may have multiple roles.
-- Permissions are inherited from assigned roles.
-- Only administrators may assign roles.
-- Users select a workspace after login when multiple roles exist.
+- Every user must have one active role.
+- Roles determine accessible modules.
+- Permission changes are logged.
+- Only administrators can manage roles.
+- System default roles cannot be deleted.
+
+---
+
+# Validation Rules
+
+Role
+
+- Role name required.
+- Role name must be unique.
+
+Permission
+
+- Module required.
+- Permission name required.
+
+---
+
+# Permissions
+
+Administrator permissions include:
+
+- Create Roles
+- Update Roles
+- Delete Custom Roles
+- Assign Permissions
+- Assign User Roles
+- View Authorization Logs
+
+---
+
+# Security
+
+- JWT Authentication
+- Role-Based Access Control
+- Audit Logging
+- Secure Permission Assignment
+- Authorization Validation
+
+---
+
+# Indexes
+
+Role
+
+- name
+
+Permission
+
+- module
+
+RolePermission
+
+- role_id
+- permission_id
+
+UserRole
+
+- user_id
+
+---
+
+# Reports
+
+Role Management Reports
+
+- User Role Report
+- Permission Report
+- Role Assignment Report
+- Authorization Audit Report
+
+---
+
+# Performance
+
+- Cache permissions.
+- Cache user roles.
+- Optimize authorization lookups.
+- Index permission tables.
+
+---
+
+# API Mapping
+
+GET /api/roles
+
+POST /api/roles
+
+PUT /api/roles/{id}
+
+DELETE /api/roles/{id}
+
+GET /api/permissions
+
+PUT /api/roles/{id}/permissions
+
+GET /api/users/{id}/roles
+
+---
+
+# UI Pages
+
+- Role Management
+- Permission Management
+- User Role Assignment
+- Authorization Logs
+
+---
+
+# Dependencies
+
+This module depends on:
+
+- Authentication Module
+
+The following modules depend on this module:
+
+- All System Modules
+
+---
+
+# Future Expansion
+
+- Dynamic Permissions
+- Temporary Roles
+- Multi-Tenant Roles
+- Permission Templates
 
 ---
 
 # Notes
 
-This structure supports future user roles without database changes.
+The Role Management Module provides centralized authorization for the entire NextGen Smart University Platform and is responsible for enforcing secure Role-Based Access Control (RBAC).

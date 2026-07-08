@@ -4,9 +4,9 @@
 
 The Academic Module is the core of the NextGen Smart University Platform.
 
-It manages all academic operations including students, lecturers, faculties, departments, academic programs, courses, sections, enrollment, class schedules, transcripts, and graduation requirements.
+It manages all academic operations including students, lecturers, faculties, departments, academic programs, semesters, courses, sections, enrollments, class schedules, transcripts, GPA calculation, and graduation requirements.
 
-Every academic process in the system depends on this module.
+Every academic process within the platform depends on this module.
 
 ---
 
@@ -15,12 +15,44 @@ Every academic process in the system depends on this module.
 - Manage students and lecturers.
 - Organize faculties and departments.
 - Manage academic programs.
+- Manage semesters.
 - Manage courses and prerequisites.
 - Handle course registration.
 - Build student schedules.
 - Calculate GPA and CGPA.
 - Store academic history.
 - Support graduation requirements.
+
+---
+
+# Scope
+
+This module manages all academic entities and academic workflows throughout the university.
+
+It covers:
+
+- Students
+- Lecturers
+- Coordinators
+- Faculties
+- Departments
+- Programs
+- Courses
+- Sections
+- Enrollments
+- Class Schedules
+- Academic Records
+- GPA Calculation
+- Graduation Requirements
+
+---
+
+# Actors
+
+- Student
+- Lecturer
+- Coordinator
+- Administrator
 
 ---
 
@@ -50,7 +82,11 @@ Section
 
 ↓
 
-Student Enrollment
+Enrollment
+
+↓
+
+Student
 
 ---
 
@@ -62,7 +98,7 @@ Purpose
 
 Stores all student academic information.
 
-Columns
+### Columns
 
 - id
 - user_id
@@ -72,6 +108,8 @@ Columns
 - program_id
 - advisor_id
 - current_semester_id
+- study_mode
+- academic_level
 - admission_date
 - expected_graduation_date
 - academic_status
@@ -90,7 +128,7 @@ Purpose
 
 Stores lecturer information.
 
-Columns
+### Columns
 
 - id
 - user_id
@@ -111,7 +149,7 @@ Purpose
 
 Stores coordinator information.
 
-Columns
+### Columns
 
 - id
 - lecturer_id
@@ -122,13 +160,13 @@ Columns
 
 ## Faculty
 
-Examples
+### Examples
 
 - Faculty of Computing
 - Faculty of Engineering
 - Faculty of Business
 
-Columns
+### Columns
 
 - id
 - name
@@ -139,13 +177,13 @@ Columns
 
 ## Department
 
-Examples
+### Examples
 
 - Computer Science
 - Software Engineering
 - Artificial Intelligence
 
-Columns
+### Columns
 
 - id
 - faculty_id
@@ -156,12 +194,12 @@ Columns
 
 ## Program
 
-Examples
+### Examples
 
 - Bachelor of Computer Science
 - Bachelor of Software Engineering
 
-Columns
+### Columns
 
 - id
 - department_id
@@ -173,13 +211,7 @@ Columns
 
 ## Semester
 
-Examples
-
-- Fall 2026
-- Spring 2027
-- Summer 2027
-
-Columns
+### Columns
 
 - id
 - name
@@ -188,13 +220,14 @@ Columns
 - end_date
 - registration_start
 - registration_end
+- current_semester
 - status
 
 ---
 
 ## Course
 
-Columns
+### Columns
 
 - id
 - department_id
@@ -205,8 +238,9 @@ Columns
 - credit_hours
 - course_type
 - level
+- course_status
 
-Course Types
+### Course Types
 
 - Core
 - Elective
@@ -217,11 +251,7 @@ Course Types
 
 ## CoursePrerequisite
 
-Purpose
-
-Stores prerequisite relationships.
-
-Columns
+### Columns
 
 - id
 - course_id
@@ -231,11 +261,7 @@ Columns
 
 ## Section
 
-Purpose
-
-Represents one offering of a course.
-
-Columns
+### Columns
 
 - id
 - course_id
@@ -244,16 +270,23 @@ Columns
 - section_number
 - classroom
 - building
+- delivery_mode
 - capacity
 - registered_students
 - waiting_list
 - status
 
+### Delivery Modes
+
+- Physical
+- Online
+- Hybrid
+
 ---
 
 ## ClassSchedule
 
-Columns
+### Columns
 
 - id
 - section_id
@@ -266,21 +299,19 @@ Columns
 
 ## Enrollment
 
-Purpose
-
-Stores student registrations.
-
-Columns
+### Columns
 
 - id
 - student_id
 - section_id
 - registration_date
+- approved_by
+- approved_at
 - enrollment_status
 - final_grade
 - grade_points
 
-Enrollment Status
+### Enrollment Status
 
 - Pending
 - Approved
@@ -293,11 +324,7 @@ Enrollment Status
 
 ## Transcript
 
-Purpose
-
-Stores completed courses.
-
-Columns
+### Columns
 
 - id
 - student_id
@@ -365,62 +392,72 @@ Class Schedule
 
 # Business Rules
 
-Students
+## Students
 
 - Cannot exceed maximum credit hours.
 - Must satisfy prerequisites.
 - Cannot register the same course twice unless repeating.
 - Cannot register after the registration deadline.
 - Cannot register in full sections unless joining the waiting list.
+- Cannot register for courses with timetable conflicts.
+- Cannot exceed credit hour limits without coordinator approval.
 
-Sections
+## Sections
 
 - Capacity cannot be exceeded.
 - Every section belongs to one semester.
 - Every section has one lecturer.
 
-Courses
+## Courses
 
 - Every course belongs to one department.
-- Credit hours cannot be negative.
 - Course code must be unique.
+- Credit hours must be greater than zero.
 
-Programs
+## Programs
 
 - Graduation requires completing all required credit hours.
-- Required GPA must meet university policy.
+- Graduation requires meeting the minimum GPA requirement.
 
 ---
 
 # Validation Rules
 
-Student Number
+## Student Number
 
 - Required
 - Unique
 
-Course Code
+## Course Code
 
 - Required
 - Unique
 
-Credit Hours
+## Credit Hours
 
 - Positive integer
 
-GPA
+## GPA
 
 - Between 0.00 and 4.00
 
-Semester Dates
+## Semester
 
 - Start date must be before end date.
+
+## Registration
+
+- Registration period must be open.
+
+## Section Capacity
+
+- Must be greater than zero.
 
 ---
 
 # Academic Status
 
-Student status can be:
+Student status:
 
 - Active
 - Suspended
@@ -436,7 +473,7 @@ Student selects semester.
 
 ↓
 
-System checks registration period.
+System verifies registration period.
 
 ↓
 
@@ -452,7 +489,7 @@ System checks section capacity.
 
 ↓
 
-Registration is submitted.
+Registration submitted.
 
 ↓
 
@@ -468,52 +505,167 @@ Student added to section.
 
 ↓
 
-Student added automatically to Course Chat and LMS.
+Student added automatically to LMS.
+
+↓
+
+Student added automatically to Course Chat.
+
+↓
+
+Student schedule updated.
+
+---
+
+# Permissions
+
+## Student
+
+- View Courses
+- Register Courses
+- Drop Courses
+- View Schedule
+- View Transcript
+- View GPA
+
+## Lecturer
+
+- View Assigned Courses
+- View Student Lists
+
+## Coordinator
+
+- Approve Registration
+- Manage Sections
+
+## Administrator
+
+- Full Academic Access
+
+---
+
+# Notifications
+
+Students receive notifications for:
+
+- Registration Approved
+- Registration Rejected
+- Course Added
+- Course Dropped
+- Schedule Updated
+- Graduation Status Updated
+
+---
+
+# Security
+
+- Students can only access their own academic records.
+- Lecturers can only access assigned courses.
+- Coordinators manage only their departments.
+- Administrators have full academic access.
 
 ---
 
 # Indexes
 
-Student
+## Student
 
 - student_number
 - user_id
 
-Course
+## Course
 
 - course_code
 
-Section
+## Section
 
 - semester_id
 - lecturer_id
 
-Enrollment
+## Enrollment
 
 - student_id
 - section_id
 
 ---
 
+# Reports
+
+Academic Reports
+
+- Student Transcript
+- GPA Report
+- Enrollment Report
+- Registration Report
+- Graduation Report
+- Department Statistics
+
+---
+
+# Performance
+
+- Index searchable columns.
+- Cache course catalog.
+- Optimize enrollment queries.
+- Optimize GPA calculations.
+
+---
+
 # API Mapping
 
-Academic Module provides APIs for:
+GET /api/academic/student-profile
+
+GET /api/academic/courses
+
+GET /api/academic/sections
+
+POST /api/academic/enrollments
+
+DELETE /api/academic/enrollments/{id}
+
+GET /api/academic/schedule
+
+GET /api/academic/transcript
+
+GET /api/academic/gpa
+
+GET /api/academic/faculties
+
+GET /api/academic/departments
+
+---
+
+# UI Pages
 
 - Student Profile
 - Course Catalog
 - Course Registration
-- Drop Course
-- View Schedule
-- View Transcript
-- View GPA
-- Faculty Management
-- Department Management
+- My Schedule
+- Transcript
+- Academic Progress
+- Graduation Status
+
+---
+
+# Dependencies
+
+This module depends on:
+
+- Authentication Module
+- Notification Module
+
+The following modules depend on this module:
+
+- Attendance
+- LMS
+- Chat
+- Finance
+- AI Exam
+- Student Portal
 
 ---
 
 # Future Expansion
-
-Future versions may include:
 
 - Double Major
 - Minor Programs
@@ -527,6 +679,6 @@ Future versions may include:
 
 # Notes
 
-This module is the academic foundation of the entire platform.
+The Academic Module is the academic foundation of the NextGen Smart University Platform.
 
-All academic features depend on this design.
+All academic features and services depend on this module.

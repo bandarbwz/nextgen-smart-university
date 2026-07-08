@@ -1,159 +1,261 @@
-# Restaurant Portal
+# Restaurant Portal Module
 
-## Overview
+## Purpose
 
-The Restaurant Portal allows restaurant owners to manage menus, orders, payments, and daily operations within the university Food Court.
+The Restaurant Portal enables restaurant owners to manage their restaurants, menus, customer orders, sales, and daily operations within the NextGen Smart University Platform.
 
-Each restaurant has its own secure dashboard.
+It provides a centralized interface for managing food services while ensuring efficient order processing and customer satisfaction.
 
 ---
 
 # Objectives
 
-Restaurant owners can:
-
-- Manage Restaurant Profile
-- Manage Menu
-- Receive Orders
-- Update Order Status
-- View Sales Reports
-- View Customer Reviews
+- Manage restaurant information.
+- Manage food menus.
+- Process customer orders.
+- Track order status.
+- Monitor sales.
+- Generate business reports.
+- Improve restaurant operations.
 
 ---
 
-# Dashboard
+# Scope
 
-Dashboard Widgets
+The Restaurant Portal includes:
+
+- Dashboard
+- Restaurant Profile
+- Menu Management
+- Category Management
+- Order Management
+- Sales Reports
+- Notifications
+- Calendar
+- Settings
+
+---
+
+# Actors
+
+- Restaurant Owner
+
+---
+
+# Features
+
+Restaurant Owners can:
+
+- View Dashboard
+- Manage Restaurant Profile
+- Manage Food Categories
+- Manage Menu Items
+- Upload Food Images
+- Accept Orders
+- Reject Orders
+- Update Order Status
+- View Sales Reports
+- View Customer Orders
+- Receive Notifications
+- Update Restaurant Settings
+
+---
+
+# Dashboard Widgets
+
+The dashboard displays:
 
 - Today's Orders
 - Pending Orders
 - Preparing Orders
 - Ready Orders
-- Completed Orders
 - Daily Revenue
-- Average Rating
+- Popular Menu Items
+- Customer Notifications
+- Recent Activities
 
 ---
 
-# Restaurant Profile
+# Restaurant Services
 
-Owners can:
+## Restaurant Profile
 
-- Update Restaurant Information
-- Upload Logo
-- Update Opening Hours
-- Update Contact Details
-
----
-
-# Menu Management
-
-Owners can:
-
-- Add Menu Item
-- Edit Menu Item
-- Delete Menu Item
-- Enable/Disable Menu Item
-- Upload Images
-- Organize Categories
+- Restaurant Information
+- Business Hours
+- Contact Details
+- Availability Status
 
 ---
 
-# Order Management
+## Menu Management
 
-Restaurant owners can:
-
-- Accept Orders
-- Reject Orders
-- Mark Preparing
-- Mark Ready
-- Mark Completed
-
-Students receive notifications after every status change.
+- Food Categories
+- Menu Items
+- Food Images
+- Pricing
+- Availability
 
 ---
 
-# Payment
+## Order Management
 
-Restaurant owners can:
-
-- View Payment History
-- View Revenue
-- Download Sales Reports
-
----
-
-# Customer Reviews
-
-Restaurant owners can:
-
-- View Ratings
-- View Reviews
-- Reply to Reviews (Future Version)
+- Pending Orders
+- Accepted Orders
+- Preparing Orders
+- Ready Orders
+- Completed Orders
+- Cancelled Orders
 
 ---
 
-# Reports
-
-Generate:
+## Sales Management
 
 - Daily Sales
 - Weekly Sales
 - Monthly Sales
-- Best Selling Items
-- Customer Ratings
-
-Export Formats
-
-- PDF
-- Excel
+- Revenue Reports
 
 ---
 
-# Notifications
+# Business Rules
 
-Restaurant owners receive notifications for:
+- Restaurant owners manage only their own restaurant.
+- Orders cannot be modified after completion.
+- Menu items marked unavailable cannot be ordered.
+- Prices must always be greater than zero.
+- Every order status update is recorded.
 
-- New Order
-- Cancelled Order
-- Payment Completed
-- Low Stock Alert
+---
+
+# Validation Rules
+
+Restaurant
+
+- Restaurant name required.
+- Business hours required.
+
+Menu Item
+
+- Name required.
+- Price greater than zero.
+- Category required.
+
+Order
+
+- Valid status required.
+- Customer information required.
 
 ---
 
 # Permissions
 
-Restaurant owners can:
+Restaurant Owner permissions include:
 
-- Manage only their own restaurant.
-- View only their own sales.
-
-Cannot:
-
-- Access other restaurants.
-- Modify university settings.
-- Access student academic data.
+- Manage Restaurant Profile
+- Manage Menu
+- Manage Categories
+- Accept Orders
+- Reject Orders
+- Update Order Status
+- View Sales Reports
 
 ---
 
-# Integrations
+# Notifications
 
+Restaurant Owners receive notifications for:
+
+- New Order
+- Order Cancelled
+- Payment Received
+- Customer Feedback
+- System Announcements
+
+---
+
+# Security
+
+- JWT Authentication
+- Role-Based Access Control
+- Secure File Upload
+- Secure Payment Information
+- Audit Logging
+
+---
+
+# Performance
+
+- Cache menu data.
+- Optimize order processing.
+- Compress uploaded food images.
+- Load reports asynchronously.
+
+---
+
+# API Mapping
+
+GET /api/restaurant/dashboard
+
+GET /api/restaurant/profile
+
+PUT /api/restaurant/profile
+
+GET /api/restaurant/menu
+
+POST /api/restaurant/menu
+
+PUT /api/restaurant/menu/{id}
+
+DELETE /api/restaurant/menu/{id}
+
+GET /api/restaurant/orders
+
+PUT /api/restaurant/orders/{id}
+
+GET /api/restaurant/reports
+
+---
+
+# UI Pages
+
+- Dashboard
+- Restaurant Profile
+- Menu Management
+- Categories
+- Orders
+- Sales Reports
+- Notifications
+- Calendar
+- Settings
+
+---
+
+# Dependencies
+
+This module depends on:
+
+- Authentication Module
 - Food Court Module
 - Finance Module
 - Notification Module
-- Student Portal
+
+The following modules depend on this module:
+
+- Reports Module
 
 ---
 
-# Future Enhancements
+# Future Expansion
 
 - Inventory Management
 - AI Sales Prediction
-- Discount Campaigns
-- Loyalty Program
+- AI Demand Forecasting
+- Customer Reviews
+- Promotional Campaigns
+- Restaurant Analytics
 
 ---
 
-# Success Criteria
+# Notes
 
-The Restaurant Portal is complete when restaurant owners can manage all daily operations digitally through one dashboard.
+The Restaurant Portal integrates with the Food Court Module for order management, the Finance Module for payment tracking, the Notification Module for order updates, and the Reports Module for restaurant performance analytics.

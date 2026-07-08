@@ -2,24 +2,47 @@
 
 ## Purpose
 
-The Learning Management System (LMS) manages all learning activities within the platform.
+The Learning Management System (LMS) manages all teaching and learning activities within the NextGen Smart University Platform.
 
-It allows lecturers to publish course materials, assignments, quizzes, online exams, announcements, grades, and course resources.
-
-Students can access all learning content from a single portal.
+It enables lecturers to publish course materials, assignments, quizzes, announcements, grades, and learning resources while allowing students to access all course content from a single platform.
 
 ---
 
 # Objectives
 
-- Manage learning materials.
+- Manage course materials.
 - Manage assignments.
 - Manage quizzes.
-- Manage online exams.
-- Store grades.
-- Share announcements.
-- Organize course resources.
-- Support online learning.
+- Manage online learning.
+- Manage announcements.
+- Publish grades.
+- Support student submissions.
+- Organize learning resources.
+
+---
+
+# Scope
+
+The LMS manages all digital learning activities including:
+
+- Course Materials
+- Assignments
+- Assignment Submissions
+- Quizzes
+- Quiz Questions
+- Quiz Submissions
+- Grades
+- Announcements
+- Learning Resources
+
+---
+
+# Actors
+
+- Student
+- Lecturer
+- Coordinator
+- Administrator
 
 ---
 
@@ -27,9 +50,7 @@ Students can access all learning content from a single portal.
 
 ## CourseMaterial
 
-Purpose
-
-Stores learning materials uploaded by lecturers.
+Stores course learning materials.
 
 Columns
 
@@ -50,10 +71,6 @@ Columns
 
 ## Assignment
 
-Purpose
-
-Stores assignments.
-
 Columns
 
 - id
@@ -71,10 +88,6 @@ Columns
 ---
 
 ## AssignmentSubmission
-
-Purpose
-
-Stores student submissions.
 
 Columns
 
@@ -97,10 +110,6 @@ Submission Status
 ---
 
 ## Quiz
-
-Purpose
-
-Stores quizzes.
 
 Columns
 
@@ -130,7 +139,7 @@ Columns
 Question Types
 
 - Multiple Choice
-- True/False
+- True / False
 - Short Answer
 - Essay
 
@@ -150,10 +159,6 @@ Columns
 
 ## Grade
 
-Purpose
-
-Stores grades.
-
 Columns
 
 - id
@@ -165,22 +170,11 @@ Columns
 - total_marks
 - grade_letter
 - grade_points
-
-Assessment Types
-
-- Assignment
-- Quiz
-- Midterm
-- Final
-- Participation
+- published_at
 
 ---
 
 ## Announcement
-
-Purpose
-
-Stores course announcements.
 
 Columns
 
@@ -194,10 +188,6 @@ Columns
 ---
 
 ## Resource
-
-Purpose
-
-Stores additional learning resources.
 
 Columns
 
@@ -227,6 +217,10 @@ Section
 
 ↓
 
+Materials
+
+↓
+
 Assignments
 
 ↓
@@ -243,19 +237,7 @@ Course
 
 ↓
 
-Materials
-
-↓
-
-Resources
-
-↓
-
-Announcements
-
----
-
-Quiz
+Quizzes
 
 ↓
 
@@ -263,22 +245,31 @@ Questions
 
 ↓
 
-Student Submission
+Submissions
+
+---
+
+Course
 
 ↓
 
-Grades
+Announcements
+
+↓
+
+Resources
 
 ---
 
 # Business Rules
 
-- Only lecturers can upload materials.
-- Students can only access enrolled courses.
-- Assignments have deadlines.
+- Only lecturers can upload learning materials.
+- Students can access only enrolled courses.
+- Assignment deadlines are enforced.
 - Late submissions follow lecturer settings.
-- Grades cannot be edited after final approval.
-- Announcements are visible immediately after publishing.
+- Grades cannot be modified after final publication.
+- Announcements become visible immediately after publishing.
+- Students may attempt quizzes only within the allowed period.
 
 ---
 
@@ -291,28 +282,45 @@ Assignments
 
 Materials
 
-- File type must be allowed.
-- File size must be within system limit.
+- Allowed file types only.
+- Maximum upload size enforced.
 
 Grades
 
 - Marks cannot exceed total marks.
-- Grade points calculated automatically.
+
+Quiz
+
+- End time must be after start time.
 
 ---
 
-# File Types
+# Permissions
 
-Supported files
+## Student
 
-- PDF
-- DOCX
-- PPTX
-- XLSX
-- ZIP
-- JPG
-- PNG
-- MP4
+- View Materials
+- Download Resources
+- Submit Assignments
+- Take Quizzes
+- View Grades
+
+## Lecturer
+
+- Upload Materials
+- Create Assignments
+- Create Quizzes
+- Publish Grades
+- Publish Announcements
+
+## Coordinator
+
+- View Course Content
+- Monitor Teaching Activities
+
+## Administrator
+
+- Full LMS Access
 
 ---
 
@@ -320,38 +328,137 @@ Supported files
 
 Students receive notifications for:
 
-- New Assignment
 - New Material
-- New Quiz
-- New Grade
-- New Announcement
+- New Assignment
 - Assignment Deadline
+- New Quiz
+- Quiz Reminder
+- Grade Published
+- New Announcement
+
+Lecturers receive notifications for:
+
+- Assignment Submitted
+- Quiz Completed
+
+---
+
+# Security
+
+- Only enrolled students can access course content.
+- Uploaded files are validated.
+- File types are restricted.
+- Virus scanning should be supported.
+- Grades are protected from unauthorized modification.
+
+---
+
+# Indexes
+
+CourseMaterial
+
+- section_id
+
+Assignment
+
+- section_id
+
+AssignmentSubmission
+
+- assignment_id
+- student_id
+
+Quiz
+
+- section_id
+
+Grade
+
+- student_id
+- section_id
+
+---
+
+# Reports
+
+LMS Reports
+
+- Assignment Submission Report
+- Quiz Performance
+- Student Progress
+- Grade Distribution
+- Course Activity Report
+- Lecturer Activity Report
+
+---
+
+# Performance
+
+- Cache course materials.
+- Optimize file downloads.
+- Index assignment submissions.
+- Optimize grade retrieval.
+- Archive old course materials.
 
 ---
 
 # API Mapping
 
-LMS provides APIs for:
+GET /api/lms/materials
 
-- Upload Material
-- Create Assignment
-- Submit Assignment
-- Create Quiz
-- Submit Quiz
-- Publish Grade
-- Publish Announcement
-- Download Resources
+POST /api/lms/materials
+
+POST /api/lms/assignments
+
+POST /api/lms/submissions
+
+POST /api/lms/quizzes
+
+POST /api/lms/quiz-submissions
+
+GET /api/lms/grades
+
+POST /api/lms/announcements
+
+GET /api/lms/resources
+
+---
+
+# UI Pages
+
+- LMS Dashboard
+- Course Materials
+- Assignments
+- Assignment Details
+- Quiz Center
+- Grades
+- Announcements
+- Resources
+
+---
+
+# Dependencies
+
+This module depends on:
+
+- Authentication Module
+- Academic Module
+- Notification Module
+
+The following modules depend on this module:
+
+- Student Portal
+- Lecturer Portal
+- Reports Module
 
 ---
 
 # Future Expansion
 
-Future improvements
-
-- AI Assignment Feedback
+- Live Online Classes
 - AI Study Assistant
 - AI Quiz Generator
-- Live Online Classes
+- AI Assignment Feedback
 - Automatic Lecture Recording
 - Learning Analytics
 
@@ -359,10 +466,4 @@ Future improvements
 
 # Notes
 
-The LMS integrates with:
-
-- Academic Module
-- Attendance Module
-- AI Exam Module
-- Student Dashboard
-- Lecturer Dashboard
+The LMS integrates with the Academic Module, Attendance Module, Assessment Module, Student Portal, Lecturer Portal, and Notification Module.

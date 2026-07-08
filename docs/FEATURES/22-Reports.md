@@ -1,173 +1,279 @@
-# Reporting System
+# Reports Module
 
-## Overview
+## Purpose
 
-The Reporting System provides detailed reports and analytics for students, lecturers, coordinators, administrators, STAD staff, and restaurant owners.
+The Reports Module provides comprehensive reporting and analytics for the NextGen Smart University Platform.
 
-Reports help users monitor performance, analyze data, and make informed decisions.
+It collects data from all system modules to generate accurate reports that support academic, administrative, financial, and operational decision-making.
 
 ---
 
 # Objectives
 
-The Reporting System provides:
+- Generate comprehensive reports.
+- Support data analysis.
+- Monitor system performance.
+- Track academic progress.
+- Improve decision making.
+- Export reports.
+
+---
+
+# Scope
+
+The Reports Module includes:
 
 - Academic Reports
 - Attendance Reports
-- LMS Reports
-- Financial Reports
-- AI Exam Reports
-- Food Court Reports
+- Assessment Reports
+- Finance Reports
 - Student Activity Reports
+- Food Court Reports
+- AI Examination Reports
+- User Activity Reports
 - System Reports
 
 ---
 
-# Student Reports
+# Actors
 
-Students can view:
+- Student
+- Lecturer
+- Coordinator
+- Administrator
+- STAD Staff
+- Restaurant Owner
 
-- Academic Transcript
+---
+
+# Report Categories
+
+## Academic Reports
+
+- Student Transcript
 - GPA Report
-- Attendance Report
-- Assignment Report
-- Quiz Report
+- Course Enrollment
+- Graduation Progress
+- Course Completion
+- Faculty Statistics
+
+---
+
+## Attendance Reports
+
+- Student Attendance
+- Section Attendance
+- Lecturer Attendance Summary
+- Department Attendance
+- Attendance Trends
+
+---
+
+## Assessment Reports
+
+- Grade Distribution
+- Assessment Summary
+- Student Performance
+- Course Performance
+- Lecturer Performance
+
+---
+
+## Finance Reports
+
+- Tuition Payments
+- Outstanding Fees
+- Scholarship Summary
+- Revenue Report
 - Payment History
+
+---
+
+## Student Activities Reports
+
+- Club Membership
 - Event Participation
-- Reward Points
+- Activity Points
+- Volunteer Hours
 
 ---
 
-# Lecturer Reports
+## Food Court Reports
 
-Lecturers can generate:
-
-- Attendance Report
-- Assignment Report
-- Quiz Report
-- Grade Report
-- Student Performance Report
-- AI Exam Report
+- Daily Orders
+- Restaurant Revenue
+- Best Selling Items
+- Customer Orders
 
 ---
 
-# Coordinator Reports
+## AI Examination Reports
 
-Coordinators can generate:
-
-- Registration Report
-- Section Capacity Report
-- Graduation Candidates
-- Academic Warning Report
-- Department Statistics
+- Examination Summary
+- AI Violations
+- Cheating Detection
+- Exam Statistics
+- Student AI Report
 
 ---
 
-# Administrator Reports
-
-Administrators can generate:
+## System Reports
 
 - User Statistics
-- Academic Statistics
-- Attendance Statistics
-- Financial Reports
-- Restaurant Reports
-- AI Monitoring Reports
-- System Health Reports
+- Login History
+- Audit Logs
+- Error Reports
+- Security Reports
 
 ---
 
-# STAD Reports
+# Business Rules
 
-Generate:
-
-- Club Reports
-- Event Reports
-- Student Participation
-- Volunteer Hours
-- Reward Points
-- Certificates
+- Users can access only authorized reports.
+- Reports use real-time system data whenever possible.
+- Generated reports are read-only.
+- Sensitive reports require administrator permission.
+- Report generation activities are logged.
 
 ---
 
-# Restaurant Reports
+# Validation Rules
 
-Restaurant owners can generate:
-
-- Daily Sales
-- Weekly Sales
-- Monthly Sales
-- Best Selling Items
-- Revenue Summary
-- Customer Ratings
+- Date range required when applicable.
+- User permissions must be verified.
+- Export format must be supported.
 
 ---
 
 # Export Formats
 
-Supported formats
+Supported formats:
 
 - PDF
-- Excel
+- Excel (XLSX)
 - CSV
-
----
-
-# Filters
-
-Reports can be filtered by:
-
-- Date
-- Semester
-- Faculty
-- Department
-- Course
-- Student
-- Lecturer
-- Event
-- Restaurant
-
----
-
-# Dashboard Analytics
-
-The system displays:
-
-- Charts
-- Graphs
-- KPIs
-- Summary Cards
-- Trend Analysis
 
 ---
 
 # Permissions
 
-Users can only access reports related to their role.
+## Student
+
+- Personal Academic Reports
+- Attendance Reports
+- Finance Reports
+
+## Lecturer
+
+- Course Reports
+- Student Performance Reports
+- Attendance Reports
+
+## Coordinator
+
+- Department Reports
+- Academic Reports
+- Assessment Reports
+
+## Administrator
+
+- Full Access to All Reports
+
+## STAD Staff
+
+- Student Activities Reports
+
+## Restaurant Owner
+
+- Restaurant Reports
+- Sales Reports
 
 ---
 
-# Integrations
+# Security
 
+- JWT Authentication
+- Role-Based Access Control
+- Secure Report Generation
+- Audit Logging
+- Protected Report Downloads
+
+---
+
+# Performance
+
+- Cache frequently requested reports.
+- Generate large reports asynchronously.
+- Optimize database queries.
+- Archive historical reports.
+
+---
+
+# API Mapping
+
+GET /api/reports
+
+GET /api/reports/academic
+
+GET /api/reports/attendance
+
+GET /api/reports/assessment
+
+GET /api/reports/finance
+
+GET /api/reports/activities
+
+GET /api/reports/system
+
+GET /api/reports/export
+
+---
+
+# UI Pages
+
+- Reports Dashboard
+- Academic Reports
+- Attendance Reports
+- Assessment Reports
+- Finance Reports
+- Student Activities Reports
+- AI Reports
+- System Reports
+
+---
+
+# Dependencies
+
+This module depends on:
+
+- Authentication Module
 - Academic Module
 - Attendance Module
-- LMS Module
+- Assessment Module
 - Finance Module
-- Food Court Module
-- AI Exam Module
+- AI Examination Module
 - Student Activities Module
+- Food Court Module
+
+The following modules depend on this module:
+
+- Administrator Portal
+- Coordinator Portal
+- Lecturer Portal
+- STAD Portal
 
 ---
 
-# Future Enhancements
+# Future Expansion
 
-- AI Analytics
+- AI Analytics Dashboard
 - Predictive Reports
-- Interactive Dashboards
-- Scheduled Reports
+- Interactive Charts
+- Business Intelligence Dashboard
+- Custom Report Builder
 
 ---
 
-# Success Criteria
+# Notes
 
-The Reporting System is complete when every role can generate accurate reports relevant to their responsibilities.
+The Reports Module serves as the centralized reporting and analytics engine for the NextGen Smart University Platform, providing accurate, secure, and role-based access to operational and academic data across all integrated modules.

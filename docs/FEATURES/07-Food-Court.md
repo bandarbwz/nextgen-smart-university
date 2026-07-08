@@ -2,24 +2,43 @@
 
 ## Purpose
 
-The Food Court Module manages all restaurants, menus, food ordering, payments, order tracking, and customer reviews within the university.
+The Food Court Module manages restaurants, menus, food ordering, payments, and order tracking within the NextGen Smart University Platform.
 
-Students can browse menus, place orders, make payments, and receive notifications when their orders are ready.
-
-Restaurant owners can manage menus, receive orders, update order status, and view sales reports.
+It enables students to order food online while allowing restaurant owners to efficiently manage menus, orders, and daily operations.
 
 ---
 
 # Objectives
 
 - Manage restaurants.
-- Manage menus.
-- Process food orders.
-- Support online payments.
-- Notify students.
+- Manage food menus.
+- Support online food ordering.
 - Track order status.
+- Manage payments.
 - Generate sales reports.
-- Collect customer reviews.
+- Improve food service efficiency.
+
+---
+
+# Scope
+
+This module includes:
+
+- Restaurant Management
+- Menu Management
+- Food Categories
+- Online Ordering
+- Order Tracking
+- Payment Management
+- Sales Reports
+
+---
+
+# Actors
+
+- Student
+- Restaurant Owner
+- Administrator
 
 ---
 
@@ -31,19 +50,16 @@ Purpose
 
 Stores restaurant information.
 
-Columns
+### Columns
 
 - id
 - owner_id
-- name
+- restaurant_name
 - description
-- logo
 - location
+- phone
 - opening_time
 - closing_time
-- phone
-- email
-- payment_methods
 - status
 - created_at
 - updated_at
@@ -56,18 +72,11 @@ Purpose
 
 Stores menu categories.
 
-Examples
-
-- Meals
-- Drinks
-- Desserts
-- Snacks
-
-Columns
+### Columns
 
 - id
 - restaurant_id
-- name
+- category_name
 - description
 
 ---
@@ -76,21 +85,19 @@ Columns
 
 Purpose
 
-Stores menu items.
+Stores food menu items.
 
-Columns
+### Columns
 
 - id
 - restaurant_id
 - category_id
-- name
+- item_name
 - description
-- image
 - price
+- image_path
 - availability
 - preparation_time
-- created_at
-- updated_at
 
 ---
 
@@ -98,35 +105,19 @@ Columns
 
 Purpose
 
-Stores student orders.
+Stores food orders.
 
-Columns
+### Columns
 
 - id
 - student_id
 - restaurant_id
-- order_number
 - total_amount
 - payment_method
 - payment_status
 - order_status
-- pickup_time
-- created_at
-
-Payment Status
-
-- Pending
-- Paid
-- Refunded
-
-Order Status
-
-- Pending
-- Accepted
-- Preparing
-- Ready
-- Completed
-- Cancelled
+- ordered_at
+- completed_at
 
 ---
 
@@ -136,7 +127,7 @@ Purpose
 
 Stores ordered menu items.
 
-Columns
+### Columns
 
 - id
 - order_id
@@ -153,55 +144,14 @@ Purpose
 
 Stores payment information.
 
-Columns
+### Columns
 
 - id
 - order_id
 - payment_reference
 - payment_method
-- amount
 - payment_status
 - paid_at
-
----
-
-## RestaurantReview
-
-Purpose
-
-Stores customer reviews.
-
-Columns
-
-- id
-- restaurant_id
-- student_id
-- rating
-- review
-- created_at
-
-Rating
-
-- 1
-- 2
-- 3
-- 4
-- 5
-
----
-
-## FavoriteRestaurant
-
-Purpose
-
-Stores students' favorite restaurants.
-
-Columns
-
-- id
-- student_id
-- restaurant_id
-- created_at
 
 ---
 
@@ -211,17 +161,29 @@ Restaurant
 
 ↓
 
-FoodCategory
+Food Category
 
 ↓
 
-MenuItem
+Menu Item
+
+---
+
+Student
 
 ↓
 
-OrderItem
+Order
 
 ↓
+
+Order Item
+
+↓
+
+Menu Item
+
+---
 
 Order
 
@@ -231,49 +193,122 @@ Payment
 
 ---
 
-Restaurant
-
-↓
-
-RestaurantReview
-
-↓
-
-Student
-
----
-
-Restaurant
-
-↓
-
-FavoriteRestaurant
-
-↓
-
-Student
-
----
-
 # Business Rules
 
-- Every restaurant must register before selling.
-- Restaurant owners manage only their own restaurant.
-- Menu items can be enabled or disabled.
-- Orders cannot be modified after preparation starts.
-- Students receive notifications for every status update.
-- Reviews are allowed only after completed orders.
+- Students may order only from active restaurants.
+- Orders cannot contain unavailable items.
+- Menu prices must be greater than zero.
+- Restaurant owners can update menu availability.
+- Completed orders cannot be edited.
+- Cancelled orders are recorded in the order history.
+
+---
+
+# Validation Rules
+
+Restaurant
+
+- Restaurant name required.
+- Phone number required.
+
+Menu Item
+
+- Name required.
+- Price must be greater than zero.
+- Category required.
+
+Order
+
+- At least one item required.
+- Restaurant must be active.
+
+Payment
+
+- Valid payment method required.
+- Payment status updated automatically.
+
+---
+
+# Permissions
+
+## Student
+
+- View Restaurants
+- View Menus
+- Place Orders
+- Cancel Orders
+- View Order History
+
+## Restaurant Owner
+
+- Manage Restaurant
+- Manage Menu
+- Accept Orders
+- Reject Orders
+- Update Order Status
+- View Sales Reports
+
+## Administrator
+
+- Full Food Court Access
+
+---
+
+# Order Workflow
+
+Student selects restaurant.
+
+↓
+
+Student selects menu items.
+
+↓
+
+Order is submitted.
+
+↓
+
+Restaurant accepts the order.
+
+↓
+
+Payment verified.
+
+↓
+
+Restaurant prepares food.
+
+↓
+
+Order marked as Ready.
+
+↓
+
+Student collects the order.
+
+↓
+
+Order completed.
+
+---
+
+# Order Status
+
+- Pending
+- Accepted
+- Preparing
+- Ready
+- Completed
+- Cancelled
 
 ---
 
 # Payment Methods
 
-Supported methods
-
 - Cash
+- Online Banking
 - Credit Card
 - Debit Card
-- Online Banking
 - E-Wallet
 
 ---
@@ -282,76 +317,133 @@ Supported methods
 
 Students receive notifications for:
 
+- Order Confirmed
 - Order Accepted
-- Order Preparing
 - Order Ready
 - Order Completed
 - Order Cancelled
 
-Restaurant owners receive notifications for:
+Restaurant Owners receive notifications for:
 
 - New Order
-- Payment Received
 - Order Cancelled
 
 ---
 
-# Validation Rules
+# Security
+
+- Validate all payments.
+- Protect customer information.
+- Validate uploaded menu images.
+- Restrict restaurant management to owners.
+- Log all payment transactions.
+
+---
+
+# Indexes
 
 Restaurant
 
-- Name required
-- Opening time required
+- owner_id
 
-Menu Item
+MenuItem
 
-- Name required
-- Price greater than zero
+- restaurant_id
+- category_id
 
 Order
 
-- At least one menu item required
+- student_id
+- restaurant_id
 
-Review
+Payment
 
-- Rating between 1 and 5
+- order_id
+
+---
+
+# Reports
+
+Food Court Reports
+
+- Daily Sales
+- Monthly Revenue
+- Popular Menu Items
+- Restaurant Performance
+- Order Statistics
+- Payment Report
+
+---
+
+# Performance
+
+- Cache restaurant menus.
+- Optimize order retrieval.
+- Index order history.
+- Compress uploaded food images.
 
 ---
 
 # API Mapping
 
-Food Court APIs
+GET /api/restaurants
 
-- View Restaurants
-- View Menu
-- Place Order
-- Cancel Order
-- Track Order
-- Pay Order
-- Submit Review
-- Manage Restaurant
-- Manage Menu
+GET /api/restaurants/{id}
+
+GET /api/menu
+
+POST /api/orders
+
+PUT /api/orders/{id}
+
+GET /api/orders/history
+
+POST /api/payments
+
+GET /api/reports/food-court
+
+---
+
+# UI Pages
+
+- Restaurant List
+- Restaurant Details
+- Menu
+- Shopping Cart
+- Checkout
+- Order History
+- Restaurant Dashboard
+- Sales Reports
+
+---
+
+# Dependencies
+
+This module depends on:
+
+- Authentication Module
+- Notification Module
+- Finance Module
+
+The following modules depend on this module:
+
+- Student Portal
+- Restaurant Portal
+- Reports Module
 
 ---
 
 # Future Expansion
 
-Future improvements
-
-- QR Pickup
 - AI Food Recommendation
-- Delivery Robot Integration
-- Loyalty Rewards
-- Discount Coupons
-- Meal Subscription Plans
+- Table Reservation
+- Delivery Tracking
+- Loyalty Points
+- Promotional Coupons
+- Nutrition Information
 
 ---
 
 # Notes
 
-The Food Court Module integrates with:
-
-- Student Dashboard
-- Restaurant Dashboard
-- Notification Module
-- Payment Module
+The Food Court Module integrates with the Finance Module for payment processing, the Notification Module for order updates, the Student Portal for ordering, and the Restaurant Portal for restaurant management.

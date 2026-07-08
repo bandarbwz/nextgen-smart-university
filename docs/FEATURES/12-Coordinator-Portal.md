@@ -1,217 +1,262 @@
-# Coordinator Portal
+# Coordinator Portal Module
 
-## Overview
+## Purpose
 
-The Coordinator Portal is designed for academic coordinators to manage departments, study plans, course offerings, student registrations, and academic operations.
+The Coordinator Portal enables academic coordinators to oversee academic operations, approve course registrations, monitor teaching activities, review student progress, and coordinate departmental academic management.
 
-The portal acts as the bridge between lecturers, students, and the university administration.
+It serves as the bridge between lecturers, students, and academic administration.
 
 ---
 
 # Objectives
 
-The Coordinator Portal allows coordinators to:
+- Manage departmental academic activities.
+- Approve course registrations.
+- Monitor student progress.
+- Supervise lecturers.
+- Review attendance statistics.
+- Review assessment progress.
+- Generate academic reports.
+- Support academic decision making.
 
-- Manage Study Plans
-- Manage Course Offerings
-- Manage Sections
-- Approve Registrations
-- Manage Academic Calendar
-- Resolve Timetable Conflicts
-- Assign Lecturers
-- Monitor Student Progress
+---
+
+# Scope
+
+The Coordinator Portal includes:
+
+- Dashboard
+- Student Management
+- Lecturer Management
+- Course Registration Approval
+- Academic Monitoring
+- Attendance Monitoring
+- Assessment Monitoring
+- Reports
+- Notifications
+- Calendar
+- Settings
+
+---
+
+# Actors
+
+- Coordinator
+
+---
+
+# Features
+
+Coordinators can:
+
+- View Dashboard
+- Approve Course Registration
+- Approve Add/Drop Requests
+- View Student Records
+- View Lecturer Information
+- Monitor Attendance
+- Monitor Assessments
+- View Course Statistics
 - Generate Academic Reports
-- Communicate with Students and Lecturers
+- Send Announcements
+- Communicate with Lecturers
+- Update Profile
 
 ---
 
-# Coordinator Dashboard
+# Dashboard Widgets
 
-Displayed immediately after login.
+The dashboard displays:
 
-Dashboard Widgets
-
-- Current Semester
-- Registration Requests
-- Total Students
-- Active Sections
-- Lecturer Assignments
-- Graduation Candidates
-- Academic Alerts
-- Department Announcements
-- Recent Notifications
+- Pending Registration Requests
+- Department Statistics
+- Student Enrollment
+- Lecturer Workload
+- Attendance Summary
+- Assessment Progress
+- Notifications
+- Recent Activities
 
 ---
 
-# Student Management
+# Academic Services
 
-Coordinators can:
+## Student Management
 
-- View Student Profiles
+- View Student Records
 - View Academic Progress
-- View GPA & CGPA
-- View Registered Courses
-- View Graduation Status
-- View Academic Warnings
+- View GPA
+- View Enrollment History
 
 ---
 
-# Course Registration
+## Lecturer Management
 
-Coordinators can:
-
-- Approve Registration Requests
-- Reject Registration Requests
-- Override Registration Rules
-- Approve Credit Hour Overload
-- Manage Waiting Lists
+- View Assigned Courses
+- View Teaching Load
+- View Attendance Records
 
 ---
 
-# Course Management
+## Registration Management
 
-Coordinators can:
-
-- Create Course Offerings
-- Open New Sections
-- Close Sections
-- Set Section Capacity
-- Assign Classrooms
-- Assign Lecturers
+- Approve Registrations
+- Approve Add/Drop Requests
+- Reject Requests
+- Review Prerequisite Validation
 
 ---
 
-# Study Plan Management
+## Attendance Monitoring
 
-Coordinators can:
-
-- Create Study Plans
-- Update Study Plans
-- Add Courses
-- Remove Courses
-- Set Prerequisites
-- Define Graduation Requirements
+- Department Attendance
+- Attendance Reports
+- Attendance Trends
 
 ---
 
-# Semester Management
+## Assessment Monitoring
 
-Coordinators can:
-
-- Open Registration
-- Close Registration
-- Configure Semester Dates
-- Publish Academic Calendar
+- Assessment Status
+- Grade Progress
+- Submission Statistics
 
 ---
 
-# Timetable Management
-
-Coordinators can:
-
-- View Timetables
-- Detect Schedule Conflicts
-- Resolve Conflicts
-- Assign Rooms
-- Update Class Times
-
----
-
-# Graduation Management
-
-Coordinators can:
-
-- View Graduation Candidates
-- Verify Credit Hours
-- Verify GPA Requirements
-- Approve Graduation Eligibility
-
----
-
-# Academic Reports
-
-Generate reports for:
+## Reports
 
 - Student Performance
-- GPA Statistics
-- Registration Summary
-- Section Capacity
-- Graduation Progress
+- Lecturer Performance
+- Course Enrollment
 - Department Statistics
 
-Export Formats
+---
 
-- PDF
-- Excel
+# Business Rules
+
+- Coordinators manage only their assigned department.
+- Registration approvals follow university policies.
+- Coordinators cannot modify grades directly.
+- Department reports are read-only.
 
 ---
 
-# Announcements
+# Validation Rules
 
-Coordinators can:
-
-- Publish Department Announcements
-- Schedule Announcements
-- Edit Announcements
-- Delete Announcements
-
----
-
-# Notifications
-
-Receive notifications for:
-
-- Registration Requests
-- Section Capacity Alerts
-- Graduation Alerts
-- Academic Warnings
-- System Announcements
+- Coordinator account must be active.
+- Requests must belong to the coordinator's department.
+- Registration approval follows prerequisite validation.
 
 ---
 
 # Permissions
 
-Coordinators are allowed to:
+Coordinator permissions include:
 
-- Manage department academic operations.
-- Approve registrations.
-- Manage study plans.
-- Assign lecturers.
-- Open and close sections.
-
-Coordinators cannot:
-
-- Manage system settings.
-- Access financial records.
-- Modify administrator accounts.
+- Approve Course Registration
+- Approve Add/Drop
+- View Student Records
+- View Lecturer Records
+- View Attendance Reports
+- View Assessment Reports
+- Generate Reports
+- Publish Department Announcements
 
 ---
 
-# Integrations
+# Notifications
 
-The Coordinator Portal integrates with:
+Coordinators receive notifications for:
+
+- Registration Requests
+- Add/Drop Requests
+- Attendance Alerts
+- Academic Warnings
+- Lecturer Announcements
+- System Notifications
+
+---
+
+# Security
+
+- JWT Authentication
+- Role-Based Access Control
+- Department-Based Authorization
+- Audit Logging
+- Secure Academic Records
+
+---
+
+# Performance
+
+- Cache department statistics.
+- Optimize student searches.
+- Load reports asynchronously.
+- Index registration requests.
+
+---
+
+# API Mapping
+
+GET /api/coordinator/dashboard
+
+GET /api/coordinator/students
+
+GET /api/coordinator/lecturers
+
+GET /api/coordinator/registrations
+
+PUT /api/coordinator/registrations/{id}/approve
+
+PUT /api/coordinator/registrations/{id}/reject
+
+GET /api/coordinator/reports
+
+GET /api/coordinator/statistics
+
+---
+
+# UI Pages
+
+- Dashboard
+- Student Management
+- Lecturer Management
+- Registration Approval
+- Attendance
+- Assessments
+- Reports
+- Notifications
+- Calendar
+- Settings
+
+---
+
+# Dependencies
+
+This module depends on:
 
 - Authentication Module
 - Academic Module
 - Attendance Module
-- LMS Module
-- Student Portal
-- Lecturer Portal
+- Assessment Module
 - Notification Module
 
+The following modules depend on this module:
+
+- Reports Module
+
 ---
 
-# Future Enhancements
-
-Future versions may include:
+# Future Expansion
 
 - AI Academic Advisor
-- AI Timetable Optimization
-- AI Graduation Prediction
-- AI Course Demand Forecasting
+- AI Student Risk Analysis
+- AI Enrollment Prediction
+- AI Department Analytics
+- Smart Academic Planning
 
 ---
 
-# Success Criteria
+# Notes
 
-The Coordinator Portal is considered complete when coordinators can manage all academic operations for their department through a single centralized interface.
+The Coordinator Portal integrates with the Academic Module, Attendance Module, Assessment Module, Reports Module, and Notification Module to provide complete academic oversight for each department.

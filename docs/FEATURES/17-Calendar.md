@@ -1,221 +1,296 @@
-# Calendar System
+# Calendar Module
 
-## Overview
+## Purpose
 
-The Calendar System provides a centralized scheduling platform for all university activities.
+The Calendar Module provides a centralized scheduling system for all academic and university activities within the NextGen Smart University Platform.
 
-It combines academic schedules, examinations, assignment deadlines, university events, registration periods, and personal reminders into a single interactive calendar.
-
-The calendar automatically updates based on the user's role and registered courses.
+It helps students, lecturers, coordinators, administrators, STAD staff, and restaurant owners organize their schedules and receive reminders for important events.
 
 ---
 
 # Objectives
 
-The Calendar System allows users to:
-
-- View Academic Calendar
-- View Personal Schedule
-- View Course Timetable
-- Track Assignment Deadlines
-- Track Quiz Dates
-- Track Midterm Exams
-- Track Final Exams
-- View University Events
-- View Registration Periods
-- View Reset Exam Period
-- Receive Event Reminders
+- Manage academic schedules.
+- Manage university events.
+- Display examinations.
+- Display assignment deadlines.
+- Display class schedules.
+- Display meetings.
+- Send event reminders.
+- Improve time management.
 
 ---
 
-# Student Calendar
+# Scope
 
-Students can view:
-
-- Lecture Schedule
-- Laboratory Schedule
-- Assignment Due Dates
-- Quiz Dates
-- Midterm Exams
-- Final Exams
-- Course Registration Period
-- Add/Drop Period
-- Reset Exam Period
-- Club Events
-- STAD Events
-- Personal Reminders
-
-Students can also create:
-
-- Personal Notes
-- Personal Reminders
-
----
-
-# Lecturer Calendar
-
-Lecturers can view:
-
-- Teaching Schedule
-- Laboratory Sessions
-- Assignment Deadlines
-- Quiz Schedule
-- Midterm Schedule
-- Final Examination Schedule
-- Department Meetings
-- Office Hours
-
-Lecturers can create:
-
-- Assignment Events
-- Quiz Events
-- Office Hour Events
-
----
-
-# Coordinator Calendar
-
-Coordinators can manage:
-
-- Registration Opening
-- Registration Closing
-- Grade Approval Deadlines
-- Graduation Timeline
-- Semester Timeline
-- Department Meetings
-
----
-
-# Administrator Calendar
-
-Administrators can manage:
+The Calendar Module includes:
 
 - Academic Calendar
+- Personal Calendar
+- Class Schedule
+- Examination Schedule
+- Assignment Deadlines
 - University Events
-- Maintenance Schedule
-- Backup Schedule
-- Registration Timeline
-- Semester Timeline
+- Meetings
+- Reminder System
 
 ---
 
-# Calendar Views
+# Actors
 
-Supported Views
-
-- Day View
-- Week View
-- Month View
-- Agenda View
-
----
-
-# Event Categories
-
-Academic
-
-Assignments
-
-Quizzes
-
-Midterm Exams
-
-Final Exams
-
-Meetings
-
-Student Activities
-
-Registration
-
-Finance
-
-System
-
-Personal
+- Student
+- Lecturer
+- Coordinator
+- Administrator
+- STAD Staff
+- Restaurant Owner
 
 ---
 
-# Event Information
+# Database Tables
 
-Each event contains:
+## CalendarEvent
 
-- Title
-- Description
-- Category
-- Date
-- Start Time
-- End Time
-- Location
-- Related Course
-- Related Lecturer
-- Status
+Purpose
+
+Stores calendar events.
+
+### Columns
+
+- id
+- user_id
+- title
+- description
+- event_type
+- start_datetime
+- end_datetime
+- location
+- reminder_enabled
+- created_at
+- updated_at
 
 ---
 
-# Event Status
+## Reminder
 
-- Upcoming
-- In Progress
-- Completed
-- Cancelled
+Purpose
+
+Stores reminder settings.
+
+### Columns
+
+- id
+- event_id
+- reminder_time
+- reminder_method
+- status
+
+### Reminder Methods
+
+- In-App
+- Email
+- Push Notification
+
+---
+
+# Relationships
+
+User
+
+↓
+
+Calendar Event
+
+↓
+
+Reminder
+
+---
+
+# Event Types
+
+- Class
+- Examination
+- Assignment
+- Quiz
+- Meeting
+- Student Activity
+- Food Court Event
+- Holiday
+- Personal Event
+
+---
+
+# Business Rules
+
+- Users can manage only their own personal events.
+- Academic events are generated automatically.
+- Assignment deadlines are synchronized with the LMS.
+- Examination schedules are synchronized with the AI Examination Module.
+- Class schedules are synchronized with the Academic Module.
+- Event reminders are generated automatically.
+
+---
+
+# Validation Rules
+
+Event
+
+- Title required.
+- Start date required.
+- End date required.
+- End date must be after start date.
+
+Reminder
+
+- Reminder time must be before the event starts.
+
+---
+
+# Permissions
+
+## Student
+
+- View Calendar
+- Create Personal Events
+- Edit Personal Events
+- Delete Personal Events
+
+## Lecturer
+
+- View Teaching Schedule
+- Create Meetings
+- View Academic Calendar
+
+## Coordinator
+
+- View Department Calendar
+
+## Administrator
+
+- Full Calendar Management
+
+## STAD Staff
+
+- Manage Student Activity Events
 
 ---
 
 # Notifications
 
-Automatic reminders are sent:
+Users receive reminders for:
 
-- 24 Hours Before
-- 1 Hour Before
-- 15 Minutes Before
-
----
-
-# Calendar Permissions
-
-Student
-
-- View Calendar
-- Add Personal Reminder
-
-Lecturer
-
-- Create Course Events
-- Edit Course Events
-
-Coordinator
-
-- Manage Academic Calendar
-
-Administrator
-
-- Full Calendar Access
+- Upcoming Classes
+- Assignment Deadlines
+- Quizzes
+- Examinations
+- Meetings
+- University Events
+- Club Activities
 
 ---
 
-# Integrations
+# Security
 
-The Calendar System integrates with:
+- JWT Authentication
+- Role-Based Access Control
+- User-specific calendar events
+- Secure reminder delivery
 
+---
+
+# Indexes
+
+CalendarEvent
+
+- user_id
+- start_datetime
+
+Reminder
+
+- event_id
+
+---
+
+# Reports
+
+Calendar Reports
+
+- Daily Schedule
+- Weekly Schedule
+- Monthly Schedule
+- Upcoming Events
+- Missed Events
+
+---
+
+# Performance
+
+- Cache upcoming events.
+- Load monthly calendars efficiently.
+- Optimize reminder scheduling.
+- Archive expired events.
+
+---
+
+# API Mapping
+
+GET /api/calendar
+
+GET /api/calendar/events
+
+POST /api/calendar/events
+
+PUT /api/calendar/events/{id}
+
+DELETE /api/calendar/events/{id}
+
+GET /api/calendar/reminders
+
+---
+
+# UI Pages
+
+- Calendar Dashboard
+- Monthly Calendar
+- Weekly Calendar
+- Daily Calendar
+- Event Details
+- Reminder Settings
+
+---
+
+# Dependencies
+
+This module depends on:
+
+- Authentication Module
 - Academic Module
 - LMS Module
-- Attendance Module
+- AI Examination Module
 - Student Activities Module
-- Finance Module
 - Notification Module
 
+The following modules depend on this module:
+
+- Student Portal
+- Lecturer Portal
+- Coordinator Portal
+- Administrator Portal
+- STAD Portal
+
 ---
 
-# Future Enhancements
+# Future Expansion
 
-- Google Calendar Sync
-- Microsoft Outlook Sync
-- Apple Calendar Sync
-- Mobile Calendar Support
+- Google Calendar Integration
+- Microsoft Outlook Integration
+- AI Schedule Assistant
+- Smart Conflict Detection
+- Shared Calendars
 
 ---
 
-# Success Criteria
+# Notes
 
-The Calendar System is considered complete when every user can manage academic schedules, university events, and personal reminders through one centralized calendar.
+The Calendar Module acts as the central scheduling service for the entire NextGen Smart University Platform. It automatically synchronizes academic schedules, examinations, assignments, meetings, and student activities from all integrated modules while allowing users to manage their personal events securely.

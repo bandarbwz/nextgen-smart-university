@@ -1,162 +1,257 @@
-# Settings System
+# Settings Module
 
-## Overview
+## Purpose
 
-The Settings System allows users and administrators to configure personal preferences and platform settings.
+The Settings Module manages the configuration of the NextGen Smart University Platform.
 
-Different roles have different levels of access to settings.
+It allows authorized users to configure system preferences, user preferences, security settings, notifications, appearance, and platform-wide options from a centralized interface.
 
 ---
 
 # Objectives
 
-The Settings System provides:
+- Manage system configuration.
+- Manage user preferences.
+- Configure security settings.
+- Configure notification settings.
+- Customize platform appearance.
+- Maintain application consistency.
 
-- Profile Settings
+---
+
+# Scope
+
+The Settings Module includes:
+
+- User Settings
+- System Settings
 - Security Settings
 - Notification Settings
-- System Configuration
-- Language Settings
-- Theme Settings
+- Appearance Settings
+- Localization Settings
 
 ---
 
-# Student Settings
+# Actors
 
-Students can manage:
+- Student
+- Lecturer
+- Coordinator
+- Administrator
+- Restaurant Owner
+- STAD Staff
 
-- Profile Information
-- Password
-- Profile Photo
-- Notification Preferences
+---
+
+# Database Tables
+
+## UserSetting
+
+Purpose
+
+Stores user-specific settings.
+
+### Columns
+
+- id
+- user_id
+- language
+- theme
+- timezone
+- notification_enabled
+- email_notification
+- created_at
+- updated_at
+
+---
+
+## SystemSetting
+
+Purpose
+
+Stores global platform settings.
+
+### Columns
+
+- id
+- setting_key
+- setting_value
+- description
+- updated_by
+- updated_at
+
+---
+
+# Relationships
+
+User
+
+↓
+
+User Setting
+
+---
+
+Administrator
+
+↓
+
+System Setting
+
+---
+
+# Setting Categories
+
+## User Settings
+
 - Language
 - Theme
-
----
-
-# Lecturer Settings
-
-Lecturers can manage:
-
-- Profile
-- Password
-- Office Information
-- Notification Preferences
-- Theme
-
----
-
-# Coordinator Settings
-
-Coordinators can manage:
-
-- Profile
-- Password
-- Department Information
+- Time Zone
+- Profile Preferences
 - Notification Preferences
 
 ---
 
-# Administrator Settings
-
-Administrators can configure:
+## System Settings
 
 - University Information
-- Academic Calendar
-- Registration Rules
-- Attendance Rules
-- AI Exam Settings
-- Security Policies
+- Academic Year
+- Registration Period
+- Semester Settings
 - File Upload Limits
-- Notification Templates
-- Backup Settings
+- Maintenance Mode
 
 ---
 
-# Security Settings
+## Security Settings
 
-Users can:
-
-- Change Password
-- Manage Active Sessions
-- Logout from All Devices
-
-Administrators can:
-
-- Configure Password Policy
-- Configure Session Timeout
-- Configure Authentication Rules
+- Password Policy
+- Session Timeout
+- Login Attempts
+- JWT Expiration
+- Two-Factor Authentication (Future)
 
 ---
 
-# Notification Settings
+## Notification Settings
 
-Users can enable or disable:
-
-- Academic Notifications
-- Assignment Notifications
-- Food Court Notifications
-- Event Notifications
-- Finance Notifications
-- System Notifications
+- Email Notifications
+- In-App Notifications
+- Push Notifications (Future)
 
 ---
 
-# Appearance
-
-Users can choose:
+## Appearance Settings
 
 - Light Theme
 - Dark Theme
-
-Future versions may support additional themes.
-
----
-
-# Language
-
-Supported languages:
-
-- English
-- Arabic
-
-Future versions may include more languages.
+- System Theme
 
 ---
 
-# Backup & Recovery
+# Business Rules
 
-Administrators can:
+- Users can modify only their own settings.
+- Only administrators can modify system settings.
+- Security settings require administrator privileges.
+- Changes are applied immediately unless otherwise specified.
 
-- Create Backups
-- Restore Backups
-- Schedule Automatic Backups
+---
+
+# Validation Rules
+
+User Setting
+
+- Language required.
+- Theme required.
+
+System Setting
+
+- Setting key must be unique.
+- Setting value cannot be empty.
 
 ---
 
 # Permissions
 
-Each role can modify only the settings assigned to that role.
+## User
 
-Only administrators can modify global platform settings.
+- View Personal Settings
+- Update Personal Settings
+
+## Administrator
+
+- Manage System Settings
+- Manage Security Settings
+- Manage Platform Configuration
 
 ---
 
-# Integrations
+# Security
 
-The Settings System integrates with every module of the platform.
+- JWT Authentication
+- Role-Based Access Control
+- Audit Logging
+- Secure Configuration Management
 
 ---
 
-# Future Enhancements
+# Performance
 
-- Multi-language Support
+- Cache frequently used settings.
+- Load user preferences during login.
+- Minimize database queries.
+
+---
+
+# API Mapping
+
+GET /api/settings/user
+
+PUT /api/settings/user
+
+GET /api/settings/system
+
+PUT /api/settings/system
+
+GET /api/settings/security
+
+PUT /api/settings/security
+
+---
+
+# UI Pages
+
+- User Settings
+- System Settings
+- Security Settings
+- Notification Settings
+- Appearance Settings
+
+---
+
+# Dependencies
+
+This module depends on:
+
+- Authentication Module
+
+The following modules depend on this module:
+
+- All System Modules
+
+---
+
+# Future Expansion
+
+- AI Personalized Preferences
+- Theme Marketplace
+- Multi-Language Support
 - Accessibility Settings
-- Personalized Dashboards
-- AI Preference Recommendations
+- Device Synchronization
 
 ---
 
-# Success Criteria
+# Notes
 
-The Settings System is complete when users can manage their personal preferences securely and administrators can configure platform-wide settings from a centralized interface.
+The Settings Module provides centralized configuration management for both users and administrators while ensuring secure, consistent, and scalable platform customization.

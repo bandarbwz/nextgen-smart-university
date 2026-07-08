@@ -1,27 +1,47 @@
-# AI Exam Monitoring Module
+# AI Examination Module
 
 ## Purpose
 
-The AI Exam Monitoring Module provides intelligent online exam supervision using computer vision and AI technologies.
+The AI Examination Module provides secure online examinations using Artificial Intelligence to monitor student behavior, detect cheating attempts, and generate examination reports.
 
-The module helps lecturers monitor students during online exams by detecting suspicious behavior, recording violations, and generating AI reports.
-
-The AI assists lecturers in making decisions but does not replace academic judgment.
+The module enhances academic integrity by combining AI monitoring with traditional examination management.
 
 ---
 
 # Objectives
 
-- Monitor online exams.
-- Verify student identity.
-- Detect cheating attempts.
-- Track eye movement.
-- Detect multiple faces.
-- Detect fullscreen exit.
-- Detect browser tab switching.
-- Generate AI reports.
-- Record violations.
-- Support lecturer review.
+- Conduct secure online examinations.
+- Monitor students using AI.
+- Detect cheating behavior.
+- Generate AI violation reports.
+- Protect examination integrity.
+- Record examination sessions.
+- Support automatic evidence collection.
+
+---
+
+# Scope
+
+The module manages:
+
+- Online Exams
+- Exam Sessions
+- AI Monitoring
+- Face Detection
+- Eye Tracking
+- Head Pose Detection
+- Tab Switching Detection
+- Fullscreen Monitoring
+- AI Violations
+- Examination Reports
+
+---
+
+# Actors
+
+- Student
+- Lecturer
+- Administrator
 
 ---
 
@@ -29,61 +49,77 @@ The AI assists lecturers in making decisions but does not replace academic judgm
 
 ## Exam
 
-Purpose
+Columns
 
-Stores online examinations.
+- id
+- section_id
+- title
+- description
+- total_marks
+- duration
+- start_time
+- end_time
+- passing_marks
+- status
+
+---
+
+## ExamQuestion
 
 Columns
 
 - id
-- course_id
-- section_id
-- title
-- description
-- duration
-- total_marks
-- start_time
-- end_time
-- ai_monitoring_enabled
-- created_by
-- created_at
+- exam_id
+- question
+- question_type
+- marks
+- correct_answer
+
+Question Types
+
+- Multiple Choice
+- True / False
+- Short Answer
+- Essay
 
 ---
 
-## ExamSession
-
-Purpose
-
-Stores each student's exam session.
+## ExamSubmission
 
 Columns
 
 - id
 - exam_id
 - student_id
-- session_token
-- login_time
-- exam_start
-- exam_end
-- camera_status
-- microphone_status
-- fullscreen_status
-- overall_status
+- score
+- submitted_at
+- submission_status
 
-Overall Status
+Submission Status
 
-- Active
-- Completed
-- Cancelled
-- Interrupted
+- Submitted
+- Auto Submitted
+- Pending Review
+
+---
+
+## ExamSession
+
+Columns
+
+- id
+- exam_id
+- student_id
+- session_start
+- session_end
+- ip_address
+- browser
+- device
+- status
 
 ---
 
 ## AIViolation
-
-Purpose
-
-Stores AI-detected violations.
 
 Columns
 
@@ -91,69 +127,18 @@ Columns
 - session_id
 - violation_type
 - confidence_score
+- evidence_path
 - detected_at
-- screenshot_path
-- reviewed
-- lecturer_action
 
 Violation Types
 
-- Face Not Detected
 - Multiple Faces
+- Face Not Detected
 - Looking Away
-- Fullscreen Exit
+- Head Pose Warning
 - Tab Switching
+- Fullscreen Exit
 - Camera Disabled
-- Microphone Disabled
-- Suspicious Activity
-
----
-
-## AIReport
-
-Purpose
-
-Stores final AI reports.
-
-Columns
-
-- id
-- session_id
-- total_violations
-- risk_level
-- lecturer_review
-- recommendation
-- generated_at
-
-Risk Levels
-
-- Low
-- Medium
-- High
-- Critical
-
----
-
-## ExamRecording
-
-Purpose
-
-Stores recorded exam media.
-
-Columns
-
-- id
-- session_id
-- recording_type
-- file_path
-- recording_start
-- recording_end
-
-Recording Types
-
-- Camera
-- Screen
-- Audio
 
 ---
 
@@ -163,67 +148,31 @@ Exam
 
 ↓
 
+Questions
+
+↓
+
+Student Submission
+
+↓
+
 Exam Session
 
 ↓
 
 AI Violations
 
-↓
-
-AI Report
-
-↓
-
-Lecturer Review
-
----
-
-Exam Session
-
-↓
-
-Exam Recording
-
----
-
-# AI Detection Features
-
-The system supports:
-
-- Face Detection
-- Face Verification
-- Eye Tracking
-- Head Pose Detection
-- Multiple Face Detection
-- Camera Status Monitoring
-- Fullscreen Monitoring
-- Browser Tab Detection
-- Idle Detection
-
 ---
 
 # Business Rules
 
-- Students must enable the camera before starting the exam.
-- Students must remain in fullscreen mode.
-- Only one face is allowed during the exam.
-- Students cannot open multiple exam sessions.
-- AI records all detected violations.
-- Lecturers review AI reports before taking disciplinary action.
-
----
-
-# Lecturer Review
-
-Lecturers can:
-
-- View violation timeline.
-- View screenshots.
-- Watch recordings.
-- Ignore violations.
-- Mark violations as confirmed.
-- Decide whether to invalidate an exam.
+- Students can start only during the examination period.
+- Only one active session is allowed.
+- Camera permission is mandatory.
+- Microphone permission follows university policy.
+- AI monitoring starts automatically.
+- Exams are automatically submitted when time expires.
+- AI violations are permanently recorded.
 
 ---
 
@@ -234,69 +183,176 @@ Exam
 - Duration must be greater than zero.
 - Start time must be before end time.
 
-Session
+Submission
 
 - Student must be enrolled.
-- One active session per student.
+- Only one submission allowed.
 
-Violation
+Session
 
-- Confidence score between 0 and 100.
+- Camera required.
+- Browser compatibility verified.
+
+---
+
+# AI Monitoring
+
+The AI system monitors:
+
+- Face Detection
+- Eye Tracking
+- Head Pose
+- Camera Status
+- Browser Focus
+- Fullscreen Mode
+- Multiple Face Detection
+
+---
+
+# Permissions
+
+## Student
+
+- Start Exam
+- Submit Exam
+- View Own Results
+
+## Lecturer
+
+- Create Exam
+- Publish Exam
+- Review AI Reports
+- Publish Grades
+
+## Administrator
+
+- Full Examination Access
 
 ---
 
 # Notifications
 
-Notify lecturers when:
+Students receive:
 
-- Multiple faces detected.
-- Camera disabled.
-- Fullscreen exited.
-- High-risk behavior detected.
+- Exam Available
+- Exam Reminder
+- Submission Successful
 
-Notify students when:
+Lecturers receive:
 
-- Camera disconnected.
-- Fullscreen exited.
-- Internet connection lost.
+- Exam Completed
+- AI Violations Detected
+
+---
+
+# Security
+
+- JWT Authentication
+- Secure Browser Session
+- AI Monitoring
+- HTTPS Only
+- Session Timeout
+- Prevent Multiple Sessions
+
+---
+
+# Indexes
+
+Exam
+
+- section_id
+
+ExamSubmission
+
+- student_id
+- exam_id
+
+ExamSession
+
+- student_id
+
+AIViolation
+
+- session_id
+
+---
+
+# Reports
+
+AI Examination Reports
+
+- Student Results
+- AI Violation Report
+- Exam Statistics
+- Submission Report
+- Session Report
+
+---
+
+# Performance
+
+- AI runs independently from the main API.
+- Process only active sessions.
+- Optimize video processing.
+- Archive completed sessions.
 
 ---
 
 # API Mapping
 
-AI Exam APIs
+GET /api/exams
 
-- Start Exam
-- End Exam
-- Start Monitoring
-- Record Violation
-- Upload Screenshot
-- Generate Report
-- Review Report
-- Download Report
+POST /api/exams
+
+GET /api/exams/{id}
+
+POST /api/exams/start
+
+POST /api/exams/submit
+
+GET /api/exams/results
+
+GET /api/exams/violations
+
+---
+
+# UI Pages
+
+- Exam Dashboard
+- Start Examination
+- Examination Screen
+- Results
+- AI Violation Report
+- Lecturer Examination Dashboard
+
+---
+
+# Dependencies
+
+This module depends on:
+
+- Authentication Module
+- Academic Module
+- LMS Module
+
+The following modules depend on this module:
+
+- Student Portal
+- Lecturer Portal
+- Reports Module
 
 ---
 
 # Future Expansion
 
-Future improvements
-
-- Mobile Phone Detection
 - Voice Analysis
-- Identity Verification using Face Recognition
-- AI Behavioral Analysis
-- AI Exam Risk Prediction
-- Automatic Exam Recording Analysis
+- Keyboard Behavior Analysis
+- AI Identity Verification
+- Mobile Exam Monitoring
+- AI Exam Analytics
 
 ---
 
 # Notes
 
-The AI Exam Module integrates with:
-
-- Academic Module
-- LMS Module
-- Student Dashboard
-- Lecturer Dashboard
-- Notification Module
-- Authentication Module
+The AI Examination Module integrates with the LMS Module for exam management, the Academic Module for student enrollment, the Authentication Module for secure access, and the Reports Module for examination analytics.

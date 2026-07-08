@@ -2,278 +2,275 @@
 
 ## Purpose
 
-The System Module manages the core services required by the platform.
+The System Module manages the core platform services that support the entire NextGen Smart University Platform.
 
-It includes notifications, system settings, audit logs, file management, announcements, and background jobs.
-
-This module supports all other modules and provides centralized system management.
+It is responsible for system configuration, health monitoring, maintenance, background services, backups, scheduling, and overall platform operation.
 
 ---
 
 # Objectives
 
-- Manage system settings.
-- Store notifications.
-- Record audit logs.
-- Manage uploaded files.
-- Store announcements.
-- Support scheduled jobs.
-- Monitor system health.
+- Manage core system services.
+- Monitor platform health.
+- Maintain system stability.
+- Manage scheduled jobs.
+- Support backup and recovery.
+- Improve system reliability.
+
+---
+
+# Scope
+
+The System Module includes:
+
+- System Dashboard
+- System Configuration
+- Health Monitoring
+- Background Services
+- Scheduler
+- Backup & Recovery
+- Maintenance Mode
+- System Logs
+
+---
+
+# Actors
+
+- Administrator
+
+---
+
+# Core Services
+
+## System Configuration
+
+- University Information
+- Environment Configuration
+- Application Settings
+- Email Configuration
+- Storage Configuration
+
+---
+
+## Health Monitoring
+
+- Server Status
+- Database Status
+- API Status
+- AI Service Status
+- Storage Status
+
+---
+
+## Background Services
+
+- Scheduled Jobs
+- Email Queue
+- Notification Queue
+- Report Generation
+- File Processing
+
+---
+
+## Backup & Recovery
+
+- Database Backup
+- File Backup
+- Restore Backup
+- Backup History
+
+---
+
+## Maintenance
+
+- Enable Maintenance Mode
+- Disable Maintenance Mode
+- Broadcast Maintenance Notice
 
 ---
 
 # Database Tables
 
-## Notification
+## SystemConfiguration
 
 Purpose
 
-Stores system notifications.
+Stores system-wide configuration.
 
-Columns
-
-- id
-- user_id
-- title
-- message
-- notification_type
-- related_module
-- related_id
-- is_read
-- sent_at
-- created_at
-
-Notification Types
-
-- Academic
-- Attendance
-- LMS
-- Finance
-- Food Court
-- Events
-- Chat
-- AI Exam
-- System
-
----
-
-## SystemSetting
-
-Purpose
-
-Stores configurable system settings.
-
-Columns
+### Columns
 
 - id
-- setting_key
-- setting_value
+- configuration_key
+- configuration_value
 - description
 - updated_by
 - updated_at
 
-Examples
-
-- University Name
-- Semester Status
-- Maximum Credit Hours
-- Attendance Radius
-- File Upload Limit
-- Allowed File Types
-
 ---
 
-## AuditLog
+## SystemLog
 
 Purpose
 
-Stores important system actions.
+Stores important system events.
 
-Columns
+### Columns
 
 - id
-- user_id
 - module
 - action
-- old_value
-- new_value
-- ip_address
-- device
-- browser
+- severity
+- message
+- created_by
 - created_at
 
 ---
 
-## UploadedFile
+## BackupHistory
 
 Purpose
 
-Stores uploaded file information.
+Stores backup records.
 
-Columns
-
-- id
-- uploaded_by
-- module
-- file_name
-- original_name
-- file_type
-- file_size
-- file_path
-- uploaded_at
-
----
-
-## SystemAnnouncement
-
-Purpose
-
-Stores announcements visible to all users.
-
-Columns
+### Columns
 
 - id
-- title
-- content
-- target_role
-- published_by
-- published_at
-- expires_at
+- backup_type
+- backup_file
+- backup_size
 - status
-
-Target Roles
-
-- All Users
-- Students
-- Lecturers
-- Coordinators
-- Administrators
-- Restaurant Owners
-- STAD Staff
-
----
-
-## BackgroundJob
-
-Purpose
-
-Stores scheduled background jobs.
-
-Columns
-
-- id
-- job_name
-- status
-- started_at
-- finished_at
-- execution_time
-- result
-
-Status
-
-- Pending
-- Running
-- Completed
-- Failed
+- created_at
 
 ---
 
 # Relationships
 
-User
-
-↓
-
-Notification
-
----
-
-User
-
-↓
-
-Audit Log
-
----
-
-User
-
-↓
-
-Uploaded File
-
----
-
 Administrator
 
 ↓
 
-System Settings
+System Configuration
 
 ↓
 
-Announcements
+System Log
 
 ↓
 
-Background Jobs
+Backup History
 
 ---
 
 # Business Rules
 
-- Every important action should generate an audit log.
-- Notifications are delivered based on user roles.
-- Only administrators can modify system settings.
-- Files are linked to their original module.
-- Expired announcements are hidden automatically.
+- Only administrators can access the System Module.
+- System configuration changes are logged.
+- Scheduled backups must run automatically.
+- Maintenance mode blocks user access except administrators.
+- Failed services generate alerts.
 
 ---
 
 # Validation Rules
 
-Notifications
+Configuration
 
-- Title required.
-- Message required.
+- Key required.
+- Value required.
 
-System Settings
+Backup
 
-- Setting key must be unique.
+- Backup type required.
+- Backup status required.
 
-Uploaded Files
+---
 
-- Allowed file types only.
-- Maximum file size enforced.
+# Permissions
+
+Administrator permissions include:
+
+- Manage System Configuration
+- View System Status
+- Manage Scheduled Jobs
+- Create Backup
+- Restore Backup
+- View Logs
+- Enable Maintenance Mode
+
+---
+
+# Security
+
+- JWT Authentication
+- Role-Based Access Control
+- Audit Logging
+- Secure Backup Storage
+- Configuration Protection
+
+---
+
+# Performance
+
+- Cache configuration settings.
+- Monitor server resources.
+- Optimize background jobs.
+- Archive old system logs.
 
 ---
 
 # API Mapping
 
-System APIs
+GET /api/system/dashboard
 
-- Get Notifications
-- Mark Notification as Read
-- View Announcements
-- Update Settings
-- Upload File
-- View Audit Logs
+GET /api/system/status
+
+GET /api/system/configuration
+
+PUT /api/system/configuration
+
+POST /api/system/backup
+
+POST /api/system/restore
+
+GET /api/system/logs
+
+POST /api/system/maintenance
+
+---
+
+# UI Pages
+
+- System Dashboard
+- System Status
+- Configuration
+- Backup & Recovery
+- Maintenance
+- System Logs
+
+---
+
+# Dependencies
+
+This module depends on:
+
+- Authentication Module
+
+The following modules depend on this module:
+
+- All Platform Modules
 
 ---
 
 # Future Expansion
 
-Future improvements
-
-- Email Notifications
-- SMS Notifications
-- Push Notifications
-- Cloud File Storage
 - AI System Monitoring
-- Health Dashboard
+- Automatic Failure Recovery
+- Distributed Server Management
+- Cloud Backup Integration
+- Predictive Maintenance
 
 ---
 
 # Notes
 
-The System Module integrates with every module in the platform and provides shared services across the application.
+The System Module provides the operational foundation of the NextGen Smart University Platform. It manages platform configuration, monitoring, maintenance, backup, and recovery to ensure high availability, security, and reliable system performance.

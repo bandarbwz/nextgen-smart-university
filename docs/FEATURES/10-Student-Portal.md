@@ -1,249 +1,208 @@
-# Student Portal
+# Student Portal Module
 
-## Overview
+## Purpose
 
-The Student Portal is the primary interface for students in the NextGen Smart University Platform.
+The Student Portal is the primary interface for students to access academic, financial, learning, communication, and campus services through a single secure dashboard.
 
-It provides access to academic services, learning resources, communication tools, financial services, university activities, AI-monitored online examinations, and personal information through a modern responsive dashboard.
-
-Every student accesses the system through this portal after successful authentication.
+It provides students with personalized information and integrates all university services into one platform.
 
 ---
 
 # Objectives
 
-The Student Portal allows students to:
-
-- View their dashboard
-- Manage their profile
-- View their digital student ID
-- Register courses
-- View timetable
-- Track attendance
-- Access LMS
-- Submit assignments
-- Take quizzes
-- Take online exams
-- View grades
-- View transcript
-- View GPA & CGPA
-- Join course chats
-- Receive notifications
-- Order food
-- Join clubs
-- Register university events
-- Earn activity points
-- Download certificates
-- View finance information
-- Update settings
+- Provide a centralized student dashboard.
+- Manage academic services.
+- Access LMS resources.
+- View attendance.
+- Access financial information.
+- Participate in student activities.
+- Communicate with lecturers.
+- Receive notifications.
 
 ---
 
-# Student Dashboard
+# Scope
 
-The dashboard is displayed immediately after login.
+The Student Portal includes:
 
-Dashboard Widgets
+- Dashboard
+- Academic Profile
+- Course Registration
+- Timetable
+- Attendance
+- LMS
+- AI Examinations
+- Finance
+- Food Court
+- Student Activities
+- Notifications
+- Chat
+- Calendar
+- Downloads
+- Settings
 
-- Student Information
+---
+
+# Actors
+
+- Student
+
+---
+
+# Features
+
+Students can:
+
+- View Dashboard
+- View Academic Profile
+- Register Courses
+- Drop Courses
+- View Timetable
+- View Attendance
+- Access LMS
+- Submit Assignments
+- Take Quizzes
+- Take AI Exams
+- View Grades
+- View Transcript
+- Pay Tuition Fees
+- Order Food
+- Register Events
+- Join Course Chats
+- Download Documents
+- Manage Profile
+- Update Password
+
+---
+
+# Dashboard Widgets
+
+The dashboard displays:
+
+- Student Profile
 - Current Semester
 - Today's Schedule
 - Attendance Summary
 - GPA & CGPA
-- Registered Courses
-- Assignment Deadlines
+- Outstanding Fees
+- Latest Announcements
+- Upcoming Assignments
+- Upcoming Quizzes
 - Upcoming Exams
 - Notifications
-- Recent Announcements
-- Food Court Promotions
-- Event Highlights
+- Recent Chat Messages
 
 ---
 
-# Student Profile
+# Services
 
-Students can:
+## Academic
 
-- View personal information
-- Update phone number
-- Update profile photo
-- Update emergency contact
-- Change password
-- View university email
-
-Editable Fields
-
-- Phone Number
-- Profile Photo
-- Emergency Contact
-
-Read Only Fields
-
-- Student ID
-- Name
-- Faculty
-- Department
-- Program
-- University Email
+- Course Registration
+- Add / Drop Courses
+- Course Catalog
+- Timetable
+- Transcript
+- GPA
 
 ---
 
-# Digital Student ID
+## Learning
 
-The profile includes an animated digital student card.
-
-Front Side
-
-- Student Photo
-- Student Name
-- Student Number
-- Faculty
-- Program
-- QR Code
-
-Back Side
-
-- University Logo
-- Emergency Contact
-- Academic Status
-- Expiry Information
-
-Animation
-
-- Flip Card Animation
-- Smooth Transition
-- Responsive Design
+- Course Materials
+- Assignments
+- Quizzes
+- Grades
+- Announcements
 
 ---
 
-# Academic Services
+## Attendance
 
-Students can:
+- Attendance Percentage
+- Attendance History
+- Attendance Excuses
 
+---
+
+## AI Examination
+
+- Available Exams
+- Start Examination
+- View Results
+
+---
+
+## Finance
+
+- Invoices
+- Payments
+- Scholarships
+- Financial Holds
+
+---
+
+## Food Court
+
+- Restaurants
+- Menus
+- Place Orders
+- Order History
+
+---
+
+## Student Activities
+
+- Clubs
+- Events
+- Registrations
+- Activity Points
+
+---
+
+## Communication
+
+- Course Chat
+- Private Chat
+- Notifications
+
+---
+
+# Business Rules
+
+- Students may only access their own records.
+- Students cannot modify official academic records.
+- Course registration follows university policies.
+- Financial holds may restrict course registration.
+- Students automatically join course chats after successful enrollment.
+
+---
+
+# Validation Rules
+
+- Student account must be active.
+- Student must be authenticated.
+- Student must have the required permissions.
+- Registration requests follow academic rules.
+
+---
+
+# Permissions
+
+Student permissions include:
+
+- View Personal Information
 - Register Courses
 - Drop Courses
-- View Timetable
-- View Course Details
-- View Course Prerequisites
-- View Academic Calendar
-
----
-
-# Learning Management System
-
-Students can:
-
-- Download Lecture Notes
-- Watch Lecture Videos
+- View Grades
+- Access LMS
+- Join Course Chat
 - Submit Assignments
-- Join Discussions
-- Download Resources
-- Take Quizzes
-- Take Online Exams
-
----
-
-# Attendance
-
-Students can:
-
-- Scan QR Attendance
-- View Attendance History
-- View Attendance Percentage
-- Download Attendance Reports
-- Submit Attendance Excuses
-
----
-
-# Grades
-
-Students can:
-
-- View Assignment Grades
-- View Quiz Grades
-- View Midterm Grades
-- View Final Grades
-- View GPA
-- View CGPA
-- Download Transcript
-
----
-
-# Course Chat
-
-Students can:
-
-- Send Messages
-- Share Images
-- Share Videos
-- Share Files
-- Reply to Messages
-- React to Messages
-
-Students are automatically added after successful course registration.
-
----
-
-# AI Online Exams
-
-Students can:
-
-- Start Online Exam
-- Enable Camera
-- Enable Microphone
-- Complete Identity Verification
-- View Exam Rules
-
-During Exam
-
-- Camera must remain active.
-- Fullscreen mode is required.
-- AI monitors eye movement.
-- AI detects suspicious activity.
-- Violations are recorded automatically.
-
----
-
-# Student Activities
-
-Students can:
-
-- View Clubs
-- Join Clubs
-- Leave Clubs
-- Register Events
-- View Event Calendar
-- Scan Event QR
-- Earn Reward Points
-- Download Certificates
-- Download Excuse Letters
-
----
-
-# Food Court
-
-Students can:
-
-- Browse Restaurants
-- Browse Menus
-- Place Orders
-- Pay Online
-- Track Orders
-- Rate Restaurants
-- Save Favorite Restaurants
-
----
-
-# Finance
-
-Students can:
-
-- View Tuition Fees
-- View Outstanding Balance
-- Make Payments
-- Download Invoices
-- View Payment History
-- Request Refunds
+- Take Exams
+- View Finance
+- Order Food
+- Register Activities
+- Download Files
 
 ---
 
@@ -251,82 +210,107 @@ Students can:
 
 Students receive notifications for:
 
-- Course Registration
+- New Announcements
 - Assignment Deadlines
-- New Grades
-- Attendance Alerts
-- Exam Reminders
-- Event Registration
-- Food Orders
-- Financial Updates
-- System Announcements
+- Quiz Availability
+- Exam Schedule
+- Grade Published
+- Attendance Warning
+- Payment Reminder
+- Food Order Status
+- Event Reminder
+- Chat Messages
 
 ---
 
-# Settings
+# Security
 
-Students can manage:
-
-- Profile
-- Password
-- Notification Preferences
-- Privacy Settings
-- Language
-- Theme
+- JWT Authentication
+- Role-Based Access Control
+- Secure Session Management
+- HTTPS Communication
+- Input Validation
+- Audit Logging
 
 ---
 
-# Permissions
+# Performance
 
-Students are allowed to:
-
-- Access enrolled courses.
-- Access personal information.
-- Submit coursework.
-- Participate in course chats.
-- Join approved events.
-- Place food orders.
-
-Students cannot:
-
-- Access other student data.
-- Modify grades.
-- Modify attendance records.
-- Manage university settings.
+- Load dashboard widgets asynchronously.
+- Cache frequently accessed student data.
+- Optimize API requests.
+- Support responsive design.
 
 ---
 
-# Integrations
+# API Mapping
 
-The Student Portal integrates with:
+GET /api/student/dashboard
+
+GET /api/student/profile
+
+GET /api/student/timetable
+
+GET /api/student/attendance
+
+GET /api/student/grades
+
+GET /api/student/transcript
+
+GET /api/student/notifications
+
+GET /api/student/calendar
+
+---
+
+# UI Pages
+
+- Dashboard
+- My Profile
+- Academic
+- Timetable
+- Attendance
+- LMS
+- AI Examination
+- Finance
+- Food Court
+- Student Activities
+- Chat
+- Notifications
+- Calendar
+- Downloads
+- Settings
+
+---
+
+# Dependencies
+
+This module depends on:
 
 - Authentication Module
 - Academic Module
 - Attendance Module
 - LMS Module
-- Chat Module
-- Student Activities Module
-- Food Court Module
+- AI Examination Module
 - Finance Module
-- AI Exam Module
+- Food Court Module
+- Student Activities Module
+- Chat Module
 - Notification Module
 
 ---
 
-# Future Enhancements
-
-Future versions may include:
+# Future Expansion
 
 - Mobile Application
 - AI Academic Advisor
 - AI Course Recommendation
 - AI Study Planner
-- Smart Campus Navigation
+- Digital Student ID
 - Digital Wallet
-- Library Services
 
 ---
 
-# Success Criteria
+# Notes
 
-The Student Portal is considered complete when students can perform all academic and non-academic tasks from one centralized dashboard without requiring external systems.
+The Student Portal serves as the central access point for all student services. It integrates every major module within the NextGen Smart University Platform while ensuring secure, role-based, and user-friendly access to university resources.

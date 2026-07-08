@@ -1,93 +1,73 @@
-# Download Center
+# Download Center Module
 
 ## Purpose
 
-The Download Center provides users with a centralized location to generate, preview, and download official university documents.
+The Download Center provides a centralized location where users can securely access and download documents, forms, academic resources, reports, certificates, and other files available to their role within the NextGen Smart University Platform.
 
-The module ensures secure access to downloadable files based on user roles and permissions while maintaining document integrity and auditability.
+It ensures organized, secure, and role-based access to downloadable resources.
 
 ---
 
 # Objectives
 
-- Centralize downloadable documents.
-- Generate official PDF documents.
-- Control access using user roles.
-- Maintain document history.
-- Improve administrative efficiency.
-- Reduce manual document requests.
+- Centralize downloadable resources.
+- Provide secure file downloads.
+- Organize documents by category.
+- Support role-based access.
+- Maintain download history.
+- Improve document accessibility.
 
 ---
 
-# Supported Documents
+# Scope
 
-Students can download:
+The Download Center includes:
 
-- Student ID Card
-- Course Registration Slip
-- Class Schedule
-- Academic Transcript
-- Grade Report
-- Attendance Report
-- Tuition Invoice
-- Payment Receipt
-- Excuse Letter
-- Activity Certificate
+- Academic Documents
+- University Forms
+- Student Documents
+- Lecturer Resources
+- Reports
+- Certificates
+- Policies
+- Templates
 
-Lecturers can download:
+---
 
-- Teaching Schedule
-- Attendance Reports
-- Grade Sheets
-- Course Reports
+# Actors
 
-Coordinators can download:
-
-- Registration Reports
-- Academic Reports
-- Student Lists
-- Graduation Reports
-
-Administrators can download:
-
-- System Reports
-- Financial Reports
-- User Reports
-- Audit Reports
-
-Restaurant Owners can download:
-
-- Sales Reports
-- Order Reports
-
-STAD Staff can download:
-
-- Event Reports
-- Attendance Reports
-- Activity Certificates
+- Student
+- Lecturer
+- Coordinator
+- Administrator
+- STAD Staff
+- Restaurant Owner
 
 ---
 
 # Database Tables
 
-## DownloadRequest
+## DownloadFile
 
 Purpose
 
-Stores generated download requests.
+Stores downloadable files.
 
-Columns
+### Columns
 
 - id
-- user_id
-- document_type
-- document_name
-- generated_by
+- title
+- description
+- category
+- file_name
 - file_path
-- generated_at
-- expires_at
+- file_size
+- file_type
+- uploaded_by
+- visibility
 - download_count
-- status
+- created_at
+- updated_at
 
 ---
 
@@ -95,134 +75,206 @@ Columns
 
 Purpose
 
-Stores document download history.
+Stores download history.
 
-Columns
+### Columns
 
 - id
-- request_id
+- file_id
 - user_id
 - downloaded_at
 - ip_address
-- device
-- browser
 
 ---
 
 # Relationships
 
+Download File
+
+↓
+
+Download History
+
+↓
+
 User
 
-↓
+---
 
-DownloadRequest
+# Categories
 
-↓
-
-DownloadHistory
+- Academic Documents
+- Course Materials
+- Student Forms
+- Lecturer Forms
+- Examination Documents
+- Reports
+- Certificates
+- Policies
+- Templates
+- Financial Documents
 
 ---
 
 # Business Rules
 
-- Users may download only authorized documents.
-- Every generated document must have a unique identifier.
-- Download requests are logged.
-- Sensitive documents require authentication.
-- Expired download links cannot be reused.
-- Generated PDFs must remain unchanged after creation.
+- Users may download only authorized files.
+- Deleted files remain in download history.
+- Every download is logged.
+- Files must belong to a valid category.
+- Restricted documents require appropriate permissions.
 
 ---
 
 # Validation Rules
 
-- User must be authenticated.
-- User must have permission to access the requested document.
-- Requested document must exist.
-- Download link must not be expired.
+Download File
+
+- Title required.
+- Category required.
+- File required.
+- Supported file type only.
 
 ---
 
-# Document Generation
+# Supported File Types
 
-Supported formats
+Documents
 
 - PDF
+- DOCX
+- XLSX
+- PPTX
+- ZIP
+
+Images
+
+- JPG
+- PNG
+
+Others
+
 - CSV
-- Excel (XLSX)
-
-PDF generation uses:
-
-- DomPDF
+- TXT
 
 ---
 
-# Security Rules
+# Permissions
 
-- Require JWT authentication.
-- Validate user permissions.
-- Protect download URLs.
-- Log every download.
-- Prevent unauthorized document access.
-- Prevent direct access to storage files.
+## Student
+
+- Download Academic Documents
+- Download Personal Documents
+- Download Certificates
+
+## Lecturer
+
+- Download Teaching Resources
+- Download Reports
+
+## Coordinator
+
+- Download Department Reports
+
+## Administrator
+
+- Full Download Management
+- Upload Documents
+- Delete Documents
+
+## STAD Staff
+
+- Download Student Activity Documents
+
+## Restaurant Owner
+
+- Download Restaurant Reports
+
+---
+
+# Notifications
+
+Users receive notifications when:
+
+- New documents are published.
+- Updated versions become available.
+- Important university documents are released.
+- Certificates are generated.
+
+---
+
+# Security
+
+- JWT Authentication
+- Role-Based Access Control
+- Secure File Storage
+- Download Audit Logging
+- File Access Validation
 
 ---
 
 # Performance
 
-- Cache frequently requested documents when appropriate.
-- Generate reports asynchronously for large datasets.
-- Store only file paths in the database.
-- Automatically remove expired temporary files.
+- Cache frequently downloaded files.
+- Compress downloadable resources.
+- Support resumable downloads.
+- Optimize file delivery.
 
 ---
 
 # API Mapping
 
-Download Center APIs
+GET /api/downloads
 
-GET /downloads
+GET /api/downloads/{id}
 
-GET /downloads/{id}
+POST /api/downloads
 
-POST /downloads/generate
+PUT /api/downloads/{id}
 
-DELETE /downloads/{id}
+DELETE /api/downloads/{id}
 
-GET /downloads/history
+GET /api/downloads/history
 
 ---
 
 # UI Pages
 
 - Download Center
-- Generated Documents
+- Document Categories
+- Document Details
 - Download History
+
+---
+
+# Dependencies
+
+This module depends on:
+
+- Authentication Module
+- Notification Module
+
+The following modules depend on this module:
+
+- Student Portal
+- Lecturer Portal
+- Coordinator Portal
+- Administrator Portal
+- STAD Portal
+- Restaurant Portal
 
 ---
 
 # Future Expansion
 
-Future improvements
-
-- Digital Signatures
-- QR Code Verification
-- Watermarked Documents
-- Bulk Downloads
-- Email Document Delivery
-- Cloud File Storage
+- Version Control
+- AI Document Recommendation
+- OCR Search
+- Cloud Storage Integration
+- Offline Download Support
 
 ---
 
 # Notes
 
-The Download Center integrates with:
-
-- Authentication Module
-- Academic Module
-- Attendance Module
-- Finance Module
-- Student Activities Module
-- Reporting Module
-
-All generated documents must follow university policies and maintain data confidentiality.
+The Download Center serves as the centralized document repository for the NextGen Smart University Platform. It provides secure, role-based access to academic resources, reports, certificates, forms, and official university documents while maintaining complete download history and audit logs.
