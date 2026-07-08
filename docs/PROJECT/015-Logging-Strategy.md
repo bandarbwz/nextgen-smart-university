@@ -2,33 +2,54 @@
 
 ## Purpose
 
-This document defines the logging strategy for the NextGen Smart University Platform.
+This document defines the official logging strategy for the NextGen Smart University Platform (NSUP).
 
-The goal is to record important system activities, simplify debugging, improve monitoring, and increase security.
+The objective is to record important system activities, improve debugging, support auditing, strengthen security, and simplify system monitoring.
+
+Every module in the platform must follow this logging strategy.
 
 ---
 
 # Objectives
 
+The logging system aims to:
+
 - Record important system events.
-- Detect security incidents.
 - Support troubleshooting.
-- Monitor system health.
-- Maintain audit history.
+- Improve security monitoring.
+- Detect suspicious activities.
+- Maintain an audit trail.
+- Monitor system performance.
+- Assist in incident investigation.
+
+---
+
+# Log Levels
+
+The system uses the following log levels:
+
+- INFO
+- WARNING
+- ERROR
+- CRITICAL
+
+Each log entry must use the appropriate severity level.
 
 ---
 
 # Log Categories
 
-The system should generate logs for:
+The system records logs for:
 
 - Authentication
 - User Activities
+- Administrative Activities
 - Database Operations
 - API Requests
-- System Errors
-- Security Events
 - AI Services
+- Security Events
+- System Errors
+- Performance Events
 
 ---
 
@@ -43,6 +64,7 @@ Record:
 - Password Reset
 - Account Lock
 - Session Expired
+- JWT Validation Failure
 
 ---
 
@@ -53,10 +75,13 @@ Record:
 - Course Registration
 - Course Drop
 - Assignment Submission
+- Quiz Submission
 - Attendance
 - Event Registration
 - Food Orders
-- Profile Updates
+- Payment
+- Profile Update
+- Download Requests
 
 ---
 
@@ -66,11 +91,14 @@ Record:
 
 - User Creation
 - User Deletion
-- Role Updates
+- Role Assignment
 - Permission Changes
 - Course Creation
-- Department Changes
-- System Settings
+- Department Updates
+- Faculty Updates
+- Restaurant Approval
+- Event Approval
+- System Configuration Changes
 
 ---
 
@@ -81,11 +109,42 @@ Record:
 - Exam Started
 - Exam Finished
 - Face Detection
-- Multiple Face Detection
+- Identity Verification
 - Eye Tracking Warning
-- Tab Switching
+- Multiple Face Detection
+- Head Pose Warning
+- Browser Tab Switching
 - Fullscreen Exit
-- AI Violation
+- AI Violation Report Generated
+
+The AI service records observations only.
+
+Final academic decisions remain the responsibility of authorized university staff.
+
+---
+
+# API Logs
+
+Record:
+
+- API Endpoint
+- HTTP Method
+- Response Status
+- Response Time
+- User ID
+- IP Address
+
+---
+
+# Database Logs
+
+Record:
+
+- Database Connection Errors
+- Failed Transactions
+- Constraint Violations
+- Backup Operations
+- Restore Operations
 
 ---
 
@@ -93,27 +152,81 @@ Record:
 
 Record:
 
-- Database Errors
+- PHP Errors
+- Python AI Errors
 - API Errors
-- Server Errors
+- Database Errors
 - File Upload Errors
 - Payment Errors
+
+Critical errors should generate immediate alerts.
+
+---
+
+# Performance Logs
+
+Record:
+
+- Slow Database Queries
+- Slow API Responses
+- High Memory Usage
+- CPU Usage
+- AI Processing Time
+- File Upload Duration
 
 ---
 
 # Log Information
 
-Every log should include:
+Every log entry should include:
 
 - Log ID
-- User ID
-- Action
+- Timestamp
+- Log Level
 - Module
+- User ID (if available)
+- User Role
+- Action
+- Status
 - IP Address
 - Device
 - Browser
-- Timestamp
-- Status
+- Operating System
+- Description
+
+---
+
+# Log Format
+
+All logs should follow a consistent structure.
+
+Example
+
+```text
+Timestamp:
+2026-08-01 14:30:15
+
+Level:
+INFO
+
+Module:
+Authentication
+
+User ID:
+STU20260015
+
+Action:
+Login
+
+Status:
+Success
+
+IP Address:
+192.168.1.10
+
+Message:
+Student logged into the system successfully.
+```
 
 ---
 
@@ -123,8 +236,12 @@ Never log:
 
 - Passwords
 - JWT Tokens
-- Payment Details
+- Payment Card Information
 - Personal Secrets
+- Authentication Credentials
+- Raw Biometric Data
+
+Sensitive information must always be protected.
 
 ---
 
@@ -142,19 +259,74 @@ Audit Logs
 
 - Permanent
 
+Performance Logs
+
+- 6 Months
+
+AI Logs
+
+- 12 Months
+
 ---
 
 # Monitoring
 
 Logs should support:
 
-- Error Monitoring
-- Performance Monitoring
 - Security Monitoring
+- Performance Monitoring
 - User Activity Monitoring
+- Error Monitoring
+- AI Monitoring
+- Audit Reporting
+
+---
+
+# Alerting
+
+The system should generate alerts for:
+
+- Multiple Failed Login Attempts
+- Database Connection Failures
+- Critical Server Errors
+- AI Service Failures
+- Payment Failures
+- Unauthorized Access Attempts
+
+Critical alerts should be sent to system administrators immediately.
+
+---
+
+# Audit Trail
+
+Important administrative actions must be traceable.
+
+Examples include:
+
+- User Creation
+- User Deletion
+- Role Changes
+- Grade Approval
+- Registration Approval
+- Financial Transactions
+- System Configuration Changes
+
+Audit logs should never be modified or deleted manually.
+
+---
+
+# Best Practices
+
+- Log only meaningful events.
+- Avoid excessive logging.
+- Use consistent log formats.
+- Protect log integrity.
+- Rotate logs regularly.
+- Archive old logs securely.
+- Restrict access to log files.
 
 ---
 
 # Final Rule
 
-Every important action performed in the system must be recorded using a secure and structured logging system.
+Every important system event must be recorded using a secure, structured, and consistent logging system without exposing sensitive information.

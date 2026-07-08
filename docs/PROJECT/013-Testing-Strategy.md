@@ -2,19 +2,25 @@
 
 ## Purpose
 
-This document defines the testing strategy for the NextGen Smart University Platform.
+This document defines the official testing strategy for the NextGen Smart University Platform (NSUP).
 
-The goal is to ensure every feature works correctly, securely, and reliably before deployment.
+The objective is to ensure that every module functions correctly, securely, efficiently, and reliably before deployment.
+
+Testing is mandatory throughout the software development lifecycle.
 
 ---
 
 # Testing Objectives
 
-- Verify all features work as expected.
-- Detect bugs early.
-- Improve system reliability.
+The testing process aims to:
+
+- Verify functional correctness.
+- Detect defects early.
+- Improve software quality.
 - Protect user data.
-- Ensure a smooth user experience.
+- Validate business rules.
+- Ensure system stability.
+- Improve user experience.
 
 ---
 
@@ -27,11 +33,95 @@ The project includes the following testing levels:
 - System Testing
 - User Acceptance Testing (UAT)
 
+Each level serves a different purpose and must be completed before deployment.
+
+---
+
+# Unit Testing
+
+Purpose
+
+Verify individual functions, classes, and modules.
+
+Examples
+
+- Login validation
+- GPA calculation
+- Credit hour validation
+- Payment calculation
+- Attendance validation
+
+Expected Result
+
+Each unit should work independently without errors.
+
+---
+
+# Integration Testing
+
+Purpose
+
+Verify communication between modules.
+
+Examples
+
+- React ↔ PHP API
+- PHP ↔ MySQL
+- PHP ↔ Python AI
+- Authentication ↔ Dashboard
+- Registration ↔ LMS
+
+Expected Result
+
+Modules communicate correctly and exchange valid data.
+
+---
+
+# System Testing
+
+Purpose
+
+Verify the complete application as one integrated system.
+
+Examples
+
+- Student registration workflow
+- Assignment submission
+- QR attendance
+- Food ordering
+- Event registration
+- Online examination
+
+Expected Result
+
+Complete workflows operate successfully.
+
+---
+
+# User Acceptance Testing (UAT)
+
+Purpose
+
+Ensure the system satisfies user requirements.
+
+Users include:
+
+- Students
+- Lecturers
+- Coordinators
+- Administrators
+- STAD Staff
+- Restaurant Owners
+
+Expected Result
+
+Users can successfully complete their tasks without issues.
+
 ---
 
 # Functional Testing
 
-Verify that every feature performs correctly.
+Verify every feature performs according to the business requirements.
 
 Examples
 
@@ -39,35 +129,40 @@ Examples
 - Course Registration
 - QR Attendance
 - Assignment Submission
-- Food Ordering
+- Online Examination
+- Finance
+- Food Court
 - Event Registration
 
 ---
 
 # Validation Testing
 
-Verify all input validation.
+Verify all user input.
 
 Examples
 
-- Required fields
-- Email format
-- Password rules
-- File upload validation
-- Credit hour limits
+- Required Fields
+- Email Format
+- Password Policy
+- File Upload Rules
+- Credit Hour Limits
+- Course Prerequisites
+- Schedule Clash Detection
 
 ---
 
 # Security Testing
 
-Verify the security of the system.
+Verify system security.
 
-Examples
+Tests include:
 
 - SQL Injection
-- XSS
-- CSRF
+- Cross-Site Scripting (XSS)
+- Cross-Site Request Forgery (CSRF)
 - JWT Authentication
+- Role-Based Access Control
 - Unauthorized Access
 
 ---
@@ -76,13 +171,14 @@ Examples
 
 Verify system performance.
 
-Examples
+Measure:
 
-- Login speed
-- Dashboard loading
-- Database queries
-- File uploads
-- Chat response time
+- Login Response Time
+- Dashboard Loading
+- Database Query Speed
+- API Response Time
+- File Upload Performance
+- AI Response Time
 
 ---
 
@@ -95,18 +191,39 @@ Check:
 - Responsive Design
 - Navigation
 - Forms
-- Buttons
 - Tables
-- Mobile Compatibility
+- Buttons
+- Dark Mode
+- Light Mode
+- Accessibility
+
+---
+
+# AI Testing
+
+Verify AI examination monitoring.
+
+Tests include:
+
+- Face Detection
+- Identity Verification
+- Eye Tracking
+- Head Pose Detection
+- Browser Tab Detection
+- Fullscreen Detection
+- AI Report Generation
+
+The AI must generate reports only and must not make academic decisions.
 
 ---
 
 # Regression Testing
 
-Whenever a new feature is added:
+Whenever changes are made:
 
-- Test existing features.
-- Ensure no previous functionality is broken.
+- Retest existing features.
+- Verify previous functionality still works.
+- Ensure bug fixes do not introduce new issues.
 
 ---
 
@@ -114,38 +231,56 @@ Whenever a new feature is added:
 
 Critical
 
-- System crash
-- Data loss
-- Security issue
+- System Crash
+- Data Loss
+- Security Breach
 
 High
 
-- Major feature not working
+- Core Feature Failure
+- Data Corruption
 
 Medium
 
-- Minor feature issue
+- Incorrect Validation
+- Minor Functional Issues
 
 Low
 
-- UI issue
-- Typo
-- Layout problem
+- UI Issues
+- Typographical Errors
+- Layout Problems
+
+---
+
+# Testing Environment
+
+Testing should be performed using:
+
+- React Development Build
+- PHP 8.4
+- MySQL 8
+- Python AI Service
+- Apache Web Server
+
+Use a dedicated testing environment before deployment.
 
 ---
 
 # Testing Checklist
 
-Before completing a feature:
+Before completing any feature:
 
 - Functional Testing Passed
-- Validation Passed
-- Security Passed
-- Performance Passed
-- UI Passed
+- Validation Testing Passed
+- Security Testing Passed
+- Performance Testing Passed
+- UI Testing Passed
+- AI Testing Passed (if applicable)
+- Documentation Updated
 
 ---
 
 # Final Rule
 
-No feature should be marked as complete until all required tests have passed.
+No feature should be marked as complete until all required tests have been successfully completed and verified.

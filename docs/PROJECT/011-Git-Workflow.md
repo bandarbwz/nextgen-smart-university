@@ -2,45 +2,102 @@
 
 ## Purpose
 
-This document defines the Git workflow for the NextGen Smart University Platform.
+This document defines the official Git workflow for the NextGen Smart University Platform (NSUP).
 
-Every developer and AI assistant must follow these rules.
+The objective is to maintain a clean, organized, and traceable version history throughout the development lifecycle.
+
+All developers and AI assistants must follow this workflow.
 
 ---
 
-# Branches
+# Workflow Overview
 
-The project uses the following branches:
+The project follows a simplified Git workflow suitable for both individual and team development.
+
+Main workflow:
+
+Feature Development
+
+↓
+
+Testing
+
+↓
+
+Commit
+
+↓
+
+Push
+
+↓
+
+Review
+
+↓
+
+Merge
+
+↓
+
+Release
+
+---
+
+# Branch Strategy
+
+The project uses the following branch types:
 
 - main
 - develop
 - feature/*
-- hotfix/*
 - release/*
+- hotfix/*
 
 ---
 
 # Main Branch
 
-The main branch contains only stable and tested code.
+Purpose
 
-Direct commits to the main branch are not allowed.
+- Contains stable production-ready code.
+- Represents the latest approved release.
+- Should always remain deployable.
+
+Rules
+
+- Avoid direct commits during team development.
+- For this academic project, direct commits are allowed when working individually.
+- Only completed and tested features should exist on this branch.
 
 ---
 
 # Develop Branch
 
-The develop branch contains the latest completed features.
+Purpose
 
-All feature branches should be merged into develop first.
+- Integration branch for completed features.
+- Used before creating production releases.
+
+Rules
+
+- Merge feature branches into develop.
+- Keep develop stable.
+- Fix integration issues before release.
 
 ---
 
-# Feature Branch
+# Feature Branches
 
-Each new feature must have its own branch.
+Purpose
 
-Examples:
+Develop one feature independently.
+
+Naming Convention
+
+feature/<feature-name>
+
+Examples
 
 feature/authentication
 
@@ -48,27 +105,60 @@ feature/student-dashboard
 
 feature/course-registration
 
-feature/chat-system
+feature/attendance
 
----
+feature/chat
 
-# Hotfix Branch
+feature/food-court
 
-Critical production bugs should be fixed using hotfix branches.
+Rules
 
-Example:
-
-hotfix/login-error
+- One feature per branch.
+- Keep branches focused.
+- Delete the branch after merging.
 
 ---
 
 # Release Branch
 
-Release branches are created before production deployment.
+Purpose
 
-Example:
+Prepare a stable production release.
+
+Naming Convention
 
 release/v1.0.0
+
+release/v1.1.0
+
+Tasks
+
+- Final testing
+- Documentation review
+- Bug fixing
+- Version verification
+
+---
+
+# Hotfix Branch
+
+Purpose
+
+Fix critical production issues.
+
+Naming Convention
+
+hotfix/login
+
+hotfix/payment
+
+hotfix/security
+
+Rules
+
+- Fix only critical bugs.
+- Merge into main.
+- Merge back into develop.
 
 ---
 
@@ -76,44 +166,62 @@ release/v1.0.0
 
 Every commit should represent one logical change.
 
-Examples
+Good Examples
 
-Good
+- Add authentication module
+- Implement QR attendance
+- Add course registration validation
+- Fix payment calculation
+- Update API documentation
 
-- Add login page
-- Add student dashboard
-- Fix attendance bug
-- Update database schema
-
-Bad
+Bad Examples
 
 - Update files
 - Fix stuff
 - Changes
+- Work
+- Test
 
 ---
 
 # Commit Frequency
 
-Commit after:
+Create commits after:
 
 - Completing one feature
 - Fixing one bug
 - Updating documentation
+- Completing database changes
+- Finishing API endpoints
 
-Avoid very large commits.
+Avoid large commits containing unrelated changes.
+
+---
+
+# Commit Message Format
+
+Use imperative, concise, and descriptive messages.
+
+Examples
+
+- Add student dashboard
+- Create attendance API
+- Fix login validation
+- Refactor finance service
+- Update business rules
 
 ---
 
 # Pull Requests
 
-Every completed feature should be reviewed before merging.
+When working in a team, every completed feature should be reviewed before merging.
 
-Pull Requests should include:
+A Pull Request should include:
 
-- Description
-- Changed files
-- Testing notes
+- Summary
+- Changed Files
+- Testing Notes
+- Related Issue (if applicable)
 
 ---
 
@@ -121,12 +229,43 @@ Pull Requests should include:
 
 Merge only after:
 
-- Code review
-- Successful testing
-- Documentation update
+- Code Review
+- Successful Testing
+- Documentation Update
+- Approval
+
+Never merge incomplete features.
+
+---
+
+# Version Tags
+
+Create Git tags for every official release.
+
+Examples
+
+v1.0.0
+
+v1.1.0
+
+v2.0.0
+
+---
+
+# Best Practices
+
+- Commit frequently.
+- Keep commits small.
+- Keep commit messages meaningful.
+- Push regularly.
+- Never commit passwords or secrets.
+- Never commit generated files unnecessarily.
+- Keep Git history clean.
 
 ---
 
 # Final Rule
 
-Keep the Git history clean, organized, and easy to understand.
+Git history is part of the project documentation.
+
+Every commit should clearly describe the work completed and maintain a clean, organized development history.

@@ -2,15 +2,30 @@
 
 ## Purpose
 
-This document defines the branching strategy for the NextGen Smart University Platform.
+This document defines the official branching strategy for the NextGen Smart University Platform (NSUP).
 
-The goal is to keep development organized, stable, and easy to manage.
+It explains how Git branches are organized throughout the project lifecycle to ensure a stable, maintainable, and well-structured development process.
+
+This document complements the Git Workflow documentation.
+
+---
+
+# Objectives
+
+The branching strategy aims to:
+
+- Keep the main branch stable.
+- Isolate new features.
+- Simplify collaboration.
+- Reduce merge conflicts.
+- Support safe releases.
+- Enable quick hotfixes.
 
 ---
 
 # Branch Types
 
-The project uses five branch types.
+The project uses the following branch types:
 
 - main
 - develop
@@ -18,20 +33,23 @@ The project uses five branch types.
 - release/*
 - hotfix/*
 
+Each branch has a specific responsibility.
+
 ---
 
 # Main Branch
 
 Purpose
 
-- Production-ready code only.
-- Always stable.
-- Protected branch.
+- Stores production-ready code.
+- Represents the latest stable version.
+- Should always be deployable.
 
 Rules
 
-- No direct commits.
-- Only merge approved releases.
+- Protect the branch whenever possible.
+- Only merge tested and approved releases.
+- Avoid experimental development.
 
 ---
 
@@ -39,13 +57,14 @@ Rules
 
 Purpose
 
-- Integration branch.
-- Contains completed features waiting for release.
+- Integration branch for completed features.
+- Serves as the preparation branch for future releases.
 
 Rules
 
-- Feature branches merge into develop.
-- Must remain stable.
+- Merge completed feature branches here.
+- Resolve integration issues before creating a release.
+- Keep the branch stable.
 
 ---
 
@@ -53,11 +72,15 @@ Rules
 
 Purpose
 
-Develop one feature at a time.
+Develop one feature independently.
+
+Naming Convention
+
+feature/<feature-name>
 
 Examples
 
-feature/login
+feature/authentication
 
 feature/student-dashboard
 
@@ -69,38 +92,51 @@ feature/chat
 
 feature/food-court
 
+feature/finance
+
 Rules
 
-- One feature per branch.
-- Delete branch after merge.
+- One branch for one feature.
+- Keep changes focused.
+- Delete the branch after merging.
 
 ---
 
-# Release Branch
+# Release Branches
 
 Purpose
 
-Prepare a production release.
+Prepare a stable software release.
 
-Examples
+Naming Convention
 
 release/v1.0.0
 
 release/v1.1.0
 
-Tasks
+Typical Activities
 
 - Final testing
 - Bug fixes
 - Documentation review
+- Version verification
+
+After approval, merge into:
+
+- main
+- develop
 
 ---
 
-# Hotfix Branch
+# Hotfix Branches
 
 Purpose
 
 Fix critical production issues.
+
+Naming Convention
+
+hotfix/<issue-name>
 
 Examples
 
@@ -112,6 +148,7 @@ hotfix/security
 
 Rules
 
+- Only critical issues.
 - Merge into main.
 - Merge back into develop.
 
@@ -119,46 +156,99 @@ Rules
 
 # Branch Naming Rules
 
-Use lowercase.
+Use:
 
-Use hyphens instead of spaces.
+- Lowercase letters
+- Hyphens instead of spaces
+- Short descriptive names
 
-Keep names short and descriptive.
-
-Good
+Good Examples
 
 feature/student-profile
 
 feature/course-registration
 
-Bad
+feature/payment-history
 
-feature/NewFeature
+feature/attendance-report
+
+Bad Examples
 
 feature/Test
 
+feature/NewFeature
+
 feature/temp
+
+feature/abc
+
+---
+
+# Branch Lifecycle
+
+Feature Branch
+
+↓
+
+Develop Branch
+
+↓
+
+Release Branch
+
+↓
+
+Main Branch
+
+If a production issue occurs:
+
+Main Branch
+
+↓
+
+Hotfix Branch
+
+↓
+
+Main + Develop
 
 ---
 
 # Merge Strategy
 
-Feature
+Before merging any branch:
 
-↓
+- Code Review Completed
+- Documentation Updated
+- Tests Passed
+- No Merge Conflicts
+- Business Rules Verified
 
-Develop
+---
 
-↓
+# Branch Protection
 
-Release
+The following branches should be protected whenever possible:
 
-↓
+- main
+- develop
 
-Main
+Only approved changes should be merged into these branches.
+
+---
+
+# Best Practices
+
+- Keep branches short-lived.
+- Sync regularly with develop.
+- Resolve conflicts early.
+- Delete merged branches.
+- Avoid unrelated changes within the same branch.
 
 ---
 
 # Final Rule
 
-Every branch must have a clear purpose and a clean history.
+Every branch must have a clear purpose.
+
+A clean branching strategy simplifies development, testing, maintenance, and future project expansion.
