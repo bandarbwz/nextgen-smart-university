@@ -1,133 +1,368 @@
-# Student Activities API
+# Chat API
 
-## Overview
+## Purpose
 
-The Student Activities API manages clubs, university events, registrations, certificates, reward points, and student participation.
+This document defines the Chat REST APIs for the NextGen Smart University Platform.
+
+The Chat API provides secure real-time communication between students, lecturers, coordinators, administrators, STAD staff, and restaurant owners. It supports private messaging, course chat rooms, file sharing, media sharing, message reactions, and read receipts.
 
 ---
 
 # Base URL
 
-/api/v1/stad
+```
+/api/v1/chat
+```
 
 ---
 
 # Authentication
 
-Bearer Token (JWT)
+All endpoints require:
+
+```
+Authorization: Bearer <JWT_TOKEN>
+```
 
 ---
 
-# Clubs
+# Content Type
 
-GET /clubs
+Standard Requests
 
-GET /clubs/{id}
+```
+application/json
+```
 
-POST /clubs
+File Upload
 
-PUT /clubs/{id}
-
-DELETE /clubs/{id}
-
----
-
-# Events
-
-GET /events
-
-GET /events/{id}
-
-POST /events
-
-PUT /events/{id}
-
-DELETE /events/{id}
+```
+multipart/form-data
+```
 
 ---
 
-# Registration
-
-POST /events/{id}/register
-
-DELETE /events/{id}/cancel
-
-GET /events/{id}/participants
+# Chat Room APIs
 
 ---
 
-# Attendance
+## Get Chat Rooms
 
-POST /events/{id}/attendance
-
-GET /attendance
-
----
-
-# Reward Points
-
-GET /reward-points
-
-GET /leaderboard
+```
+GET /api/v1/chat/rooms
+```
 
 ---
 
-# Certificates
+## Get Chat Room
 
-GET /certificates
-
-GET /certificates/{id}
-
-DOWNLOAD /certificates/{id}
+```
+GET /api/v1/chat/rooms/{id}
+```
 
 ---
 
-# Excuse Letters
+## Create Chat Room
 
-GET /excuse-letters
+```
+POST /api/v1/chat/rooms
+```
 
-DOWNLOAD /excuse-letters/{id}
+Permissions
 
----
-
-# Reports
-
-GET /reports/events
-
-GET /reports/clubs
-
-GET /reports/participation
+- Lecturer
+- Administrator
 
 ---
 
-# Response Codes
+## Update Chat Room
 
-200
+```
+PUT /api/v1/chat/rooms/{id}
+```
 
-201
+---
 
-400
+## Delete Chat Room
 
-401
+```
+DELETE /api/v1/chat/rooms/{id}
+```
 
-403
+---
 
-404
+## Join Chat Room
 
-422
+```
+POST /api/v1/chat/rooms/{id}/join
+```
 
-500
+---
+
+## Leave Chat Room
+
+```
+POST /api/v1/chat/rooms/{id}/leave
+```
+
+---
+
+## Get Room Members
+
+```
+GET /api/v1/chat/rooms/{id}/members
+```
+
+---
+
+# Message APIs
+
+---
+
+## Get Messages
+
+```
+GET /api/v1/chat/rooms/{id}/messages
+```
+
+---
+
+## Send Message
+
+```
+POST /api/v1/chat/messages
+```
+
+---
+
+## Edit Message
+
+```
+PUT /api/v1/chat/messages/{id}
+```
+
+---
+
+## Delete Message
+
+```
+DELETE /api/v1/chat/messages/{id}
+```
+
+---
+
+## Reply to Message
+
+```
+POST /api/v1/chat/messages/{id}/reply
+```
+
+---
+
+## Forward Message
+
+```
+POST /api/v1/chat/messages/{id}/forward
+```
+
+---
+
+## Pin Message
+
+```
+PUT /api/v1/chat/messages/{id}/pin
+```
+
+Permissions
+
+- Lecturer
+- Administrator
+
+---
+
+# Attachment APIs
+
+---
+
+## Upload Attachment
+
+```
+POST /api/v1/chat/attachments
+```
+
+---
+
+## Download Attachment
+
+```
+GET /api/v1/chat/attachments/{id}
+```
+
+---
+
+## Delete Attachment
+
+```
+DELETE /api/v1/chat/attachments/{id}
+```
+
+---
+
+# Reaction APIs
+
+---
+
+## Add Reaction
+
+```
+POST /api/v1/chat/messages/{id}/reaction
+```
+
+---
+
+## Remove Reaction
+
+```
+DELETE /api/v1/chat/messages/{id}/reaction
+```
+
+---
+
+# Read Receipt APIs
+
+---
+
+## Mark Message as Read
+
+```
+PUT /api/v1/chat/messages/{id}/read
+```
+
+---
+
+## Get Read Receipts
+
+```
+GET /api/v1/chat/messages/{id}/read
+```
+
+---
+
+# Search APIs
+
+---
+
+## Search Messages
+
+```
+GET /api/v1/chat/search
+```
+
+Example
+
+```
+GET /api/v1/chat/search?keyword=assignment
+```
+
+---
+
+# Validation Rules
+
+Messages
+
+- Message cannot be empty.
+- Maximum message length follows system settings.
+
+Attachments
+
+- File type must be supported.
+- File size must not exceed the upload limit.
+
+Chat Rooms
+
+- User must be a room member.
+- Course chat membership is managed automatically.
 
 ---
 
 # Security
 
 - JWT Authentication
-- QR Validation
-- Role Validation
+- Role-Based Access Control
+- Secure File Upload
+- File Validation
+- Malware Scanning
+- Audit Logging
+
+---
+
+# HTTP Status Codes
+
+| Code | Description |
+|------|-------------|
+|200|OK|
+|201|Created|
+|400|Bad Request|
+|401|Unauthorized|
+|403|Forbidden|
+|404|Not Found|
+|409|Conflict|
+|422|Validation Error|
+|500|Internal Server Error|
+
+---
+
+# Permissions
+
+Student
+
+- View Chat Rooms
+- Send Messages
+- Upload Files
+- React to Messages
+
+Lecturer
+
+- Manage Course Chats
+- Pin Messages
+- Moderate Discussions
+
+Coordinator
+
+- View Course Chats
+
+Administrator
+
+- Full Chat Management
+
+---
+
+# Business Rules
+
+- Students are automatically added to course chat rooms after enrollment.
+- Students are automatically removed after dropping a course.
+- Messages are permanently logged.
+- Deleted messages are soft deleted for audit purposes.
+- Attachments are securely stored.
+- Read receipts update automatically.
+- Course chat rooms are created automatically when a section is created.
+
+---
+
+# Dependencies
+
+This API depends on:
+
+- Authentication API
+- Academic API
+
+Related APIs
+
+- Notification API
+- Download Center API
 
 ---
 
 # Notes
 
-Integrates with Academic, Attendance, and Notification modules.
+The Chat API provides secure real-time communication for the NextGen Smart University Platform. It supports course discussions, private messaging, media sharing, reactions, read receipts, and integrates with the Notification and Academic modules.

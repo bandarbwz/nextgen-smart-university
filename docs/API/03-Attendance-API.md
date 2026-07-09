@@ -1,93 +1,371 @@
 # Attendance API
 
-## Overview
+## Purpose
 
-The Attendance API manages attendance records, QR sessions, excuses, and attendance reports.
+This document defines the Attendance REST APIs for the NextGen Smart University Platform.
+
+The Attendance API manages lecture attendance, QR attendance, GPS verification, AI face verification, attendance reports, attendance excuses, and attendance statistics.
 
 ---
 
 # Base URL
 
+```
 /api/v1/attendance
+```
 
 ---
 
 # Authentication
 
-Bearer Token (JWT)
+All endpoints require:
+
+```
+Authorization: Bearer <JWT_TOKEN>
+```
 
 ---
 
-# QR Attendance
+# Content Type
 
-POST /qr/start
-
-POST /qr/scan
-
-POST /qr/end
+```
+Content-Type: application/json
+```
 
 ---
 
-# Attendance
-
-GET /attendance
-
-GET /attendance/{id}
-
-POST /attendance
-
-PUT /attendance/{id}
+# QR Attendance APIs
 
 ---
 
-# Excuses
+## Generate QR Session
 
-POST /attendance/excuse
+Generate a QR code for a lecture.
 
-GET /attendance/excuse
+### Endpoint
 
-PUT /attendance/excuse/{id}
+```
+POST /api/v1/attendance/qr-session
+```
 
----
+### Permissions
 
-# Reports
-
-GET /attendance/report/student
-
-GET /attendance/report/section
-
-GET /attendance/report/course
+- Lecturer
 
 ---
 
-# Response Codes
+## Get Active QR Session
 
-200
+### Endpoint
 
-201
+```
+GET /api/v1/attendance/qr-session/{section_id}
+```
 
-400
+---
 
-401
+## Close QR Session
 
-403
+### Endpoint
 
-404
+```
+PUT /api/v1/attendance/qr-session/{id}/close
+```
 
-422
+---
 
-500
+# Attendance APIs
+
+---
+
+## Scan QR Code
+
+### Endpoint
+
+```
+POST /api/v1/attendance/scan
+```
+
+### Request Body
+
+```json
+{
+    "qr_token":"TOKEN",
+    "latitude":3.0738,
+    "longitude":101.5183
+}
+```
+
+---
+
+## Verify GPS
+
+### Endpoint
+
+```
+POST /api/v1/attendance/verify-location
+```
+
+---
+
+## Verify Face
+
+### Endpoint
+
+```
+POST /api/v1/attendance/verify-face
+```
+
+---
+
+## Record Attendance
+
+### Endpoint
+
+```
+POST /api/v1/attendance
+```
+
+---
+
+## Manual Attendance
+
+### Endpoint
+
+```
+PUT /api/v1/attendance/manual
+```
+
+---
+
+## Update Attendance
+
+### Endpoint
+
+```
+PUT /api/v1/attendance/{id}
+```
+
+---
+
+## Delete Attendance
+
+### Endpoint
+
+```
+DELETE /api/v1/attendance/{id}
+```
+
+---
+
+# Attendance Excuse APIs
+
+---
+
+## Submit Excuse
+
+### Endpoint
+
+```
+POST /api/v1/attendance/excuse
+```
+
+---
+
+## Get Excuses
+
+### Endpoint
+
+```
+GET /api/v1/attendance/excuse
+```
+
+---
+
+## Approve Excuse
+
+### Endpoint
+
+```
+PUT /api/v1/attendance/excuse/{id}/approve
+```
+
+---
+
+## Reject Excuse
+
+### Endpoint
+
+```
+PUT /api/v1/attendance/excuse/{id}/reject
+```
+
+---
+
+# Reports APIs
+
+---
+
+## Student Attendance
+
+### Endpoint
+
+```
+GET /api/v1/attendance/student/{student_id}
+```
+
+---
+
+## Section Attendance
+
+### Endpoint
+
+```
+GET /api/v1/attendance/section/{section_id}
+```
+
+---
+
+## Lecturer Attendance
+
+### Endpoint
+
+```
+GET /api/v1/attendance/lecturer/{lecturer_id}
+```
+
+---
+
+## Daily Report
+
+### Endpoint
+
+```
+GET /api/v1/attendance/reports/daily
+```
+
+---
+
+## Monthly Report
+
+### Endpoint
+
+```
+GET /api/v1/attendance/reports/monthly
+```
+
+---
+
+## Attendance Statistics
+
+### Endpoint
+
+```
+GET /api/v1/attendance/statistics
+```
+
+---
+
+# Validation Rules
+
+Attendance
+
+- Student must be enrolled.
+- QR session must be active.
+- QR token must be valid.
+- GPS verification must pass.
+- AI verification required for online attendance.
+- Duplicate attendance is not allowed.
+
+Attendance Excuse
+
+- Student required.
+- Attendance record required.
+- Reason required.
+- Supporting document required when applicable.
 
 ---
 
 # Security
 
-- QR Validation
-- GPS Validation
 - JWT Authentication
+- Role-Based Access Control
+- QR Token Validation
+- GPS Verification
+- AI Face Verification
+- Audit Logging
+- Rate Limiting
+
+---
+
+# HTTP Status Codes
+
+| Code | Description |
+|------|-------------|
+|200|OK|
+|201|Created|
+|400|Bad Request|
+|401|Unauthorized|
+|403|Forbidden|
+|404|Not Found|
+|409|Conflict|
+|422|Validation Error|
+|500|Internal Server Error|
+
+---
+
+# Permissions
+
+Student
+
+- Scan QR
+- View Attendance
+- Submit Excuse
+
+Lecturer
+
+- Generate QR
+- Record Attendance
+- Manual Attendance
+- Review Excuses
+
+Coordinator
+
+- View Reports
+
+Administrator
+
+- Full Attendance Management
+
+---
+
+# Business Rules
+
+- One attendance record per student per class.
+- QR codes expire automatically.
+- Students cannot edit attendance.
+- Manual attendance is logged.
+- GPS must be inside the configured campus radius.
+- AI verification is required for online attendance.
+- Attendance reports update automatically.
+
+---
+
+# Dependencies
+
+This API depends on:
+
+- Authentication API
+- Academic API
+
+Related APIs
+
+- AI Exam API
+- Notification API
+- Reports API
 
 ---
 
 # Notes
 
-Attendance APIs integrate with Academic and Student Activities modules.
+The Attendance API provides secure attendance management through QR codes, GPS verification, AI face verification, manual attendance, attendance excuses, and reporting. It integrates directly with the Academic, AI Examination, Notification, and Reporting modules.

@@ -1,120 +1,295 @@
 # System API
 
-## Overview
+## Purpose
 
-The System API provides platform-wide services including notifications, system settings, file management, audit logs, announcements, and health monitoring.
+This document defines the System REST APIs for the NextGen Smart University Platform.
+
+The System API manages system configuration, audit logs, backups, application settings, health monitoring, maintenance mode, and system administration.
 
 ---
 
 # Base URL
 
+```
 /api/v1/system
+```
 
 ---
 
 # Authentication
 
-Bearer Token (JWT)
+All endpoints require:
+
+```
+Authorization: Bearer <JWT_TOKEN>
+```
+
+Administrator privileges are required unless otherwise stated.
 
 ---
 
-# Notifications
+# Content Type
 
-GET /notifications
-
-PUT /notifications/{id}/read
-
-DELETE /notifications/{id}
+```
+Content-Type: application/json
+```
 
 ---
 
-# Announcements
-
-GET /announcements
-
-POST /announcements
-
-PUT /announcements/{id}
-
-DELETE /announcements/{id}
+# System Configuration APIs
 
 ---
 
-# Settings
+## Get System Settings
 
-GET /settings
-
-PUT /settings
-
----
-
-# Files
-
-POST /files/upload
-
-GET /files/{id}
-
-DELETE /files/{id}
+```
+GET /api/v1/system/settings
+```
 
 ---
 
-# Audit Logs
+## Update System Settings
 
-GET /audit-logs
+```
+PUT /api/v1/system/settings
+```
 
-GET /audit-logs/{id}
+Permissions
 
----
-
-# System Health
-
-GET /health
-
-GET /status
-
-GET /metrics
+- Administrator
 
 ---
 
-# Background Jobs
+## Reset System Settings
 
-GET /jobs
+```
+POST /api/v1/system/settings/reset
+```
 
-POST /jobs
+Permissions
 
-GET /jobs/{id}
+- Administrator
 
 ---
 
-# Response Codes
+# Audit Log APIs
 
-200
+---
 
-201
+## Get Audit Logs
 
-400
+```
+GET /api/v1/system/logs
+```
 
-401
+---
 
-403
+## Get Audit Log
 
-404
+```
+GET /api/v1/system/logs/{id}
+```
 
-422
+---
 
-500
+## Export Audit Logs
+
+```
+GET /api/v1/system/logs/export
+```
+
+---
+
+# Backup APIs
+
+---
+
+## Create Backup
+
+```
+POST /api/v1/system/backups
+```
+
+Permissions
+
+- Administrator
+
+---
+
+## Get Backups
+
+```
+GET /api/v1/system/backups
+```
+
+---
+
+## Restore Backup
+
+```
+POST /api/v1/system/backups/{id}/restore
+```
+
+Permissions
+
+- Administrator
+
+---
+
+## Delete Backup
+
+```
+DELETE /api/v1/system/backups/{id}
+```
+
+---
+
+# Maintenance APIs
+
+---
+
+## Enable Maintenance Mode
+
+```
+POST /api/v1/system/maintenance/enable
+```
+
+---
+
+## Disable Maintenance Mode
+
+```
+POST /api/v1/system/maintenance/disable
+```
+
+---
+
+## Get Maintenance Status
+
+```
+GET /api/v1/system/maintenance
+```
+
+---
+
+# Health APIs
+
+---
+
+## System Health
+
+```
+GET /api/v1/system/health
+```
+
+---
+
+## Database Status
+
+```
+GET /api/v1/system/database
+```
+
+---
+
+## Storage Status
+
+```
+GET /api/v1/system/storage
+```
+
+---
+
+## Queue Status
+
+```
+GET /api/v1/system/queues
+```
+
+---
+
+# Validation Rules
+
+System Settings
+
+- Configuration key required.
+- Configuration value required.
+
+Backup
+
+- Backup name must be unique.
+- Backup location must be available.
+
+Restore
+
+- Backup file must exist.
+- Backup integrity must be verified.
 
 ---
 
 # Security
 
 - JWT Authentication
-- Administrator Authorization
-- File Validation
+- Role-Based Access Control
 - Audit Logging
+- Encrypted Backup Storage
+- Secure Configuration Management
+
+---
+
+# HTTP Status Codes
+
+| Code | Description |
+|------|-------------|
+|200|OK|
+|201|Created|
+|400|Bad Request|
+|401|Unauthorized|
+|403|Forbidden|
+|404|Not Found|
+|409|Conflict|
+|422|Validation Error|
+|500|Internal Server Error|
+
+---
+
+# Permissions
+
+Administrator
+
+- Manage System Settings
+- Manage Backups
+- Restore Database
+- View Audit Logs
+- Enable Maintenance Mode
+
+---
+
+# Business Rules
+
+- Only administrators may modify system settings.
+- Every configuration change is recorded in the audit log.
+- Backup restoration is available only during maintenance mode.
+- Audit logs cannot be modified or deleted.
+- Health monitoring is updated automatically.
+- Backups follow the configured retention policy.
+
+---
+
+# Dependencies
+
+This API depends on:
+
+- Authentication API
+
+Related APIs
+
+- Reports API
+- Download Center API
+- Notification API
 
 ---
 
 # Notes
 
-The System API is used by all platform modules and provides shared system services.
+The System API provides centralized administration for the NextGen Smart University Platform, including configuration management, audit logging, backup and recovery, maintenance operations, and system health monitoring.

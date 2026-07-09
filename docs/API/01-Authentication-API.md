@@ -1,119 +1,234 @@
 # Authentication API
 
-## Overview
+## Purpose
 
-The Authentication API provides secure authentication and authorization services for the NextGen Smart University Platform.
+This document defines the Authentication REST APIs for the NextGen Smart University Platform.
 
-All protected APIs require a valid JWT access token.
+The Authentication API is responsible for user authentication, authorization, session management, password recovery, profile management, and account security.
 
 ---
 
 # Base URL
 
+```
 /api/v1/auth
+```
 
 ---
 
 # Authentication
 
-Authentication Method
+Some endpoints are public.
 
-Bearer Token (JWT)
+Protected endpoints require:
 
-Example
+```
+Authorization: Bearer <JWT_TOKEN>
+```
 
-Authorization: Bearer <access_token>
+---
+
+# Content Type
+
+```
+Content-Type: application/json
+```
 
 ---
 
 # Endpoints
 
+---
+
 ## Login
 
-POST /login
+Authenticate a user and generate a JWT token.
 
-Description
+### Endpoint
 
-Authenticate a user and return an access token.
+```
+POST /api/v1/auth/login
+```
 
-Request
+### Authentication
 
+Not Required
+
+### Request Body
+
+```json
 {
-    "email": "student@university.edu",
-    "password": "********"
+    "email": "student@nextgen.edu",
+    "password": "Password123!"
 }
+```
 
-Response
+### Success Response
 
+```json
 {
     "success": true,
-    "access_token": "...",
-    "refresh_token": "...",
-    "expires_in": 3600,
-    "user": {}
+    "message": "Login successful.",
+    "data": {
+        "access_token": "...",
+        "refresh_token": "...",
+        "expires_in": 3600,
+        "user": {}
+    }
 }
+```
+
+### Error Responses
+
+- 401 Unauthorized
+- 422 Validation Error
 
 ---
 
 ## Logout
 
-POST /logout
+Invalidate the current user session.
 
-Description
+### Endpoint
 
-Terminate the current user session.
+```
+POST /api/v1/auth/logout
+```
 
-Authentication
+### Authentication
 
 Required
+
+### Success Response
+
+```json
+{
+    "success": true,
+    "message": "Logout successful."
+}
+```
 
 ---
 
 ## Refresh Token
 
-POST /refresh
+Generate a new access token.
 
-Description
+### Endpoint
 
-Generate a new access token using a refresh token.
+```
+POST /api/v1/auth/refresh
+```
 
-Authentication
+### Authentication
 
-Refresh Token Required
+Required
 
 ---
 
 ## Forgot Password
 
-POST /forgot-password
+Send password reset instructions.
 
-Description
+### Endpoint
 
-Send a password reset email.
+```
+POST /api/v1/auth/forgot-password
+```
 
-Request
+### Authentication
 
+Not Required
+
+### Request Body
+
+```json
 {
-    "email":"student@university.edu"
+    "email": "student@nextgen.edu"
 }
+```
 
 ---
 
 ## Reset Password
 
-POST /reset-password
+Reset the account password.
 
-Description
+### Endpoint
 
-Reset user password.
+```
+POST /api/v1/auth/reset-password
+```
+
+### Authentication
+
+Not Required
+
+### Request Body
+
+```json
+{
+    "token": "...",
+    "password": "Password123!",
+    "password_confirmation": "Password123!"
+}
+```
 
 ---
 
 ## Change Password
 
-PUT /change-password
+Change the current user's password.
 
-Authentication
+### Endpoint
+
+```
+PUT /api/v1/auth/change-password
+```
+
+### Authentication
+
+Required
+
+### Request Body
+
+```json
+{
+    "current_password": "OldPassword123!",
+    "new_password": "NewPassword123!",
+    "password_confirmation": "NewPassword123!"
+}
+```
+
+---
+
+## Verify Email
+
+Verify the user's email address.
+
+### Endpoint
+
+```
+POST /api/v1/auth/verify-email
+```
+
+### Authentication
+
+Required
+
+---
+
+## Resend Verification Email
+
+Resend the email verification link.
+
+### Endpoint
+
+```
+POST /api/v1/auth/resend-verification
+```
+
+### Authentication
 
 Required
 
@@ -121,102 +236,146 @@ Required
 
 ## Get Profile
 
-GET /profile
+Retrieve the authenticated user's profile.
 
-Authentication
+### Endpoint
+
+```
+GET /api/v1/auth/profile
+```
+
+### Authentication
 
 Required
-
-Returns
-
-- User Information
-- Role
-- Faculty
-- Department
 
 ---
 
 ## Update Profile
 
-PUT /profile
+Update user profile information.
 
-Authentication
+### Endpoint
+
+```
+PUT /api/v1/auth/profile
+```
+
+### Authentication
 
 Required
-
-Editable Fields
-
-- Phone
-- Photo
-- Emergency Contact
 
 ---
 
 ## Active Sessions
 
-GET /sessions
+Retrieve all active login sessions.
 
-Authentication
+### Endpoint
 
-Required
+```
+GET /api/v1/auth/sessions
+```
 
-Returns
-
-All active login sessions.
-
----
-
-## Logout All Devices
-
-POST /logout-all
-
-Authentication
+### Authentication
 
 Required
 
-Terminates all active sessions.
+---
+
+## Revoke Session
+
+Terminate a specific session.
+
+### Endpoint
+
+```
+DELETE /api/v1/auth/sessions/{id}
+```
+
+### Authentication
+
+Required
 
 ---
 
-# Response Codes
+# Validation Rules
 
-200 OK
+Login
 
-201 Created
+- Email required.
+- Password required.
 
-400 Bad Request
+Password
 
-401 Unauthorized
+- Minimum 8 characters.
+- Uppercase letter.
+- Lowercase letter.
+- Number.
+- Special character.
 
-403 Forbidden
+Email
 
-404 Not Found
-
-422 Validation Error
-
-500 Internal Server Error
+- Required.
+- Valid format.
+- Unique.
 
 ---
 
 # Security
 
 - JWT Authentication
-- Password Hashing
-- Session Timeout
-- Role Validation
+- Refresh Tokens
+- Password Hashing (bcrypt/Argon2)
+- HTTPS Only
 - Rate Limiting
+- Input Validation
+- SQL Injection Protection
+- XSS Protection
+- Account Lockout After Multiple Failed Attempts
 
 ---
 
-# Future APIs
+# HTTP Status Codes
 
-- Google Login
-- Microsoft Login
-- Face Login
-- Two-Factor Authentication
+| Code | Description |
+|------|-------------|
+| 200 | OK |
+| 201 | Created |
+| 400 | Bad Request |
+| 401 | Unauthorized |
+| 403 | Forbidden |
+| 404 | Not Found |
+| 409 | Conflict |
+| 422 | Validation Error |
+| 500 | Internal Server Error |
+
+---
+
+# Permissions
+
+Accessible by:
+
+- Student
+- Lecturer
+- Coordinator
+- Administrator
+- STAD Staff
+- Restaurant Owner
+
+---
+
+# Business Rules
+
+- Every user must authenticate before accessing protected APIs.
+- JWT tokens expire automatically.
+- Refresh tokens generate new access tokens.
+- Email verification is required before full account access.
+- Passwords are never stored in plain text.
+- Failed login attempts are logged.
+- Sessions can be revoked individually.
 
 ---
 
 # Notes
 
-All protected endpoints require a valid JWT access token.
+The Authentication API is the security gateway of the NextGen Smart University Platform. All protected modules depend on successful authentication and authorization provided by this API.
