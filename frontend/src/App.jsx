@@ -11,6 +11,8 @@ import { CourseCatalogPage } from './pages/student/CourseCatalogPage';
 import { RegistrationPage } from './pages/student/RegistrationPage';
 import { SchedulePage } from './pages/student/SchedulePage';
 import { TranscriptPage } from './pages/student/TranscriptPage';
+import { AttendancePage } from './pages/student/AttendancePage';
+import { AttendanceSessionPage } from './pages/lecturer/AttendanceSessionPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import './styles/components.css';
@@ -37,6 +39,14 @@ export default function App() {
                                     <Route path="/registration" element={<RegistrationPage />} />
                                     <Route path="/schedule" element={<SchedulePage />} />
                                     <Route path="/transcript" element={<TranscriptPage />} />
+                                    <Route path="/attendance" element={<AttendancePage />} />
+                                </Route>
+
+                                <Route element={<ProtectedRoute allowedRoles={['Lecturer']} />}>
+                                    <Route
+                                        path="/attendance-session"
+                                        element={<AttendanceSessionPage />}
+                                    />
                                 </Route>
                             </Route>
                         </Route>
