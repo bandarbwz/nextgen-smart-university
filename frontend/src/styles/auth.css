@@ -1,0 +1,116 @@
+.nsu-auth {
+    display: grid;
+    grid-template-columns: 1fr;
+    min-height: 100dvh;
+}
+
+.nsu-auth__brand {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: var(--space-2xl);
+    background: linear-gradient(150deg, #1e3a8a 0%, var(--color-primary) 55%, #1d4ed8 100%);
+    color: #ffffff;
+}
+
+.nsu-auth__brand-mark {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-family: var(--font-heading);
+    font-size: var(--text-lg);
+    font-weight: 600;
+}
+
+.nsu-auth__headline {
+    font-size: clamp(1.75rem, 2.6vw, 2.5rem);
+    color: #ffffff;
+    max-width: 18ch;
+}
+
+.nsu-auth__tagline {
+    color: rgba(255, 255, 255, 0.85);
+    max-width: 42ch;
+    margin-top: var(--space-md);
+}
+
+.nsu-auth__points {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-xl) 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.nsu-auth__points li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: var(--text-sm);
+}
+
+.nsu-auth__footnote {
+    font-size: var(--text-sm);
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.nsu-auth__panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-lg);
+}
+
+.nsu-auth__form {
+    width: 100%;
+    max-width: 420px;
+}
+
+.nsu-auth__mobile-mark {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    justify-content: center;
+    margin-bottom: var(--space-lg);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+.nsu-auth__title {
+    font-size: var(--text-2xl);
+}
+
+.nsu-auth__subtitle {
+    color: var(--color-muted-foreground);
+    margin: var(--space-xs) 0 var(--space-lg);
+}
+
+.nsu-auth__meta {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: var(--space-md);
+}
+
+.nsu-auth__switch {
+    margin-top: var(--space-lg);
+    text-align: center;
+    font-size: var(--text-sm);
+    color: var(--color-muted-foreground);
+}
+
+@media (min-width: 1024px) {
+    .nsu-auth {
+        grid-template-columns: 1.05fr 1fr;
+    }
+
+    .nsu-auth__brand {
+        display: flex;
+    }
+
+    .nsu-auth__mobile-mark {
+        display: none;
+    }
+}
