@@ -8,26 +8,56 @@ use App\Services\ApiException;
 
 class FileUpload
 {
-    private const MAX_BYTES = 5 * 1024 * 1024;
+    public const PROFILE_DOCUMENT = 'document';
 
-    private const ALLOWED = [
-        'application/pdf' => 'pdf',
-        'image/jpeg' => 'jpg',
-        'image/png' => 'png',
+    public const PROFILE_COURSE_FILE = 'course_file';
+
+    private const PROFILES = [
+        self::PROFILE_DOCUMENT => [
+            'max_bytes' => 5 * 1024 * 1024,
+            'label' => 'PDF, JPG and PNG',
+            'types' => [
+                'application/pdf' => 'pdf',
+                'image/jpeg' => 'jpg',
+                'image/png' => 'png',
+            ],
+        ],
+        self::PROFILE_COURSE_FILE => [
+            'max_bytes' => 25 * 1024 * 1024,
+            'label' => 'PDF, Office documents, images, plain text and ZIP',
+            'types' => [
+                'application/pdf' => 'pdf',
+                'image/jpeg' => 'jpg',
+                'image/png' => 'png',
+                'text/plain' => 'txt',
+                'application/zip' => 'zip',
+                'application/msword' => 'doc',
+                'application/vnd.ms-excel' => 'xls',
+                'application/vnd.ms-powerpoint' => 'ppt',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'xlsx',
+                'application/vnd.openxmlformats-officedocument.presentationml.presentation' => 'pptx',
+            ],
+        ],
     ];
 
-    public static function store(array $file, string $directory): string
+    public static function store(array $file, string $directory, string $profile = self::PROFILE_DOCUMENT): string
     {
         self::guardUploadStatus($file);
 
-        if ($file['size'] > self::MAX_BYTES) {
-            throw new ApiException('The file must not be larger than 5 MB.', 422);
+        $rules = self::PROFILES[$profile];
+
+        if ($file['size'] > $rules['max_bytes']) {
+            throw new ApiException(
+                'The file must not be larger than ' . (int) ($rules['max_bytes'] / 1048576) . ' MB.',
+                422
+            );
         }
 
         $mimeType = (new \finfo(FILEINFO_MIME_TYPE))->file($file['tmp_name']);
 
-        if (!isset(self::ALLOWED[$mimeType])) {
-            throw new ApiException('Only PDF, JPG and PNG files are accepted.', 422);
+        if (!isset($rules['types'][$mimeType])) {
+            throw new ApiException('Only ' . $rules['label'] . ' files are accepted.', 422);
         }
 
         $target = dirname(__DIR__, 2) . '/storage/uploads/' . $directory;
@@ -36,7 +66,7 @@ class FileUpload
             throw new ApiException('Unable to store the uploaded file.', 500);
         }
 
-        $name = bin2hex(random_bytes(16)) . '.' . self::ALLOWED[$mimeType];
+        $name = bin2hex(random_bytes(16)) . '.' . $rules['types'][$mimeType];
 
         if (!move_uploaded_file($file['tmp_name'], $target . '/' . $name)) {
             Logger::error('Failed to move uploaded file', ['directory' => $directory]);

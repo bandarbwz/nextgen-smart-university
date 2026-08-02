@@ -51,7 +51,7 @@ abstract class Model
              VALUES (:' . implode(', :', $columns) . ')'
         );
 
-        $statement->execute($fields);
+        $statement->execute($this->normalise($fields));
 
         return (int) $this->db->lastInsertId();
     }
@@ -72,7 +72,18 @@ abstract class Model
             'UPDATE ' . $this->table . ' SET ' . implode(', ', $assignments) . ' WHERE id = :id'
         );
 
-        return $statement->execute($fields + ['id' => $id]);
+        return $statement->execute($this->normalise($fields) + ['id' => $id]);
+    }
+
+    protected function normalise(array $fields): array
+    {
+        foreach ($fields as $column => $value) {
+            if (is_bool($value)) {
+                $fields[$column] = (int) $value;
+            }
+        }
+
+        return $fields;
     }
 
     public function delete(int $id): bool

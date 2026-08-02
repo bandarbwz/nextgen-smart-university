@@ -135,6 +135,22 @@ class Enrollment extends Model
         return (int) $statement->fetchColumn();
     }
 
+    public function activeSectionIds(int $studentId): array
+    {
+        $statement = $this->db->prepare(
+            'SELECT section_id FROM Enrollment
+             WHERE student_id = :student_id AND enrollment_status IN (:approved, :completed)'
+        );
+
+        $statement->execute([
+            'student_id' => $studentId,
+            'approved' => 'Approved',
+            'completed' => 'Completed',
+        ]);
+
+        return array_map('intval', $statement->fetchAll(\PDO::FETCH_COLUMN));
+    }
+
     public function completedCourseIds(int $studentId): array
     {
         $statement = $this->db->prepare(

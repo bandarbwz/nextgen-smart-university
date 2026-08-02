@@ -2,10 +2,14 @@
 
 declare(strict_types=1);
 
+use App\Controllers\AssignmentController;
 use App\Controllers\AttendanceController;
 use App\Controllers\AuthController;
 use App\Controllers\CourseController;
 use App\Controllers\ExcuseController;
+use App\Controllers\LmsContentController;
+use App\Controllers\MaterialController;
+use App\Controllers\QuizController;
 use App\Controllers\DepartmentController;
 use App\Controllers\EnrollmentController;
 use App\Controllers\FacultyController;
@@ -177,5 +181,55 @@ $router->get('/api/v1/attendance/lecturer/{id}', fn (string $id) => $attendance-
 
 $router->put('/api/v1/attendance/{id}', fn (string $id) => $attendance->update($id));
 $router->delete('/api/v1/attendance/{id}', fn (string $id) => $attendance->destroy($id));
+
+
+$materials = new MaterialController();
+
+$router->get('/api/v1/lms/materials', fn () => $materials->index());
+$router->post('/api/v1/lms/materials', fn () => $materials->store());
+$router->get('/api/v1/lms/materials/{id}/download', fn (string $id) => $materials->download($id));
+$router->get('/api/v1/lms/materials/{id}', fn (string $id) => $materials->show($id));
+$router->put('/api/v1/lms/materials/{id}', fn (string $id) => $materials->update($id));
+$router->delete('/api/v1/lms/materials/{id}', fn (string $id) => $materials->destroy($id));
+
+
+$assignments = new AssignmentController();
+
+$router->get('/api/v1/lms/assignments', fn () => $assignments->index());
+$router->post('/api/v1/lms/assignments', fn () => $assignments->store());
+$router->post('/api/v1/lms/assignments/{id}/submit', fn (string $id) => $assignments->submit($id));
+$router->get('/api/v1/lms/assignments/{id}', fn (string $id) => $assignments->show($id));
+$router->put('/api/v1/lms/assignments/{id}', fn (string $id) => $assignments->update($id));
+$router->delete('/api/v1/lms/assignments/{id}', fn (string $id) => $assignments->destroy($id));
+
+$router->get('/api/v1/lms/submissions/{id}', fn (string $id) => $assignments->showSubmission($id));
+$router->put('/api/v1/lms/submissions/{id}/grade', fn (string $id) => $assignments->gradeSubmission($id));
+
+
+$quizzes = new QuizController();
+
+$router->get('/api/v1/lms/quizzes', fn () => $quizzes->index());
+$router->post('/api/v1/lms/quizzes', fn () => $quizzes->store());
+$router->post('/api/v1/lms/quizzes/{id}/submit', fn (string $id) => $quizzes->submit($id));
+$router->get('/api/v1/lms/quizzes/{id}/submissions', fn (string $id) => $quizzes->submissions($id));
+$router->get('/api/v1/lms/quizzes/{id}', fn (string $id) => $quizzes->show($id));
+$router->put('/api/v1/lms/quizzes/{id}', fn (string $id) => $quizzes->update($id));
+$router->delete('/api/v1/lms/quizzes/{id}', fn (string $id) => $quizzes->destroy($id));
+
+
+$lmsContent = new LmsContentController();
+
+$router->get('/api/v1/lms/announcements', fn () => $lmsContent->announcements());
+$router->post('/api/v1/lms/announcements', fn () => $lmsContent->storeAnnouncement());
+$router->put('/api/v1/lms/announcements/{id}', fn (string $id) => $lmsContent->updateAnnouncement($id));
+$router->delete('/api/v1/lms/announcements/{id}', fn (string $id) => $lmsContent->destroyAnnouncement($id));
+
+$router->get('/api/v1/lms/resources', fn () => $lmsContent->resources());
+$router->post('/api/v1/lms/resources', fn () => $lmsContent->storeResource());
+$router->delete('/api/v1/lms/resources/{id}', fn (string $id) => $lmsContent->destroyResource($id));
+
+$router->get('/api/v1/lms/grades', fn () => $lmsContent->grades());
+$router->post('/api/v1/lms/grades', fn () => $lmsContent->storeGrade());
+$router->post('/api/v1/lms/grades/publish', fn () => $lmsContent->publishGrades());
 
 return $router;
