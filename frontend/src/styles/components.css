@@ -622,3 +622,199 @@
         align-items: center;
     }
 }
+
+.nsu-chat {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+}
+
+.nsu-chat__rooms {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.nsu-chat__room {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-height: 44px;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    text-align: left;
+    cursor: pointer;
+    transition: background-color var(--duration-fast) var(--ease-out),
+        border-color var(--duration-fast) var(--ease-out);
+}
+
+.nsu-chat__room:hover {
+    background: var(--color-muted);
+}
+
+.nsu-chat__room--active {
+    background: var(--color-info-surface);
+    border-color: var(--color-primary);
+}
+
+.nsu-chat__room-name {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: var(--text-sm);
+    color: var(--color-foreground);
+}
+
+.nsu-chat__room-meta {
+    font-size: var(--text-xs);
+    color: var(--color-muted-foreground);
+}
+
+.nsu-chat__unread {
+    position: absolute;
+    top: 50%;
+    right: var(--space-md);
+    transform: translateY(-50%);
+    display: grid;
+    place-items: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    font-size: var(--text-xs);
+    font-weight: 700;
+}
+
+.nsu-chat__panel {
+    display: flex;
+    flex-direction: column;
+    min-height: 520px;
+}
+
+.nsu-chat__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-lg);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.nsu-chat__title {
+    font-size: var(--text-lg);
+}
+
+.nsu-chat__thread {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding: var(--space-lg);
+    overflow-y: auto;
+    max-height: 420px;
+}
+
+.nsu-chat__message {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    max-width: 78%;
+}
+
+.nsu-chat__message--mine {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+}
+
+.nsu-chat__bubble {
+    padding: var(--space-sm) var(--space-md);
+    background: var(--color-muted);
+    border-radius: var(--radius-lg);
+}
+
+.nsu-chat__message--mine .nsu-chat__bubble {
+    background: var(--color-info-surface);
+}
+
+.nsu-chat__sender {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin: 0 0 2px;
+    font-family: var(--font-heading);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+.nsu-chat__body {
+    margin: 0;
+    font-size: var(--text-sm);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.nsu-chat__body--deleted {
+    font-style: italic;
+    color: var(--color-muted-foreground);
+}
+
+.nsu-chat__time {
+    margin: 2px 0 0;
+    font-size: var(--text-xs);
+    color: var(--color-muted-foreground);
+}
+
+.nsu-chat__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    opacity: 0;
+    transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.nsu-chat__message:hover .nsu-chat__actions,
+.nsu-chat__message:focus-within .nsu-chat__actions {
+    opacity: 1;
+}
+
+.nsu-chat__action {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm);
+    color: var(--color-muted-foreground);
+    cursor: pointer;
+}
+
+.nsu-chat__action:hover {
+    background: var(--color-muted);
+    color: var(--color-foreground);
+}
+
+.nsu-chat__composer {
+    display: flex;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-lg);
+    border-top: 1px solid var(--color-border);
+}
+
+@media (min-width: 900px) {
+    .nsu-chat {
+        grid-template-columns: 280px 1fr;
+        align-items: start;
+    }
+
+    .nsu-chat__rooms {
+        max-height: 620px;
+    }
+}
