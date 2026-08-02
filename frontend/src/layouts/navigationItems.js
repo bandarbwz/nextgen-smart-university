@@ -6,6 +6,7 @@ import {
     GraduationCap,
     LayoutDashboard,
     Library,
+    NotebookPen,
     ScanLine,
     ScrollText,
     Users,
@@ -24,6 +25,7 @@ export const navigationGroups = [
             { to: '/courses', label: 'Course Catalog', icon: Library, roles: null },
             { to: '/registration', label: 'Course Registration', icon: ClipboardList, roles: ['Student'] },
             { to: '/schedule', label: 'My Schedule', icon: CalendarDays, roles: ['Student'] },
+            { to: '/course-content', label: 'Course Content', icon: BookOpen, roles: ['Student'] },
             { to: '/attendance', label: 'My Attendance', icon: CalendarCheck, roles: ['Student'] },
             { to: '/transcript', label: 'Transcript', icon: ScrollText, roles: ['Student'] },
         ],
@@ -31,6 +33,7 @@ export const navigationGroups = [
     {
         label: 'Teaching',
         items: [
+            { to: '/teaching', label: 'Course Content', icon: NotebookPen, roles: ['Lecturer'] },
             {
                 to: '/attendance-session',
                 label: 'Attendance Session',

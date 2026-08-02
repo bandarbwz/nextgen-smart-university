@@ -12,7 +12,9 @@ import { RegistrationPage } from './pages/student/RegistrationPage';
 import { SchedulePage } from './pages/student/SchedulePage';
 import { TranscriptPage } from './pages/student/TranscriptPage';
 import { AttendancePage } from './pages/student/AttendancePage';
+import { CourseContentPage } from './pages/student/CourseContentPage';
 import { AttendanceSessionPage } from './pages/lecturer/AttendanceSessionPage';
+import { TeachingPage } from './pages/lecturer/TeachingPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import './styles/components.css';
@@ -40,6 +42,7 @@ export default function App() {
                                     <Route path="/schedule" element={<SchedulePage />} />
                                     <Route path="/transcript" element={<TranscriptPage />} />
                                     <Route path="/attendance" element={<AttendancePage />} />
+                                    <Route path="/course-content" element={<CourseContentPage />} />
                                 </Route>
 
                                 <Route element={<ProtectedRoute allowedRoles={['Lecturer']} />}>
@@ -47,6 +50,7 @@ export default function App() {
                                         path="/attendance-session"
                                         element={<AttendanceSessionPage />}
                                     />
+                                    <Route path="/teaching" element={<TeachingPage />} />
                                 </Route>
                             </Route>
                         </Route>
