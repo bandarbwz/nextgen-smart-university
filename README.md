@@ -214,12 +214,16 @@ cd nextgen-smart-university
 
 ## Install Dependencies
 
-```bash
-composer install
-```
+Install the backend dependencies.
 
 ```bash
-npm install
+cd backend && composer install
+```
+
+Install the frontend dependencies.
+
+```bash
+cd frontend && npm install
 ```
 
 ---
@@ -229,54 +233,50 @@ npm install
 Copy the example environment file.
 
 ```bash
-cp .env.example .env
+cp backend/.env.example backend/.env
 ```
 
-Generate the application key.
+Generate a JWT secret and add it to `backend/.env` as `JWT_SECRET`.
 
 ```bash
-php artisan key:generate
+openssl rand -hex 32
 ```
 
-Configure the database connection inside the `.env` file.
+Configure the database connection inside `backend/.env`.
 
 ---
 
 # Database Setup
 
-Run database migrations.
+Create the schema.
 
 ```bash
-php artisan migrate
+mysql -u root -p < database/schema/01-authentication.sql
 ```
 
-Seed the database with sample data.
+Seed the default roles and permissions.
 
 ```bash
-php artisan db:seed
+mysql -u root -p < database/seed/01-authentication.sql
 ```
 
 ---
 
 # Running the Project
 
-Start the Laravel development server.
+Start the backend API server.
 
 ```bash
-php artisan serve
+php -S localhost:8000 -t backend/public
 ```
 
-Compile frontend assets.
+Start the frontend development server.
 
 ```bash
-npm run dev
+cd frontend && npm run dev
 ```
 
-The application will be available at:
-
-```
-http://localhost:8000
-```
+The API is available at `http://localhost:8000` and the frontend at `http://localhost:5173`.
 
 ---
 
