@@ -1,6 +1,5 @@
 /vendor/
 .env
-composer.lock
 
 storage/uploads/*
 storage/reports/*

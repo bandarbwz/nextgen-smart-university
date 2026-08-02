@@ -6,7 +6,7 @@ namespace App\Services;
 
 use RuntimeException;
 
-class AuthException extends RuntimeException
+class ApiException extends RuntimeException
 {
     public function __construct(string $message, private readonly int $statusCode = 400)
     {
