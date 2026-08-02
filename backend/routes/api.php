@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Controllers\AttendanceController;
 use App\Controllers\AuthController;
 use App\Controllers\CourseController;
+use App\Controllers\ExcuseController;
 use App\Controllers\DepartmentController;
 use App\Controllers\EnrollmentController;
 use App\Controllers\FacultyController;
@@ -146,5 +148,34 @@ $schedules = new ScheduleController();
 $router->get('/api/v1/schedule', fn () => $schedules->weekly());
 $router->get('/api/v1/schedule/daily', fn () => $schedules->daily());
 $router->get('/api/v1/schedule/semester', fn () => $schedules->weekly());
+
+
+$attendance = new AttendanceController();
+$excuses = new ExcuseController();
+
+$router->post('/api/v1/attendance/qr-session', fn () => $attendance->openSession());
+$router->get('/api/v1/attendance/qr-session/{id}', fn (string $id) => $attendance->activeSession($id));
+$router->put('/api/v1/attendance/qr-session/{id}/close', fn (string $id) => $attendance->closeSession($id));
+
+$router->post('/api/v1/attendance/scan', fn () => $attendance->scan());
+$router->post('/api/v1/attendance/verify-location', fn () => $attendance->verifyLocation());
+$router->post('/api/v1/attendance/verify-face', fn () => $attendance->verifyFace());
+$router->put('/api/v1/attendance/manual', fn () => $attendance->manual());
+
+$router->post('/api/v1/attendance/excuse', fn () => $excuses->store());
+$router->get('/api/v1/attendance/excuse', fn () => $excuses->index());
+$router->put('/api/v1/attendance/excuse/{id}/approve', fn (string $id) => $excuses->approve($id));
+$router->put('/api/v1/attendance/excuse/{id}/reject', fn (string $id) => $excuses->reject($id));
+
+$router->get('/api/v1/attendance/me', fn () => $attendance->myAttendance());
+$router->get('/api/v1/attendance/statistics', fn () => $attendance->statistics());
+$router->get('/api/v1/attendance/reports/daily', fn () => $attendance->dailyReport());
+$router->get('/api/v1/attendance/reports/monthly', fn () => $attendance->monthlyReport());
+$router->get('/api/v1/attendance/student/{id}', fn (string $id) => $attendance->forStudent($id));
+$router->get('/api/v1/attendance/section/{id}', fn (string $id) => $attendance->forSection($id));
+$router->get('/api/v1/attendance/lecturer/{id}', fn (string $id) => $attendance->forLecturer($id));
+
+$router->put('/api/v1/attendance/{id}', fn (string $id) => $attendance->update($id));
+$router->delete('/api/v1/attendance/{id}', fn (string $id) => $attendance->destroy($id));
 
 return $router;

@@ -145,6 +145,33 @@ class Validator
         return $this;
     }
 
+    public function latitude(array $data, string $field, string $label): self
+    {
+        return $this->numberBetween($data, $field, -90, 90, $label);
+    }
+
+    public function longitude(array $data, string $field, string $label): self
+    {
+        return $this->numberBetween($data, $field, -180, 180, $label);
+    }
+
+    public function numberBetween(array $data, string $field, float $min, float $max, string $label): self
+    {
+        $value = $data[$field] ?? null;
+
+        if ($value === null || $value === '') {
+            return $this;
+        }
+
+        $parsed = filter_var($value, FILTER_VALIDATE_FLOAT);
+
+        if ($parsed === false || $parsed < $min || $parsed > $max) {
+            $this->addError($field, $label . ' must be a number between ' . $min . ' and ' . $max . '.');
+        }
+
+        return $this;
+    }
+
     public function fails(): bool
     {
         return $this->errors !== [];

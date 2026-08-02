@@ -29,6 +29,17 @@ return [
         'from_name' => $_ENV['MAIL_FROM_NAME'] ?? 'NextGen Smart University',
     ],
 
+    'ai' => [
+        'service_url' => rtrim($_ENV['AI_SERVICE_URL'] ?? '', '/'),
+        'timeout' => (int) ($_ENV['AI_SERVICE_TIMEOUT'] ?? 10),
+    ],
+
+    'attendance' => [
+        'qr_ttl_minutes' => (int) ($_ENV['ATTENDANCE_QR_TTL_MINUTES'] ?? 10),
+        'late_after_minutes' => (int) ($_ENV['ATTENDANCE_LATE_AFTER_MINUTES'] ?? 15),
+        'default_radius_metres' => (int) ($_ENV['ATTENDANCE_DEFAULT_RADIUS'] ?? 150),
+    ],
+
     'security' => [
         'max_login_attempts' => (int) ($_ENV['SECURITY_MAX_LOGIN_ATTEMPTS'] ?? 5),
         'lockout_minutes' => (int) ($_ENV['SECURITY_LOCKOUT_MINUTES'] ?? 15),

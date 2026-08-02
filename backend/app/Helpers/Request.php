@@ -19,6 +19,11 @@ class Request
         return is_array($decoded) ? $decoded : [];
     }
 
+    public static function formOrBody(): array
+    {
+        return $_POST !== [] ? $_POST : self::body();
+    }
+
     public static function bearerToken(): ?string
     {
         $header = self::header('Authorization');
