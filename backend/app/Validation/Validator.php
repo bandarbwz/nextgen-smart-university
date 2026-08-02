@@ -172,6 +172,17 @@ class Validator
         return $this;
     }
 
+    public function url(array $data, string $field, string $label): self
+    {
+        $value = $data[$field] ?? null;
+
+        if (is_string($value) && trim($value) !== '' && !filter_var($value, FILTER_VALIDATE_URL)) {
+            $this->addError($field, $label . ' must be a valid URL.');
+        }
+
+        return $this;
+    }
+
     public function fails(): bool
     {
         return $this->errors !== [];

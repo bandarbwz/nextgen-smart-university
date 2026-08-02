@@ -84,6 +84,17 @@ class Section extends Model
         return $statement->fetchAll();
     }
 
+    public function idsForLecturer(int $lecturerId): array
+    {
+        $statement = $this->db->prepare(
+            'SELECT id FROM Section WHERE lecturer_id = :lecturer_id AND deleted_at IS NULL'
+        );
+
+        $statement->execute(['lecturer_id' => $lecturerId]);
+
+        return array_map('intval', $statement->fetchAll(\PDO::FETCH_COLUMN));
+    }
+
     public function incrementRegistered(int $id): bool
     {
         $statement = $this->db->prepare(
