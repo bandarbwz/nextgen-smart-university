@@ -7,7 +7,7 @@ namespace App\Controllers;
 use App\Helpers\Request;
 use App\Helpers\Response;
 use App\Middleware\AuthMiddleware;
-use App\Services\AuthException;
+use App\Services\ApiException;
 use App\Services\AuthService;
 use App\Validation\AuthValidator;
 
@@ -36,7 +36,7 @@ class AuthController
                 Request::ipAddress(),
                 Request::userAgent()
             );
-        } catch (AuthException $exception) {
+        } catch (ApiException $exception) {
             Response::error($exception->getMessage(), $exception->statusCode());
         }
 
@@ -72,7 +72,7 @@ class AuthController
                 Request::ipAddress(),
                 Request::userAgent()
             );
-        } catch (AuthException $exception) {
+        } catch (ApiException $exception) {
             Response::error($exception->getMessage(), $exception->statusCode());
         }
 
@@ -109,7 +109,7 @@ class AuthController
                 Request::ipAddress(),
                 Request::userAgent()
             );
-        } catch (AuthException $exception) {
+        } catch (ApiException $exception) {
             Response::error($exception->getMessage(), $exception->statusCode());
         }
 
@@ -136,7 +136,7 @@ class AuthController
                 Request::ipAddress(),
                 Request::userAgent()
             );
-        } catch (AuthException $exception) {
+        } catch (ApiException $exception) {
             Response::error($exception->getMessage(), $exception->statusCode());
         }
 
@@ -158,7 +158,7 @@ class AuthController
                 Request::ipAddress(),
                 Request::userAgent()
             );
-        } catch (AuthException $exception) {
+        } catch (ApiException $exception) {
             Response::error($exception->getMessage(), $exception->statusCode());
         }
 
@@ -171,7 +171,7 @@ class AuthController
 
         try {
             $this->auth->sendEmailVerification($user['user_id']);
-        } catch (AuthException $exception) {
+        } catch (ApiException $exception) {
             Response::error($exception->getMessage(), $exception->statusCode());
         }
 
@@ -184,7 +184,7 @@ class AuthController
 
         try {
             $profile = $this->auth->profile($user['user_id']);
-        } catch (AuthException $exception) {
+        } catch (ApiException $exception) {
             Response::error($exception->getMessage(), $exception->statusCode());
         }
 
@@ -212,7 +212,7 @@ class AuthController
                 Request::ipAddress(),
                 Request::userAgent()
             );
-        } catch (AuthException $exception) {
+        } catch (ApiException $exception) {
             Response::error($exception->getMessage(), $exception->statusCode());
         }
 
@@ -239,7 +239,7 @@ class AuthController
                 Request::ipAddress(),
                 Request::userAgent()
             );
-        } catch (AuthException $exception) {
+        } catch (ApiException $exception) {
             Response::error($exception->getMessage(), $exception->statusCode());
         }
 

@@ -30,7 +30,7 @@ class AuthService
         if ($user === null) {
             $this->logs->record(null, 'login', 'failed', $ipAddress, $userAgent);
 
-            throw new AuthException('Invalid email or password.', 401);
+            throw new ApiException('Invalid email or password.', 401);
         }
 
         $this->guardAccountIsUsable($user, $ipAddress, $userAgent);
@@ -38,7 +38,7 @@ class AuthService
         if (!password_verify($password, $user['password'])) {
             $this->handleFailedAttempt($user, $ipAddress, $userAgent);
 
-            throw new AuthException('Invalid email or password.', 401);
+            throw new ApiException('Invalid email or password.', 401);
         }
 
         $this->users->recordSuccessfulLogin((int) $user['id']);
@@ -58,13 +58,13 @@ class AuthService
         $session = $this->sessions->findActiveByRefreshToken($this->jwt->hashToken($refreshToken));
 
         if ($session === null) {
-            throw new AuthException('Invalid or expired refresh token.', 401);
+            throw new ApiException('Invalid or expired refresh token.', 401);
         }
 
         $user = $this->users->findById((int) $session['user_id']);
 
         if ($user === null) {
-            throw new AuthException('Invalid or expired refresh token.', 401);
+            throw new ApiException('Invalid or expired refresh token.', 401);
         }
 
         $this->guardAccountIsUsable($user, $ipAddress, $userAgent);
@@ -118,7 +118,7 @@ class AuthService
         $user = $this->users->findByPasswordResetToken($this->jwt->hashToken($token));
 
         if ($user === null) {
-            throw new AuthException('This password reset link is invalid or has expired.', 400);
+            throw new ApiException('This password reset link is invalid or has expired.', 400);
         }
 
         $this->users->updatePassword((int) $user['id'], password_hash($password, PASSWORD_BCRYPT));
@@ -139,13 +139,13 @@ class AuthService
         $user = $this->users->findById($userId);
 
         if ($user === null) {
-            throw new AuthException('Account not found.', 404);
+            throw new ApiException('Account not found.', 404);
         }
 
         if (!password_verify($currentPassword, $user['password'])) {
             $this->logs->record($userId, 'password_change', 'failed', $ipAddress, $userAgent);
 
-            throw new AuthException('The current password is incorrect.', 401);
+            throw new ApiException('The current password is incorrect.', 401);
         }
 
         $this->users->updatePassword($userId, password_hash($newPassword, PASSWORD_BCRYPT));
@@ -160,11 +160,11 @@ class AuthService
         $user = $this->users->findById($userId);
 
         if ($user === null) {
-            throw new AuthException('Account not found.', 404);
+            throw new ApiException('Account not found.', 404);
         }
 
         if ((bool) $user['email_verified']) {
-            throw new AuthException('This email address is already verified.', 409);
+            throw new ApiException('This email address is already verified.', 409);
         }
 
         $token = bin2hex(random_bytes(32));
@@ -178,7 +178,7 @@ class AuthService
         $user = $this->users->findByEmailVerificationToken($this->jwt->hashToken($token));
 
         if ($user === null) {
-            throw new AuthException('This verification link is invalid or has expired.', 400);
+            throw new ApiException('This verification link is invalid or has expired.', 400);
         }
 
         $this->users->markEmailVerified((int) $user['id']);
@@ -190,7 +190,7 @@ class AuthService
         $user = $this->users->findById($userId);
 
         if ($user === null) {
-            throw new AuthException('Account not found.', 404);
+            throw new ApiException('Account not found.', 404);
         }
 
         return $this->presentUser($user, $this->permissions->namesForRole((int) $user['role_id']));
@@ -220,7 +220,7 @@ class AuthService
         $session = $this->sessions->findByIdAndUser($sessionId, $userId);
 
         if ($session === null) {
-            throw new AuthException('Session not found.', 404);
+            throw new ApiException('Session not found.', 404);
         }
 
         $this->sessions->revoke($sessionId);
@@ -272,13 +272,13 @@ class AuthService
         if ($user['status'] !== 'active') {
             $this->logs->record((int) $user['id'], 'login', 'failed', $ipAddress, $userAgent);
 
-            throw new AuthException('This account is not active. Please contact the administration.', 403);
+            throw new ApiException('This account is not active. Please contact the administration.', 403);
         }
 
         if ($user['locked_until'] !== null && strtotime($user['locked_until'] . ' UTC') > time()) {
             $this->logs->record((int) $user['id'], 'login', 'failed', $ipAddress, $userAgent);
 
-            throw new AuthException('This account is temporarily locked. Please try again later.', 403);
+            throw new ApiException('This account is temporarily locked. Please try again later.', 403);
         }
     }
 

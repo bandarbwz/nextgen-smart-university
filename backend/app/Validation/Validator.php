@@ -95,6 +95,56 @@ class Validator
         return $this;
     }
 
+    public function integer(array $data, string $field, string $label): self
+    {
+        $value = $data[$field] ?? null;
+
+        if ($value !== null && filter_var($value, FILTER_VALIDATE_INT) === false) {
+            $this->addError($field, $label . ' must be a whole number.');
+        }
+
+        return $this;
+    }
+
+    public function positiveInteger(array $data, string $field, string $label): self
+    {
+        $value = $data[$field] ?? null;
+
+        if ($value === null) {
+            return $this;
+        }
+
+        $parsed = filter_var($value, FILTER_VALIDATE_INT);
+
+        if ($parsed === false || $parsed <= 0) {
+            $this->addError($field, $label . ' must be greater than zero.');
+        }
+
+        return $this;
+    }
+
+    public function date(array $data, string $field, string $label): self
+    {
+        $value = $data[$field] ?? null;
+
+        if (is_string($value) && trim($value) !== '' && strtotime($value) === false) {
+            $this->addError($field, $label . ' must be a valid date.');
+        }
+
+        return $this;
+    }
+
+    public function inList(array $data, string $field, array $allowed, string $label): self
+    {
+        $value = $data[$field] ?? null;
+
+        if ($value !== null && $value !== '' && !in_array($value, $allowed, true)) {
+            $this->addError($field, $label . ' must be one of: ' . implode(', ', $allowed) . '.');
+        }
+
+        return $this;
+    }
+
     public function fails(): bool
     {
         return $this->errors !== [];
