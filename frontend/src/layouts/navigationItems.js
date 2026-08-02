@@ -17,6 +17,7 @@ export const navigationGroups = [
         label: 'Overview',
         items: [
             { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, roles: null },
+            { to: '/calendar', label: 'Calendar', icon: CalendarDays, roles: null },
         ],
     },
     {
