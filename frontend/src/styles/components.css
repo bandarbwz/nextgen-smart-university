@@ -401,3 +401,89 @@
     color: var(--color-muted-foreground);
     margin: var(--space-xs) 0 0;
 }
+
+.nsu-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-md);
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: var(--space-xs);
+}
+
+.nsu-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    min-height: 44px;
+    padding: 0 var(--space-md);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    color: var(--color-muted-foreground);
+    font-family: var(--font-heading);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color var(--duration-fast) var(--ease-out),
+        color var(--duration-fast) var(--ease-out);
+}
+
+.nsu-tab:hover {
+    background: var(--color-muted);
+    color: var(--color-foreground);
+}
+
+.nsu-tab--active {
+    background: var(--color-info-surface);
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+.nsu-tab__count {
+    display: inline-grid;
+    place-items: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    font-size: var(--text-xs);
+    font-weight: 600;
+}
+
+.nsu-feed-item {
+    padding: var(--space-lg);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.nsu-feed-item:last-child {
+    border-bottom: none;
+}
+
+.nsu-feed-item__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xs);
+}
+
+.nsu-feed-item__title {
+    font-size: var(--text-base);
+    margin: 0;
+}
+
+.nsu-feed-item__body {
+    margin: 0 0 var(--space-sm);
+    color: var(--color-foreground);
+    max-width: 70ch;
+}
+
+.nsu-feed-item__meta {
+    margin: 0 0 var(--space-sm);
+    font-size: var(--text-sm);
+    color: var(--color-muted-foreground);
+}
