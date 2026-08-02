@@ -17,7 +17,8 @@ class SectionService
         private readonly Course $courses = new Course(),
         private readonly Lecturer $lecturers = new Lecturer(),
         private readonly Semester $semesters = new Semester(),
-        private readonly ClassSchedule $schedules = new ClassSchedule()
+        private readonly ClassSchedule $schedules = new ClassSchedule(),
+        private readonly CourseChatProvisioner $chat = new CourseChatProvisioner()
     ) {
     }
 
@@ -46,13 +47,14 @@ class SectionService
         return $this->sections->students($id);
     }
 
-    public function create(array $fields, array $schedule): array
+    public function create(array $fields, array $schedule, int $createdByUserId): array
     {
         $this->guardReferences($fields);
 
         $sectionId = $this->sections->create($fields);
 
         $this->replaceSchedule($sectionId, $schedule);
+        $this->chat->ensureRoomForSection($sectionId, $createdByUserId);
 
         return $this->get($sectionId);
     }

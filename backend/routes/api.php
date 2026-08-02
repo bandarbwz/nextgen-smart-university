@@ -6,6 +6,7 @@ use App\Controllers\AssignmentController;
 use App\Controllers\AttendanceController;
 use App\Controllers\AuthController;
 use App\Controllers\CalendarController;
+use App\Controllers\ChatController;
 use App\Controllers\CourseController;
 use App\Controllers\ExcuseController;
 use App\Controllers\LmsContentController;
@@ -255,5 +256,31 @@ $router->post('/api/v1/calendar/reminders', fn () => $calendar->storeReminder())
 $router->put('/api/v1/calendar/reminders/{id}/complete', fn (string $id) => $calendar->completeReminder($id));
 $router->put('/api/v1/calendar/reminders/{id}', fn (string $id) => $calendar->updateReminder($id));
 $router->delete('/api/v1/calendar/reminders/{id}', fn (string $id) => $calendar->destroyReminder($id));
+
+
+$chat = new ChatController();
+
+$router->get('/api/v1/chat/rooms', fn () => $chat->rooms());
+$router->post('/api/v1/chat/rooms', fn () => $chat->store());
+$router->post('/api/v1/chat/rooms/private', fn () => $chat->openPrivate());
+$router->get('/api/v1/chat/rooms/{id}/messages', fn (string $id) => $chat->messages($id));
+$router->get('/api/v1/chat/rooms/{id}/members', fn (string $id) => $chat->members($id));
+$router->post('/api/v1/chat/rooms/{id}/join', fn (string $id) => $chat->join($id));
+$router->post('/api/v1/chat/rooms/{id}/leave', fn (string $id) => $chat->leave($id));
+$router->get('/api/v1/chat/rooms/{id}', fn (string $id) => $chat->room($id));
+
+$router->get('/api/v1/chat/search', fn () => $chat->search());
+
+$router->post('/api/v1/chat/messages', fn () => $chat->send());
+$router->post('/api/v1/chat/messages/{id}/reply', fn (string $id) => $chat->reply($id));
+$router->put('/api/v1/chat/messages/{id}/pin', fn (string $id) => $chat->pin($id));
+$router->post('/api/v1/chat/messages/{id}/reaction', fn (string $id) => $chat->react($id));
+$router->delete('/api/v1/chat/messages/{id}/reaction', fn (string $id) => $chat->removeReaction($id));
+$router->put('/api/v1/chat/messages/{id}/read', fn (string $id) => $chat->markRead($id));
+$router->get('/api/v1/chat/messages/{id}/read', fn (string $id) => $chat->readReceipts($id));
+$router->put('/api/v1/chat/messages/{id}', fn (string $id) => $chat->edit($id));
+$router->delete('/api/v1/chat/messages/{id}', fn (string $id) => $chat->destroy($id));
+
+$router->get('/api/v1/chat/attachments/{id}', fn (string $id) => $chat->downloadAttachment($id));
 
 return $router;

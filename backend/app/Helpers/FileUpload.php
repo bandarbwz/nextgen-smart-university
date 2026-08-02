@@ -12,6 +12,8 @@ class FileUpload
 
     public const PROFILE_COURSE_FILE = 'course_file';
 
+    public const PROFILE_CHAT_FILE = 'chat_file';
+
     private const PROFILES = [
         self::PROFILE_DOCUMENT => [
             'max_bytes' => 5 * 1024 * 1024,
@@ -34,6 +36,22 @@ class FileUpload
                 'application/msword' => 'doc',
                 'application/vnd.ms-excel' => 'xls',
                 'application/vnd.ms-powerpoint' => 'ppt',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'xlsx',
+                'application/vnd.openxmlformats-officedocument.presentationml.presentation' => 'pptx',
+            ],
+        ],
+        self::PROFILE_CHAT_FILE => [
+            'max_bytes' => 15 * 1024 * 1024,
+            'label' => 'PDF, Office documents, images, ZIP, MP4 and MP3',
+            'types' => [
+                'application/pdf' => 'pdf',
+                'image/jpeg' => 'jpg',
+                'image/png' => 'png',
+                'application/zip' => 'zip',
+                'video/mp4' => 'mp4',
+                'audio/mpeg' => 'mp3',
+                'application/msword' => 'doc',
                 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
                 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'xlsx',
                 'application/vnd.openxmlformats-officedocument.presentationml.presentation' => 'pptx',
