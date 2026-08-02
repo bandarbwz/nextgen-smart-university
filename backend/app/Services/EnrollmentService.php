@@ -23,7 +23,8 @@ class EnrollmentService
         private readonly Course $courses = new Course(),
         private readonly Student $students = new Student(),
         private readonly Semester $semesters = new Semester(),
-        private readonly ClassSchedule $schedules = new ClassSchedule()
+        private readonly ClassSchedule $schedules = new ClassSchedule(),
+        private readonly CourseChatProvisioner $chat = new CourseChatProvisioner()
     ) {
     }
 
@@ -105,6 +106,8 @@ class EnrollmentService
 
             throw $exception;
         }
+
+        $this->chat->removeStudent($sectionId, $studentId);
     }
 
     public function currentForStudent(int $studentId): array
@@ -137,6 +140,8 @@ class EnrollmentService
         $enrollment = $this->requirePendingEnrollment($enrollmentId);
 
         $this->enrollments->recordDecision($enrollmentId, 'Approved', $approvedByUserId);
+
+        $this->chat->addStudent((int) $enrollment['section_id'], (int) $enrollment['student_id']);
 
         return $this->enrollments->findDetailed((int) $enrollment['id']);
     }

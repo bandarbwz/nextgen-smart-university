@@ -60,7 +60,7 @@ class SectionController extends Controller
 
     public function store(): void
     {
-        $this->authenticateAs(['Coordinator']);
+        $user = $this->authenticateAs(['Coordinator']);
 
         $data = Request::body();
         $errors = $this->validator->section($data);
@@ -70,7 +70,7 @@ class SectionController extends Controller
         }
 
         $section = $this->run(
-            fn () => $this->sections->create($this->fields($data), $this->schedule($data))
+            fn () => $this->sections->create($this->fields($data), $this->schedule($data), $user['user_id'])
         );
 
         Response::success('Section created successfully.', ['section' => $section], 201);
