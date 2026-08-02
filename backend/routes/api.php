@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Controllers\AssignmentController;
 use App\Controllers\AttendanceController;
 use App\Controllers\AuthController;
+use App\Controllers\CalendarController;
 use App\Controllers\CourseController;
 use App\Controllers\ExcuseController;
 use App\Controllers\LmsContentController;
@@ -231,5 +232,28 @@ $router->delete('/api/v1/lms/resources/{id}', fn (string $id) => $lmsContent->de
 $router->get('/api/v1/lms/grades', fn () => $lmsContent->grades());
 $router->post('/api/v1/lms/grades', fn () => $lmsContent->storeGrade());
 $router->post('/api/v1/lms/grades/publish', fn () => $lmsContent->publishGrades());
+
+
+$calendar = new CalendarController();
+
+$router->get('/api/v1/calendar', fn () => $calendar->overview());
+$router->post('/api/v1/calendar/sync', fn () => $calendar->synchronise());
+$router->post('/api/v1/calendar/import', fn () => $calendar->import());
+$router->get('/api/v1/calendar/export', fn () => $calendar->export());
+
+$router->get('/api/v1/calendar/events/daily', fn () => $calendar->daily());
+$router->get('/api/v1/calendar/events/weekly', fn () => $calendar->weekly());
+$router->get('/api/v1/calendar/events/monthly', fn () => $calendar->monthly());
+$router->get('/api/v1/calendar/events', fn () => $calendar->events());
+$router->post('/api/v1/calendar/events', fn () => $calendar->store());
+$router->get('/api/v1/calendar/events/{id}', fn (string $id) => $calendar->show($id));
+$router->put('/api/v1/calendar/events/{id}', fn (string $id) => $calendar->update($id));
+$router->delete('/api/v1/calendar/events/{id}', fn (string $id) => $calendar->destroy($id));
+
+$router->get('/api/v1/calendar/reminders', fn () => $calendar->reminders());
+$router->post('/api/v1/calendar/reminders', fn () => $calendar->storeReminder());
+$router->put('/api/v1/calendar/reminders/{id}/complete', fn (string $id) => $calendar->completeReminder($id));
+$router->put('/api/v1/calendar/reminders/{id}', fn (string $id) => $calendar->updateReminder($id));
+$router->delete('/api/v1/calendar/reminders/{id}', fn (string $id) => $calendar->destroyReminder($id));
 
 return $router;
