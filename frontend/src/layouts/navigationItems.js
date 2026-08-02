@@ -6,6 +6,7 @@ import {
     GraduationCap,
     LayoutDashboard,
     Library,
+    MessagesSquare,
     NotebookPen,
     ScanLine,
     ScrollText,
@@ -18,6 +19,7 @@ export const navigationGroups = [
         items: [
             { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, roles: null },
             { to: '/calendar', label: 'Calendar', icon: CalendarDays, roles: null },
+            { to: '/chat', label: 'Chat', icon: MessagesSquare, roles: null },
         ],
     },
     {
