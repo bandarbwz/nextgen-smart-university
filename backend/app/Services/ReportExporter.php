@@ -73,6 +73,7 @@ class ReportExporter
             . 'body{font-family:DejaVu Sans,sans-serif;font-size:10px;color:#0f172a}'
             . 'h1{font-size:16px;margin:0 0 4px}'
             . 'p.meta{color:#475569;font-size:9px;margin:0 0 12px}'
+            . 'p.note{margin:0 0 12px;line-height:1.5}'
             . 'table{width:100%;border-collapse:collapse}'
             . 'th{background:#f1f5fd;text-align:left;padding:6px;border:1px solid #cbd5e1;font-size:9px}'
             . 'td{padding:6px;border:1px solid #e4ecfc}'
@@ -80,6 +81,10 @@ class ReportExporter
             . '<h1>' . $this->escape($report['title']) . '</h1>'
             . '<p class="meta">NextGen Smart University. Generated '
             . $this->escape($report['generated_at'] ?? gmdate('Y-m-d H:i:s')) . ' UTC.</p>';
+
+        if (is_string($report['note'] ?? null)) {
+            $html .= '<p class="note">' . $this->escape($report['note']) . '</p>';
+        }
 
         if ($report['rows'] === []) {
             $html .= '<p>No data available for this report.</p>';
