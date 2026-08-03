@@ -75,6 +75,15 @@ abstract class Model
         return $statement->execute($this->normalise($fields) + ['id' => $id]);
     }
 
+    /**
+     * Escapes the LIKE wildcards so a search for "%" matches a literal percent
+     * sign instead of every row in the table.
+     */
+    protected function escapeLike(string $term): string
+    {
+        return addcslashes($term, '%_\\');
+    }
+
     protected function normalise(array $fields): array
     {
         foreach ($fields as $column => $value) {
