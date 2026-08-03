@@ -1,70 +1,96 @@
 # Project Handover
 
-Work log for the NextGen Smart University Platform build.
+Working record for the NextGen Smart University Platform build.
 
 Last updated: 2026-08-03. Nothing has been pushed to GitHub yet.
 
 ---
 
-## 1. Current state
+## 0. Resuming this work in a new conversation
 
-Phase 1 of the roadmap is complete. All six Phase 1 modules have a working
-backend and frontend, verified against a running MySQL database.
+**Nothing is stored in the assistant's memory of the conversation. Everything
+is on disk.** The code, the schema, the tests and this document are all in git.
+A new chat can pick up exactly where the last one stopped.
 
-| Module | Backend | Frontend | Branch |
-|--------|---------|----------|--------|
-| Authentication | Done | Done | `feature/authentication`, `feature/frontend-auth-academic` |
-| Academic | Done | Done | `feature/academic`, `feature/frontend-auth-academic` |
-| Attendance | Done | Done | `feature/attendance` |
-| LMS | Done | Done | `feature/lms` |
-| Calendar | Done | Done | `feature/calendar` |
-| Chat | Done | Done | `feature/chat` |
+To resume, open a new session in this project folder and say something like:
 
-Totals: 41 database tables, 110 PHP files, ~200 REST endpoints, 11 commits.
+> Continue the NextGen Smart University project. Read HANDOVER.md first.
 
-**All 11 commits sit in a single chain on `feature/chat`.** Each branch was
-created from the previous one, so `feature/chat` contains every change. You do
-not need to push seven branches.
+That is enough. The assistant also keeps a persistent project memory outside the
+repository that survives between chats, so it will already know the decisions,
+the bugs found, and where things stopped.
+
+To see the state yourself at any time:
+
+```bash
+cd ~/Desktop/nextgen-smart-university && git log --oneline && git status
+```
 
 ---
 
-## 2. Pushing to GitHub (when you are ready)
+## 1. Current state
 
-Nothing is pushed. `main` on GitHub is still at the documentation commit.
+Phase 1 is complete and tested. Phase 2 is four modules of five.
 
-To push the whole chain as one branch and open a pull request:
+| Phase | Module | Backend | Frontend | Tests |
+|-------|--------|---------|----------|-------|
+| 1 | Authentication | Done | Done | Yes |
+| 1 | Academic | Done | Done | Yes |
+| 1 | Attendance | Done | Done | Yes |
+| 1 | LMS | Done | Done | Yes |
+| 1 | Calendar | Done | Done | Yes |
+| 1 | Chat | Done | Done | Yes |
+| 2 | Finance | Done | Done | Yes |
+| 2 | Food Court | Done | Done | Yes |
+| 2 | Reports | Done | Done | Yes |
+| 2 | Download Center | Done | Done | Yes |
+| 2 | AI Examination | Not started | Not started | No |
+
+Totals: 56 database tables, 150 backend PHP files, 51 frontend files,
+183 tests with 341 assertions, 16 commits.
+
+**All 16 commits are one chain on `feature/reports-download-center`.** Each
+branch was cut from the previous one, so that single branch contains
+everything. There is no need to push seven branches.
+
+---
+
+## 2. Pushing to GitHub
+
+Nothing is pushed. `main` on GitHub is still at the documentation commit, so
+your friend has seen none of this yet.
 
 ```bash
 cd ~/Desktop/nextgen-smart-university
-git push -u origin feature/chat
+git push -u origin feature/reports-download-center
 ```
 
-Then open a pull request from `feature/chat` into `main` on GitHub.
+Then open a pull request into `main` on GitHub.
 
-If you would rather push each module as its own branch so your friend can
-review them separately:
+To push every branch separately so each module can be reviewed on its own:
 
 ```bash
-git push -u origin feature/authentication
-git push -u origin feature/academic
-git push -u origin feature/frontend-auth-academic
-git push -u origin feature/attendance
-git push -u origin feature/lms
-git push -u origin feature/calendar
-git push -u origin feature/chat
+cd ~/Desktop/nextgen-smart-university
+for branch in feature/authentication feature/academic \
+              feature/frontend-auth-academic feature/attendance \
+              feature/lms feature/calendar feature/chat \
+              feature/tests feature/finance feature/food-court \
+              feature/reports-download-center; do
+  git push -u origin "$branch"
+done
 ```
 
-Note: the GitHub CLI on this machine is authenticated as `SHAFOO11`, while the
-repository belongs to `bandarbwz`. Confirm you have push access before running
-the commands above.
+Note: the GitHub CLI on this machine is authenticated as `SHAFOO11` while the
+repository belongs to `bandarbwz`. Confirm you have push access first.
+
+Pushing is the only thing protecting this work against losing the laptop. The
+repository is currently the single copy.
 
 ---
 
 ## 3. Running the project from scratch
 
-### Requirements installed on this machine
-
-PHP 8.5, Composer and MySQL 8 were installed via Homebrew during this work.
+PHP 8.5, Composer and MySQL 8 were installed through Homebrew during this work.
 
 ```bash
 brew services start mysql
@@ -78,15 +104,15 @@ composer install
 cp .env.example .env
 ```
 
-`backend/.env` is deliberately not committed. After copying it you must
-generate a JWT secret and paste it into `JWT_SECRET`:
+`backend/.env` is deliberately not committed. Generate a JWT secret and paste
+it into `JWT_SECRET`:
 
 ```bash
 openssl rand -hex 32
 ```
 
-Without a JWT secret the API returns 500 on every request by design, rather
-than falling back to an insecure default.
+Without a secret the API returns 500 on every request by design rather than
+falling back to an insecure default.
 
 ### Database
 
@@ -94,22 +120,13 @@ Run the schema files in order, then the seeds, then the migration:
 
 ```bash
 cd ~/Desktop/nextgen-smart-university
-mysql -u root < database/schema/01-authentication.sql
-mysql -u root < database/schema/02-academic.sql
-mysql -u root < database/schema/03-attendance.sql
-mysql -u root < database/schema/04-lms.sql
-mysql -u root < database/schema/05-calendar.sql
-mysql -u root < database/schema/06-chat.sql
-
-mysql -u root < database/seed/01-authentication.sql
-mysql -u root < database/seed/02-academic.sql
-
+for f in database/schema/*.sql; do mysql -u root < "$f"; done
+for f in database/seed/*.sql; do mysql -u root < "$f"; done
 mysql -u root < database/migrations/01-backfill-course-chat-rooms.sql
 ```
 
-The seeds create the six roles, 25 permissions, three faculties, five
-departments, five programmes, two semesters and six courses. They do **not**
-create user accounts.
+The seeds create roles, permissions, faculties, departments, programmes,
+semesters and courses. They do **not** create user accounts.
 
 ### Running
 
@@ -123,25 +140,32 @@ cd frontend && npm install && npm run dev
 
 API on `http://127.0.0.1:8000`, frontend on `http://localhost:5173`.
 
+### Tests
+
+```bash
+cd backend && composer test
+```
+
+The suite builds a separate `nextgen_university_test` database from
+`database/schema/` on every run and drops it afterwards. Development data in
+`nextgen_university` is never touched.
+
 ---
 
 ## 4. Test accounts
 
-These exist in the local database only. They were created by hand for testing
-and are **not** in the seed files. Password for all of them:
-
-```
-Password123!
-```
+Local database only. These are **not** in the seed files, so rebuilding the
+database removes them. Password for all: `Password123!`
 
 | Email | Role |
 |-------|------|
 | `admin@nextgen.edu` | Administrator |
-| `lecturer@nextgen.edu` | Lecturer (Dr. Sami Lecturer) |
-| `other@nextgen.edu` | Lecturer (used to test cross-lecturer denial) |
-| `student@nextgen.edu` | Student (Lina Student, STU001) |
+| `lecturer@nextgen.edu` | Lecturer |
+| `other@nextgen.edu` | Lecturer, used to test cross lecturer denial |
+| `student@nextgen.edu` | Student, STU001 |
+| `owner@nextgen.edu` | Restaurant Owner |
 
-If you rebuild the database these disappear. Recreate one with:
+To recreate one:
 
 ```bash
 HASH=$(php -r 'echo password_hash("Password123!", PASSWORD_BCRYPT);')
@@ -156,209 +180,163 @@ FROM Role WHERE name='Administrator';"
 ## 5. Architecture
 
 ```
-backend/
-  app/
-    Controllers/   thin, validate then delegate
-    Models/        PDO data access, extend Model
-    Services/      all business logic lives here
-    Middleware/    AuthMiddleware, RoleMiddleware
-    Validation/    per module validators
-    Helpers/       Database, Router, Request, Response, Config, Logger, FileUpload
-  config/          config.php, database.php
-  routes/api.php   every route
-  public/          front controller + .htaccess
-  storage/         uploads, logs (gitignored contents)
-
-frontend/src/
-  components/  shared UI (Button, FormField, Alert, Badge, Skeleton, ...)
-  layouts/     AuthLayout, AppLayout, navigationItems
-  pages/       auth/, student/, lecturer/, plus Calendar, Chat, Profile
-  services/    one API client module per backend module
-  contexts/    AuthContext, ToastContext
-  styles/      tokens.css, components.css, shell.css, auth.css
-
-database/
-  schema/      table definitions, run in numeric order
-  seed/        reference data
-  migrations/  backfills for data created before a feature existed
+backend/app/
+  Controllers/   thin, validate then delegate
+  Models/        PDO data access, extend Model
+  Services/      all business logic
+  Middleware/    AuthMiddleware, RoleMiddleware
+  Validation/    per module validators
+  Helpers/       Database, Router, Request, Response, Config, Logger, FileUpload
+backend/tests/   Unit, Integration, Security suites
+frontend/src/    components, layouts, pages, services, contexts, styles
+database/        schema, seed, migrations
 ```
 
-Design system output from the `ui-ux-pro-max` skill is committed at
+Design system output from the ui-ux-pro-max skill is committed at
 `design-system/nextgen-smart-university/MASTER.md`.
 
 ---
 
 ## 6. Decisions taken, and why
 
-These are places where a judgement call was made. Each is worth being able to
-explain if the project is assessed.
+Places where a judgement call was made. Each is worth being able to explain.
 
-**Backend is native PHP 8.4 MVC, not Laravel or Node.**
-`docs/PROJECT/004-Technology-Stack.md`, the README and the folder structure doc
-all specify native PHP with PDO. `docs/ARCHITECTURE/03-Backend-Architecture.md`
-contradicts them by describing Node.js, Express and Prisma. That file appears
-to be a leftover from a different template and should be corrected.
+**Backend is native PHP 8.4 MVC, not Laravel or Node.** The technology stack
+document, the README and the folder structure document all specify native PHP
+with PDO. `docs/ARCHITECTURE/03-Backend-Architecture.md` contradicts them by
+describing Node.js, Express and Prisma. That file looks like a leftover from a
+different template and should be corrected.
 
-**Frontend does not use Bootstrap 5.** The tech stack doc names Bootstrap, but
-the UI is built on design tokens from the ui-ux-pro-max skill instead. Layering
-the token system over Bootstrap would have meant fighting Bootstrap's defaults.
-If Bootstrap is a hard requirement for marking, this needs reworking.
+**Frontend does not use Bootstrap 5.** The stack document names Bootstrap, but
+the UI is built on design tokens instead. If Bootstrap is a hard requirement
+for marking, this needs reworking. **Still undecided.**
 
-**Chat uses short polling, not Socket.IO.** The architecture doc specifies
-Socket.IO, which a native PHP backend cannot host. The client polls every five
-seconds using an `after_id` cursor, pauses while the browser tab is hidden and
-catches up when it becomes visible. Describe this as polling, not real time.
+**Chat uses short polling, not Socket.IO.** A native PHP backend cannot host
+Socket.IO. The client polls every five seconds with an `after_id` cursor.
+Describe it as polling, not real time.
 
-**Face verification is not stubbed.** `POST /api/v1/attendance/verify-face`
-calls a configurable `AI_SERVICE_URL` and returns 503 when it is not
-configured. It was deliberately not faked to return success, because that
-would fake a security control. It will work unchanged once the Python service
-exists.
+**Face verification is not stubbed.** It calls a configurable `AI_SERVICE_URL`
+and returns 503 when absent, rather than faking a security control.
 
-**Tokens are stored hashed.** Session and refresh tokens are stored as SHA-256
-hashes, so a database leak cannot be used to hijack sessions. QR attendance
-tokens are the exception and are stored in plain text, because the lecturer has
-to display the code to the room. They expire after ten minutes.
+**Tokens are stored hashed.** Session and refresh tokens are SHA-256 hashed.
+QR attendance tokens are the exception, stored in plain text because the
+lecturer must display the code; they expire in ten minutes.
 
-**Uploads are validated by content, not file name.** `FileUpload` sniffs the
-real MIME type and rejects mismatches. Files are written outside the web root
-under `backend/storage/uploads/` with random names, and are served through
-authenticated download endpoints.
+**Order totals and invoice amounts are computed server side.** The client sends
+identifiers and quantities only. A tampered price in the payload is ignored.
 
-### Additions beyond the documented schema
+**Report permissions live in one catalogue.** Running a report and exporting it
+both check the same table, so export cannot be used as a bypass.
 
-Each of these fills a gap where the documentation described a feature but not
-the storage it needs.
+### Two API specifications were missing and were written during the build
 
-| Addition | Reason |
-|----------|--------|
-| `User.password_reset_token`, `password_reset_expires_at`, `email_verification_token` | The reset and verification endpoints are documented, but no table stored their tokens |
-| `QuizOption` table | `QuizQuestion` had `correct_answer` but nowhere to store multiple choice options |
-| `QuizAnswer` table | `QuizSubmission` stored only a score, but Essay and Short Answer must be graded by a human |
-| `Message.pinned`, `pinned_by`, `pinned_at` | A pin endpoint is documented but no column existed |
-| `Message.deleted_at`, `deleted_by` | Soft delete is required by the business rules but no column existed |
-| `Resource` table | Present in the feature doc and the API, but missing from the table inventory, which appears stale |
+`docs/API/09-Finance-API.md` was a byte for byte duplicate of the AI
+Examination specification. `docs/API` had no Reports specification at all.
+Both were written from their feature documents.
+
+**Still broken:** `docs/API/06-Student-Activities-API.md` is a byte for byte
+duplicate of the Chat specification. The Student Activities endpoint contract
+does not exist and must be written before that module is built.
+
+### Additions and renames beyond the documented schema
+
+| Change | Reason |
+|--------|--------|
+| `User.password_reset_token`, `password_reset_expires_at`, `email_verification_token` | Reset and verification endpoints documented with nowhere to store tokens |
+| `QuizOption` table | `QuizQuestion` had `correct_answer` but nowhere to store the choices |
+| `QuizAnswer` table | `QuizSubmission` stored only a score, but Essay and Short Answer need human grading |
+| `Message.pinned`, `deleted_at`, `deleted_by` | Pin endpoint and soft delete rule documented with no columns |
+| `Resource` table | In the feature and API documents, missing from the table inventory |
+| `Order` renamed to `FoodOrder` | `ORDER` is a reserved word in SQL |
+| `Payment` renamed to `OrderPayment` | `Payment` already existed in the Finance module |
+
+The feature documents also reference a **Finance Staff** role that does not
+exist among the six defined roles. Finance endpoints are Administrator only
+until that role is added.
 
 ---
 
-## 7. Bugs found and fixed during the build
+## 7. Bugs found and fixed
 
-Recorded because several were only visible by running the code, not by reading
-it. They are already fixed and committed.
+Several were only visible by running the code, not by reading it. All are fixed
+and each has a regression test.
 
 1. **PDO turned PHP `false` into an empty string**, which MySQL rejected for
-   integer columns. This broke creating an assignment with late submission
-   disabled, and would have broken semesters, users and sections too. Fixed
+   integer columns. Broke creating an assignment with late submission
+   disabled, and would have broken semesters, users and sections. Fixed
    centrally in `Model::normalise()`.
 2. **A method signature clash took down the whole API.** `ChatMember::find()`
    was incompatible with the inherited `Model::find()`. PHP raises a class load
-   fatal for this, and because `routes/api.php` instantiates every controller at
-   boot, every endpoint including login returned a fatal error. `php -l` does
-   not detect this.
-3. **Instant events vanished from the calendar.** Assignment deadlines have the
-   same start and end time. The range query used `end > from`, so a deadline
-   landing exactly on the first instant of a month view was silently dropped.
-   Changed to `end >= from`.
-4. **Reused named placeholder.** `LIKE :term OR LIKE :term` fails under native
-   prepared statements. Split into two placeholders.
-5. **MySQL rejects a CHECK constraint** on a column that a foreign key with a
-   referential action also uses. The self prerequisite rule moved into
-   `CourseService`.
-6. **Touch targets below the minimum.** Calendar day cells were 41px and the
-   skip link 42px, against a 44px minimum. Both fixed.
-7. **A Cyrillic character** had been typed into a hex colour value, which would
-   have silently broken a dark mode border.
+   fatal, and because `routes/api.php` builds every controller at boot, every
+   endpoint including login failed. `php -l` cannot detect this, so
+   `ClassIntegrityTest` now loads every class.
+3. **Payments were counted twice.** MySQL evaluates `UPDATE` assignments left
+   to right, so the balance expression read the already incremented paid
+   amount. Paying an invoice in full produced a negative balance. Now computed
+   in PHP against a locked row.
+4. **Instant events vanished from the calendar.** Assignment deadlines have the
+   same start and end time, and the range query used `end > from`, so a
+   deadline on the first instant of a month view disappeared.
+5. **LIKE wildcards were not escaped.** Searching for a percent sign returned
+   every row. Found by a security test.
+6. **Reused named placeholder** in course search failed under native prepared
+   statements.
+7. **MySQL rejects a CHECK constraint** on a column also used by a foreign key
+   with a referential action.
+8. **Touch targets below the minimum**, calendar cells at 41px and the skip
+   link at 42px against a 44px minimum.
+9. **A Cyrillic character** typed into a hex colour value.
 
 ---
 
-## 8. Known gaps
+## 8. Test suite
 
-Honest list of what is not done.
-
-- **Reminders are never delivered.** Calendar reminders are stored and can be
-  queried, but nothing dispatches them. That needs a cron job or scheduler.
-- **Transcript PDF download is not implemented.**
-  `GET /api/v1/transcript/{id}/download` is documented and needs DomPDF.
-- **The Python AI service does not exist.** Face verification is wired and will
-  work when it does.
-- **Email is not configured.** Password reset and verification emails are
-  written and will send once SMTP credentials are in `.env`. Until then they
-  fail silently and are logged.
-- **Phase 2 modules are not started:** Finance, Food Court, AI Examination,
-  Reports, Download Center, Student Activities, Notification Center.
-- **`docs/ARCHITECTURE/03-Backend-Architecture.md` still describes Node.js** and
-  contradicts the rest of the documentation.
-
----
-
-## 8b. Test suite
-
-112 tests, 194 assertions, covering the unit, integration and security levels
-required by `docs/PROJECT/013-Testing-Strategy.md`.
+183 tests, 341 assertions.
 
 ```bash
 cd backend && composer test
 ```
 
-The suite builds a separate `nextgen_university_test` database from the files in
-`database/schema/`, so development data is never touched and schema drift breaks
-the tests.
-
-Coverage by level:
-
-- **Unit** (33) — validation rules, Haversine distance, iCalendar export and parse
-- **Integration** (67) — enrolment rules, attendance rules, LMS rules, calendar
-  synchronisation, chat membership lifecycle
-- **Security** (12) — quiz answers never reaching students, enrolment scoped
+- **Unit** — validation rules, Haversine distance, iCalendar export and parse
+- **Integration** — enrolment, attendance, LMS, calendar sync, chat
+  membership, finance, food court, reports, download center
+- **Security** — quiz answers never reaching students, enrolment scoped
   content access, cross lecturer denial, cross user isolation, SQL injection,
   and a class load check that `php -l` cannot perform
 
-Each of the bugs listed in section 7 has a named regression test. The suite was
-checked by reintroducing two of those bugs and confirming the matching tests
-failed, so a green run means something.
+The suite was checked by reintroducing two fixed bugs and confirming the
+matching tests failed, so a green run means something. Export tests assert real
+output: the PDF carries the PDF magic bytes and the spreadsheet is a valid zip
+archive.
 
 ---
 
-## 9. Suggested next steps
+## 9. Known gaps
 
-1. Push and open a pull request so your friend can review.
-2. Correct the stale Node.js architecture document.
-3. Decide the Bootstrap question before building more frontend.
-4. Add frontend tests with Vitest. The backend is covered; the React side is not.
-5. Start Phase 2.
+- **AI Examination module is not built.** It is the last Phase 2 module and
+  depends on the Python service.
+- **The Python AI service does not exist.** Face verification is wired and will
+  work once it does.
+- **Reminders are never delivered.** Calendar reminders are stored and can be
+  queried, but nothing dispatches them. Needs a cron job.
+- **Email is not configured.** Password reset and verification emails will send
+  once SMTP credentials are in `.env`. Until then they fail and are logged.
+- **No frontend tests.** The backend is covered, the React side is not.
+- **`docs/API/06-Student-Activities-API.md` is a duplicate** of the Chat
+  specification and must be written before that module is built.
+- **`docs/ARCHITECTURE/03-Backend-Architecture.md` still describes Node.js** and
+  contradicts the rest of the documentation.
+- **Student Activities, Notification Center, Assessment, Grade Approval, Reset
+  Examination, Settings, System and Role Management modules** are documented but
+  not built.
 
 ---
 
-## 10. Verification performed
+## 10. Suggested next steps
 
-For the record, every rule below was confirmed with a real request against a
-real database, not assumed.
-
-Authentication: login issues a JWT, wrong password returns 401, account locks
-after repeated failures, permissions load per role, sessions revoke.
-
-Academic: prerequisites enforced, duplicate registration rejected, credit limit
-enforced, section capacity respected, timetable clash detected between a
-09:00-11:00 class and a 10:00-12:00 class on the same day, coordinator approval
-and rejection release seats correctly.
-
-Attendance: QR scan records attendance, duplicate scan rejected, expired and
-invalid tokens rejected, GPS distance computed correctly at 50m and 2001.5m
-against a 150m radius, out of range scan refused, students not enrolled refused,
-excuse approval flips the attendance record to Excused, a text file renamed to
-look like a document was rejected with nothing written to disk.
-
-LMS: quiz correct answers never reach students, objective questions auto marked
-while essays wait for a human, deadlines enforced with an opt in late window,
-marks cannot exceed the assignment total, grades hidden until published then
-locked, hidden materials invisible to students, students cannot read content
-from courses they are not enrolled in.
-
-Calendar: sync run twice produced no duplicates, generated events are read only,
-another user's event returns 404 rather than 403, ICS export re-imported
-successfully, reminders must precede their event.
-
-Chat: non members refused, students can delete only their own messages, soft
-delete preserves the audit row while withholding content, only lecturers can
-pin, membership follows enrolment through approve and drop, and a message sent
-by another user appeared in an open browser thread without a reload.
+1. **Push.** This laptop is currently the only copy.
+2. Build the AI Examination module to finish Phase 2.
+3. Correct the stale Node.js architecture document.
+4. Decide the Bootstrap question before building more frontend.
+5. Add frontend tests with Vitest.
+6. Write the missing Student Activities API specification.
