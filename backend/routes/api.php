@@ -9,6 +9,7 @@ use App\Controllers\CalendarController;
 use App\Controllers\ChatController;
 use App\Controllers\CourseController;
 use App\Controllers\ExcuseController;
+use App\Controllers\FinanceController;
 use App\Controllers\LmsContentController;
 use App\Controllers\MaterialController;
 use App\Controllers\QuizController;
@@ -282,5 +283,36 @@ $router->put('/api/v1/chat/messages/{id}', fn (string $id) => $chat->edit($id));
 $router->delete('/api/v1/chat/messages/{id}', fn (string $id) => $chat->destroy($id));
 
 $router->get('/api/v1/chat/attachments/{id}', fn (string $id) => $chat->downloadAttachment($id));
+
+
+$finance = new FinanceController();
+
+$router->get('/api/v1/finance/tuition-fees', fn () => $finance->tuitionFees());
+$router->post('/api/v1/finance/tuition-fees', fn () => $finance->storeTuitionFee());
+$router->put('/api/v1/finance/tuition-fees/{id}', fn (string $id) => $finance->updateTuitionFee($id));
+$router->delete('/api/v1/finance/tuition-fees/{id}', fn (string $id) => $finance->destroyTuitionFee($id));
+
+$router->get('/api/v1/finance/invoices', fn () => $finance->invoices());
+$router->post('/api/v1/finance/invoices/generate', fn () => $finance->generateInvoice());
+$router->put('/api/v1/finance/invoices/{id}/cancel', fn (string $id) => $finance->cancelInvoice($id));
+$router->get('/api/v1/finance/invoices/{id}', fn (string $id) => $finance->invoice($id));
+
+$router->get('/api/v1/finance/payments', fn () => $finance->payments());
+$router->post('/api/v1/finance/payments', fn () => $finance->storePayment());
+$router->get('/api/v1/finance/payments/{id}', fn (string $id) => $finance->payment($id));
+
+$router->get('/api/v1/finance/scholarships', fn () => $finance->scholarships());
+$router->post('/api/v1/finance/scholarships', fn () => $finance->storeScholarship());
+$router->put('/api/v1/finance/scholarships/{id}/revoke', fn (string $id) => $finance->revokeScholarship($id));
+
+$router->get('/api/v1/finance/holds', fn () => $finance->holds());
+$router->post('/api/v1/finance/holds', fn () => $finance->storeHold());
+$router->put('/api/v1/finance/holds/{id}/release', fn (string $id) => $finance->releaseHold($id));
+
+$router->get('/api/v1/finance/standing', fn () => $finance->standing());
+
+$router->get('/api/v1/finance/reports/balances', fn () => $finance->balanceReport());
+$router->get('/api/v1/finance/reports/revenue', fn () => $finance->revenueReport());
+$router->get('/api/v1/finance/reports/outstanding', fn () => $finance->outstandingReport());
 
 return $router;

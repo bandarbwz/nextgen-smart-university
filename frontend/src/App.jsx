@@ -13,6 +13,7 @@ import { SchedulePage } from './pages/student/SchedulePage';
 import { TranscriptPage } from './pages/student/TranscriptPage';
 import { AttendancePage } from './pages/student/AttendancePage';
 import { CourseContentPage } from './pages/student/CourseContentPage';
+import { FinancePage } from './pages/student/FinancePage';
 import { AttendanceSessionPage } from './pages/lecturer/AttendanceSessionPage';
 import { TeachingPage } from './pages/lecturer/TeachingPage';
 import { CalendarPage } from './pages/CalendarPage';
@@ -47,6 +48,7 @@ export default function App() {
                                     <Route path="/transcript" element={<TranscriptPage />} />
                                     <Route path="/attendance" element={<AttendancePage />} />
                                     <Route path="/course-content" element={<CourseContentPage />} />
+                                    <Route path="/finance" element={<FinancePage />} />
                                 </Route>
 
                                 <Route element={<ProtectedRoute allowedRoles={['Lecturer']} />}>
