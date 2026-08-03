@@ -1,6 +1,8 @@
 import {
+    BarChart3,
     BookOpen,
     CalendarCheck,
+    FolderOpen,
     CalendarDays,
     ClipboardList,
     GraduationCap,
@@ -23,6 +25,8 @@ export const navigationGroups = [
             { to: '/calendar', label: 'Calendar', icon: CalendarDays, roles: null },
             { to: '/chat', label: 'Chat', icon: MessagesSquare, roles: null },
             { to: '/food-court', label: 'Food Court', icon: Utensils, roles: null },
+            { to: '/downloads', label: 'Download Center', icon: FolderOpen, roles: null },
+            { to: '/reports', label: 'Reports', icon: BarChart3, roles: null },
         ],
     },
     {
