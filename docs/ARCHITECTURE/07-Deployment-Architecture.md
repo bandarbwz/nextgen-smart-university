@@ -25,8 +25,9 @@ Frontend
 
 Backend
 
-- Node.js
-- Express.js
+- PHP 8.4
+- PHP-FPM
+- Nginx
 
 Database
 

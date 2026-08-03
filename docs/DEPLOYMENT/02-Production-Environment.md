@@ -20,8 +20,11 @@ Defines the production environment used to host the platform.
 
 # Backend
 
-- Node.js
-- Express.js
+- PHP 8.4
+- PHP-FPM
+- Composer
+
+Nginx passes PHP requests to PHP-FPM. The document root is `backend/public`, so the application code, the uploaded files and the logs all sit outside the web root and cannot be requested directly.
 
 ---
 
