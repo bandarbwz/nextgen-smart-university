@@ -275,9 +275,6 @@ it. They are already fixed and committed.
 
 Honest list of what is not done.
 
-- **No automated tests.** Everything was verified by running real requests
-  against a real database, but none of it is repeatable. This is the largest
-  gap before submission.
 - **Reminders are never delivered.** Calendar reminders are stored and can be
   queried, but nothing dispatches them. That needs a cron job or scheduler.
 - **Transcript PDF download is not implemented.**
@@ -294,13 +291,41 @@ Honest list of what is not done.
 
 ---
 
+## 8b. Test suite
+
+112 tests, 194 assertions, covering the unit, integration and security levels
+required by `docs/PROJECT/013-Testing-Strategy.md`.
+
+```bash
+cd backend && composer test
+```
+
+The suite builds a separate `nextgen_university_test` database from the files in
+`database/schema/`, so development data is never touched and schema drift breaks
+the tests.
+
+Coverage by level:
+
+- **Unit** (33) — validation rules, Haversine distance, iCalendar export and parse
+- **Integration** (67) — enrolment rules, attendance rules, LMS rules, calendar
+  synchronisation, chat membership lifecycle
+- **Security** (12) — quiz answers never reaching students, enrolment scoped
+  content access, cross lecturer denial, cross user isolation, SQL injection,
+  and a class load check that `php -l` cannot perform
+
+Each of the bugs listed in section 7 has a named regression test. The suite was
+checked by reintroducing two of those bugs and confirming the matching tests
+failed, so a green run means something.
+
+---
+
 ## 9. Suggested next steps
 
 1. Push and open a pull request so your friend can review.
-2. Add automated tests. This is the weakest point of the project right now.
-3. Correct the stale Node.js architecture document.
-4. Decide the Bootstrap question before building more frontend.
-5. Start Phase 2, or harden Phase 1 first.
+2. Correct the stale Node.js architecture document.
+3. Decide the Bootstrap question before building more frontend.
+4. Add frontend tests with Vitest. The backend is covered; the React side is not.
+5. Start Phase 2.
 
 ---
 

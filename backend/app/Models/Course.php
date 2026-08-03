@@ -25,8 +25,10 @@ class Course extends Model
 
         if ($term !== null && $term !== '') {
             $sql .= ' AND (c.course_name LIKE :name_term OR c.course_code LIKE :code_term)';
-            $parameters['name_term'] = '%' . $term . '%';
-            $parameters['code_term'] = '%' . $term . '%';
+            $pattern = '%' . $this->escapeLike($term) . '%';
+
+            $parameters['name_term'] = $pattern;
+            $parameters['code_term'] = $pattern;
         }
 
         if ($departmentId !== null) {

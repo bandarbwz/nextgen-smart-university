@@ -101,7 +101,7 @@ class Message extends Model
 
         $statement->execute([
             'user_id' => $userId,
-            'keyword' => '%' . $keyword . '%',
+            'keyword' => '%' . $this->escapeLike($keyword) . '%',
         ]);
 
         return $statement->fetchAll();

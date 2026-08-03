@@ -280,6 +280,30 @@ The API is available at `http://localhost:8000` and the frontend at `http://loca
 
 ---
 
+# Running Tests
+
+The backend test suite covers the unit, integration and security levels defined
+in `docs/PROJECT/013-Testing-Strategy.md`.
+
+```bash
+cd backend && composer test
+```
+
+Individual levels can be run on their own.
+
+```bash
+composer test:unit
+composer test:integration
+composer test:security
+```
+
+The suite builds its own `nextgen_university_test` database from the files in
+`database/schema/`, and drops and recreates it on every run. Development data in
+`nextgen_university` is never touched. Because the schema is rebuilt from the
+real SQL files, a change to a table that breaks a rule is caught by the tests.
+
+---
+
 # API Documentation
 
 Complete REST API documentation is available in:
