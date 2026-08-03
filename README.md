@@ -214,12 +214,16 @@ cd nextgen-smart-university
 
 ## Install Dependencies
 
-```bash
-composer install
-```
+Install the backend dependencies.
 
 ```bash
-npm install
+cd backend && composer install
+```
+
+Install the frontend dependencies.
+
+```bash
+cd frontend && npm install
 ```
 
 ---
@@ -229,54 +233,74 @@ npm install
 Copy the example environment file.
 
 ```bash
-cp .env.example .env
+cp backend/.env.example backend/.env
 ```
 
-Generate the application key.
+Generate a JWT secret and add it to `backend/.env` as `JWT_SECRET`.
 
 ```bash
-php artisan key:generate
+openssl rand -hex 32
 ```
 
-Configure the database connection inside the `.env` file.
+Configure the database connection inside `backend/.env`.
 
 ---
 
 # Database Setup
 
-Run database migrations.
+Create the schema.
 
 ```bash
-php artisan migrate
+mysql -u root -p < database/schema/01-authentication.sql
 ```
 
-Seed the database with sample data.
+Seed the default roles and permissions.
 
 ```bash
-php artisan db:seed
+mysql -u root -p < database/seed/01-authentication.sql
 ```
 
 ---
 
 # Running the Project
 
-Start the Laravel development server.
+Start the backend API server.
 
 ```bash
-php artisan serve
+php -S localhost:8000 -t backend/public
 ```
 
-Compile frontend assets.
+Start the frontend development server.
 
 ```bash
-npm run dev
+cd frontend && npm run dev
 ```
 
-The application will be available at:
+The API is available at `http://localhost:8000` and the frontend at `http://localhost:5173`.
 
+---
+
+# Running Tests
+
+The backend test suite covers the unit, integration and security levels defined
+in `docs/PROJECT/013-Testing-Strategy.md`.
+
+```bash
+cd backend && composer test
 ```
-http://localhost:8000
+
+Individual levels can be run on their own.
+
+```bash
+composer test:unit
+composer test:integration
+composer test:security
 ```
+
+The suite builds its own `nextgen_university_test` database from the files in
+`database/schema/`, and drops and recreates it on every run. Development data in
+`nextgen_university` is never touched. Because the schema is rebuilt from the
+real SQL files, a change to a table that breaks a rule is caught by the tests.
 
 ---
 

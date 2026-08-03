@@ -1,0 +1,375 @@
+<?php
+
+declare(strict_types=1);
+
+use App\Controllers\AssignmentController;
+use App\Controllers\AttendanceController;
+use App\Controllers\AuthController;
+use App\Controllers\CalendarController;
+use App\Controllers\ChatController;
+use App\Controllers\CourseController;
+use App\Controllers\DownloadCenterController;
+use App\Controllers\ExcuseController;
+use App\Controllers\FinanceController;
+use App\Controllers\FoodCourtController;
+use App\Controllers\LmsContentController;
+use App\Controllers\MaterialController;
+use App\Controllers\QuizController;
+use App\Controllers\ReportController;
+use App\Controllers\DepartmentController;
+use App\Controllers\EnrollmentController;
+use App\Controllers\FacultyController;
+use App\Controllers\LecturerController;
+use App\Controllers\ProgramController;
+use App\Controllers\ScheduleController;
+use App\Controllers\SectionController;
+use App\Controllers\SemesterController;
+use App\Controllers\StudentController;
+use App\Controllers\TranscriptController;
+use App\Helpers\Router;
+
+$router = new Router();
+
+$auth = new AuthController();
+
+$router->post('/api/v1/auth/login', fn () => $auth->login());
+$router->post('/api/v1/auth/logout', fn () => $auth->logout());
+$router->post('/api/v1/auth/refresh', fn () => $auth->refresh());
+
+$router->post('/api/v1/auth/forgot-password', fn () => $auth->forgotPassword());
+$router->post('/api/v1/auth/reset-password', fn () => $auth->resetPassword());
+$router->put('/api/v1/auth/change-password', fn () => $auth->changePassword());
+
+$router->post('/api/v1/auth/verify-email', fn () => $auth->verifyEmail());
+$router->post('/api/v1/auth/resend-verification', fn () => $auth->resendVerification());
+
+$router->get('/api/v1/auth/profile', fn () => $auth->profile());
+$router->put('/api/v1/auth/profile', fn () => $auth->updateProfile());
+
+$router->get('/api/v1/auth/sessions', fn () => $auth->sessions());
+$router->delete('/api/v1/auth/sessions/{id}', fn (string $id) => $auth->revokeSession($id));
+
+
+$faculties = new FacultyController();
+
+$router->get('/api/v1/faculties', fn () => $faculties->index());
+$router->get('/api/v1/faculties/{id}', fn (string $id) => $faculties->show($id));
+$router->get('/api/v1/faculties/{id}/departments', fn (string $id) => $faculties->departments($id));
+$router->post('/api/v1/faculties', fn () => $faculties->store());
+$router->put('/api/v1/faculties/{id}', fn (string $id) => $faculties->update($id));
+$router->delete('/api/v1/faculties/{id}', fn (string $id) => $faculties->destroy($id));
+
+
+$departments = new DepartmentController();
+
+$router->get('/api/v1/departments', fn () => $departments->index());
+$router->get('/api/v1/departments/{id}', fn (string $id) => $departments->show($id));
+$router->post('/api/v1/departments', fn () => $departments->store());
+$router->put('/api/v1/departments/{id}', fn (string $id) => $departments->update($id));
+$router->delete('/api/v1/departments/{id}', fn (string $id) => $departments->destroy($id));
+
+
+$programs = new ProgramController();
+
+$router->get('/api/v1/programs', fn () => $programs->index());
+$router->get('/api/v1/programs/{id}', fn (string $id) => $programs->show($id));
+$router->post('/api/v1/programs', fn () => $programs->store());
+$router->put('/api/v1/programs/{id}', fn (string $id) => $programs->update($id));
+$router->delete('/api/v1/programs/{id}', fn (string $id) => $programs->destroy($id));
+
+
+$courses = new CourseController();
+
+$router->get('/api/v1/courses', fn () => $courses->index());
+$router->get('/api/v1/courses/{id}', fn (string $id) => $courses->show($id));
+$router->get('/api/v1/courses/{id}/prerequisites', fn (string $id) => $courses->prerequisites($id));
+$router->post('/api/v1/courses', fn () => $courses->store());
+$router->put('/api/v1/courses/{id}', fn (string $id) => $courses->update($id));
+$router->delete('/api/v1/courses/{id}', fn (string $id) => $courses->destroy($id));
+
+
+$semesters = new SemesterController();
+
+$router->get('/api/v1/semesters', fn () => $semesters->index());
+$router->get('/api/v1/semesters/current', fn () => $semesters->current());
+$router->get('/api/v1/semesters/{id}', fn (string $id) => $semesters->show($id));
+$router->post('/api/v1/semesters', fn () => $semesters->store());
+$router->put('/api/v1/semesters/{id}', fn (string $id) => $semesters->update($id));
+$router->delete('/api/v1/semesters/{id}', fn (string $id) => $semesters->destroy($id));
+
+
+$sections = new SectionController();
+
+$router->get('/api/v1/sections', fn () => $sections->index());
+$router->get('/api/v1/sections/{id}', fn (string $id) => $sections->show($id));
+$router->get('/api/v1/sections/{id}/students', fn (string $id) => $sections->students($id));
+$router->get('/api/v1/courses/{id}/sections', fn (string $id) => $sections->byCourse($id));
+$router->post('/api/v1/sections', fn () => $sections->store());
+$router->put('/api/v1/sections/{id}', fn (string $id) => $sections->update($id));
+$router->delete('/api/v1/sections/{id}', fn (string $id) => $sections->destroy($id));
+$router->post('/api/v1/sections/{id}/open-registration', fn (string $id) => $sections->openRegistration($id));
+$router->post('/api/v1/sections/{id}/close-registration', fn (string $id) => $sections->closeRegistration($id));
+$router->put('/api/v1/sections/{id}/capacity', fn (string $id) => $sections->updateCapacity($id));
+$router->put('/api/v1/sections/{id}/lecturer', fn (string $id) => $sections->assignLecturer($id));
+$router->put('/api/v1/sections/{id}/classroom', fn (string $id) => $sections->changeClassroom($id));
+
+
+$students = new StudentController();
+
+$router->get('/api/v1/students', fn () => $students->index());
+$router->get('/api/v1/students/me', fn () => $students->profile());
+$router->get('/api/v1/students/{id}', fn (string $id) => $students->show($id));
+$router->post('/api/v1/students', fn () => $students->store());
+$router->put('/api/v1/students/{id}', fn (string $id) => $students->update($id));
+$router->delete('/api/v1/students/{id}', fn (string $id) => $students->destroy($id));
+
+
+$lecturers = new LecturerController();
+
+$router->get('/api/v1/lecturers', fn () => $lecturers->index());
+$router->get('/api/v1/lecturers/{id}', fn (string $id) => $lecturers->show($id));
+$router->post('/api/v1/lecturers', fn () => $lecturers->store());
+$router->put('/api/v1/lecturers/{id}', fn (string $id) => $lecturers->update($id));
+$router->delete('/api/v1/lecturers/{id}', fn (string $id) => $lecturers->destroy($id));
+
+
+$enrollments = new EnrollmentController();
+
+$router->post('/api/v1/enrollments/register', fn () => $enrollments->register());
+$router->post('/api/v1/enrollments/drop', fn () => $enrollments->drop());
+$router->get('/api/v1/enrollments/current', fn () => $enrollments->current());
+$router->get('/api/v1/enrollments/history', fn () => $enrollments->history());
+$router->get('/api/v1/enrollments/pending', fn () => $enrollments->pending());
+$router->put('/api/v1/enrollments/{id}/approve', fn (string $id) => $enrollments->approve($id));
+$router->put('/api/v1/enrollments/{id}/reject', fn (string $id) => $enrollments->reject($id));
+
+
+$transcripts = new TranscriptController();
+
+$router->get('/api/v1/transcript', fn () => $transcripts->own());
+$router->get('/api/v1/transcript/{id}', fn (string $id) => $transcripts->forStudent($id));
+$router->get('/api/v1/gpa', fn () => $transcripts->currentGpa());
+$router->get('/api/v1/cgpa', fn () => $transcripts->cumulativeGpa());
+$router->post('/api/v1/gpa/{id}/calculate', fn (string $id) => $transcripts->recalculate($id));
+
+
+$schedules = new ScheduleController();
+
+$router->get('/api/v1/schedule', fn () => $schedules->weekly());
+$router->get('/api/v1/schedule/daily', fn () => $schedules->daily());
+$router->get('/api/v1/schedule/semester', fn () => $schedules->weekly());
+
+
+$attendance = new AttendanceController();
+$excuses = new ExcuseController();
+
+$router->post('/api/v1/attendance/qr-session', fn () => $attendance->openSession());
+$router->get('/api/v1/attendance/qr-session/{id}', fn (string $id) => $attendance->activeSession($id));
+$router->put('/api/v1/attendance/qr-session/{id}/close', fn (string $id) => $attendance->closeSession($id));
+
+$router->post('/api/v1/attendance/scan', fn () => $attendance->scan());
+$router->post('/api/v1/attendance/verify-location', fn () => $attendance->verifyLocation());
+$router->post('/api/v1/attendance/verify-face', fn () => $attendance->verifyFace());
+$router->put('/api/v1/attendance/manual', fn () => $attendance->manual());
+
+$router->post('/api/v1/attendance/excuse', fn () => $excuses->store());
+$router->get('/api/v1/attendance/excuse', fn () => $excuses->index());
+$router->put('/api/v1/attendance/excuse/{id}/approve', fn (string $id) => $excuses->approve($id));
+$router->put('/api/v1/attendance/excuse/{id}/reject', fn (string $id) => $excuses->reject($id));
+
+$router->get('/api/v1/attendance/me', fn () => $attendance->myAttendance());
+$router->get('/api/v1/attendance/statistics', fn () => $attendance->statistics());
+$router->get('/api/v1/attendance/reports/daily', fn () => $attendance->dailyReport());
+$router->get('/api/v1/attendance/reports/monthly', fn () => $attendance->monthlyReport());
+$router->get('/api/v1/attendance/student/{id}', fn (string $id) => $attendance->forStudent($id));
+$router->get('/api/v1/attendance/section/{id}', fn (string $id) => $attendance->forSection($id));
+$router->get('/api/v1/attendance/lecturer/{id}', fn (string $id) => $attendance->forLecturer($id));
+
+$router->put('/api/v1/attendance/{id}', fn (string $id) => $attendance->update($id));
+$router->delete('/api/v1/attendance/{id}', fn (string $id) => $attendance->destroy($id));
+
+
+$materials = new MaterialController();
+
+$router->get('/api/v1/lms/materials', fn () => $materials->index());
+$router->post('/api/v1/lms/materials', fn () => $materials->store());
+$router->get('/api/v1/lms/materials/{id}/download', fn (string $id) => $materials->download($id));
+$router->get('/api/v1/lms/materials/{id}', fn (string $id) => $materials->show($id));
+$router->put('/api/v1/lms/materials/{id}', fn (string $id) => $materials->update($id));
+$router->delete('/api/v1/lms/materials/{id}', fn (string $id) => $materials->destroy($id));
+
+
+$assignments = new AssignmentController();
+
+$router->get('/api/v1/lms/assignments', fn () => $assignments->index());
+$router->post('/api/v1/lms/assignments', fn () => $assignments->store());
+$router->post('/api/v1/lms/assignments/{id}/submit', fn (string $id) => $assignments->submit($id));
+$router->get('/api/v1/lms/assignments/{id}', fn (string $id) => $assignments->show($id));
+$router->put('/api/v1/lms/assignments/{id}', fn (string $id) => $assignments->update($id));
+$router->delete('/api/v1/lms/assignments/{id}', fn (string $id) => $assignments->destroy($id));
+
+$router->get('/api/v1/lms/submissions/{id}', fn (string $id) => $assignments->showSubmission($id));
+$router->put('/api/v1/lms/submissions/{id}/grade', fn (string $id) => $assignments->gradeSubmission($id));
+
+
+$quizzes = new QuizController();
+
+$router->get('/api/v1/lms/quizzes', fn () => $quizzes->index());
+$router->post('/api/v1/lms/quizzes', fn () => $quizzes->store());
+$router->post('/api/v1/lms/quizzes/{id}/submit', fn (string $id) => $quizzes->submit($id));
+$router->get('/api/v1/lms/quizzes/{id}/submissions', fn (string $id) => $quizzes->submissions($id));
+$router->get('/api/v1/lms/quizzes/{id}', fn (string $id) => $quizzes->show($id));
+$router->put('/api/v1/lms/quizzes/{id}', fn (string $id) => $quizzes->update($id));
+$router->delete('/api/v1/lms/quizzes/{id}', fn (string $id) => $quizzes->destroy($id));
+
+
+$lmsContent = new LmsContentController();
+
+$router->get('/api/v1/lms/announcements', fn () => $lmsContent->announcements());
+$router->post('/api/v1/lms/announcements', fn () => $lmsContent->storeAnnouncement());
+$router->put('/api/v1/lms/announcements/{id}', fn (string $id) => $lmsContent->updateAnnouncement($id));
+$router->delete('/api/v1/lms/announcements/{id}', fn (string $id) => $lmsContent->destroyAnnouncement($id));
+
+$router->get('/api/v1/lms/resources', fn () => $lmsContent->resources());
+$router->post('/api/v1/lms/resources', fn () => $lmsContent->storeResource());
+$router->delete('/api/v1/lms/resources/{id}', fn (string $id) => $lmsContent->destroyResource($id));
+
+$router->get('/api/v1/lms/grades', fn () => $lmsContent->grades());
+$router->post('/api/v1/lms/grades', fn () => $lmsContent->storeGrade());
+$router->post('/api/v1/lms/grades/publish', fn () => $lmsContent->publishGrades());
+
+
+$calendar = new CalendarController();
+
+$router->get('/api/v1/calendar', fn () => $calendar->overview());
+$router->post('/api/v1/calendar/sync', fn () => $calendar->synchronise());
+$router->post('/api/v1/calendar/import', fn () => $calendar->import());
+$router->get('/api/v1/calendar/export', fn () => $calendar->export());
+
+$router->get('/api/v1/calendar/events/daily', fn () => $calendar->daily());
+$router->get('/api/v1/calendar/events/weekly', fn () => $calendar->weekly());
+$router->get('/api/v1/calendar/events/monthly', fn () => $calendar->monthly());
+$router->get('/api/v1/calendar/events', fn () => $calendar->events());
+$router->post('/api/v1/calendar/events', fn () => $calendar->store());
+$router->get('/api/v1/calendar/events/{id}', fn (string $id) => $calendar->show($id));
+$router->put('/api/v1/calendar/events/{id}', fn (string $id) => $calendar->update($id));
+$router->delete('/api/v1/calendar/events/{id}', fn (string $id) => $calendar->destroy($id));
+
+$router->get('/api/v1/calendar/reminders', fn () => $calendar->reminders());
+$router->post('/api/v1/calendar/reminders', fn () => $calendar->storeReminder());
+$router->put('/api/v1/calendar/reminders/{id}/complete', fn (string $id) => $calendar->completeReminder($id));
+$router->put('/api/v1/calendar/reminders/{id}', fn (string $id) => $calendar->updateReminder($id));
+$router->delete('/api/v1/calendar/reminders/{id}', fn (string $id) => $calendar->destroyReminder($id));
+
+
+$chat = new ChatController();
+
+$router->get('/api/v1/chat/rooms', fn () => $chat->rooms());
+$router->post('/api/v1/chat/rooms', fn () => $chat->store());
+$router->post('/api/v1/chat/rooms/private', fn () => $chat->openPrivate());
+$router->get('/api/v1/chat/rooms/{id}/messages', fn (string $id) => $chat->messages($id));
+$router->get('/api/v1/chat/rooms/{id}/members', fn (string $id) => $chat->members($id));
+$router->post('/api/v1/chat/rooms/{id}/join', fn (string $id) => $chat->join($id));
+$router->post('/api/v1/chat/rooms/{id}/leave', fn (string $id) => $chat->leave($id));
+$router->get('/api/v1/chat/rooms/{id}', fn (string $id) => $chat->room($id));
+
+$router->get('/api/v1/chat/search', fn () => $chat->search());
+
+$router->post('/api/v1/chat/messages', fn () => $chat->send());
+$router->post('/api/v1/chat/messages/{id}/reply', fn (string $id) => $chat->reply($id));
+$router->put('/api/v1/chat/messages/{id}/pin', fn (string $id) => $chat->pin($id));
+$router->post('/api/v1/chat/messages/{id}/reaction', fn (string $id) => $chat->react($id));
+$router->delete('/api/v1/chat/messages/{id}/reaction', fn (string $id) => $chat->removeReaction($id));
+$router->put('/api/v1/chat/messages/{id}/read', fn (string $id) => $chat->markRead($id));
+$router->get('/api/v1/chat/messages/{id}/read', fn (string $id) => $chat->readReceipts($id));
+$router->put('/api/v1/chat/messages/{id}', fn (string $id) => $chat->edit($id));
+$router->delete('/api/v1/chat/messages/{id}', fn (string $id) => $chat->destroy($id));
+
+$router->get('/api/v1/chat/attachments/{id}', fn (string $id) => $chat->downloadAttachment($id));
+
+
+$finance = new FinanceController();
+
+$router->get('/api/v1/finance/tuition-fees', fn () => $finance->tuitionFees());
+$router->post('/api/v1/finance/tuition-fees', fn () => $finance->storeTuitionFee());
+$router->put('/api/v1/finance/tuition-fees/{id}', fn (string $id) => $finance->updateTuitionFee($id));
+$router->delete('/api/v1/finance/tuition-fees/{id}', fn (string $id) => $finance->destroyTuitionFee($id));
+
+$router->get('/api/v1/finance/invoices', fn () => $finance->invoices());
+$router->post('/api/v1/finance/invoices/generate', fn () => $finance->generateInvoice());
+$router->put('/api/v1/finance/invoices/{id}/cancel', fn (string $id) => $finance->cancelInvoice($id));
+$router->get('/api/v1/finance/invoices/{id}', fn (string $id) => $finance->invoice($id));
+
+$router->get('/api/v1/finance/payments', fn () => $finance->payments());
+$router->post('/api/v1/finance/payments', fn () => $finance->storePayment());
+$router->get('/api/v1/finance/payments/{id}', fn (string $id) => $finance->payment($id));
+
+$router->get('/api/v1/finance/scholarships', fn () => $finance->scholarships());
+$router->post('/api/v1/finance/scholarships', fn () => $finance->storeScholarship());
+$router->put('/api/v1/finance/scholarships/{id}/revoke', fn (string $id) => $finance->revokeScholarship($id));
+
+$router->get('/api/v1/finance/holds', fn () => $finance->holds());
+$router->post('/api/v1/finance/holds', fn () => $finance->storeHold());
+$router->put('/api/v1/finance/holds/{id}/release', fn (string $id) => $finance->releaseHold($id));
+
+$router->get('/api/v1/finance/standing', fn () => $finance->standing());
+
+$router->get('/api/v1/finance/reports/balances', fn () => $finance->balanceReport());
+$router->get('/api/v1/finance/reports/revenue', fn () => $finance->revenueReport());
+$router->get('/api/v1/finance/reports/outstanding', fn () => $finance->outstandingReport());
+
+
+$foodCourt = new FoodCourtController();
+
+$router->get('/api/v1/food-court/restaurants', fn () => $foodCourt->restaurants());
+$router->post('/api/v1/food-court/restaurants', fn () => $foodCourt->storeRestaurant());
+$router->get('/api/v1/food-court/restaurants/{id}/menu', fn (string $id) => $foodCourt->menu($id));
+$router->get('/api/v1/food-court/restaurants/{id}/reviews', fn (string $id) => $foodCourt->reviews($id));
+$router->get('/api/v1/food-court/restaurants/{id}/sales', fn (string $id) => $foodCourt->salesReport($id));
+$router->get('/api/v1/food-court/restaurants/{id}', fn (string $id) => $foodCourt->restaurant($id));
+$router->put('/api/v1/food-court/restaurants/{id}', fn (string $id) => $foodCourt->updateRestaurant($id));
+$router->delete('/api/v1/food-court/restaurants/{id}', fn (string $id) => $foodCourt->destroyRestaurant($id));
+
+$router->get('/api/v1/food-court/categories', fn () => $foodCourt->categories());
+$router->post('/api/v1/food-court/categories', fn () => $foodCourt->storeCategory());
+$router->delete('/api/v1/food-court/categories/{id}', fn (string $id) => $foodCourt->destroyCategory($id));
+
+$router->post('/api/v1/food-court/menu', fn () => $foodCourt->storeMenuItem());
+$router->put('/api/v1/food-court/menu/{id}', fn (string $id) => $foodCourt->updateMenuItem($id));
+$router->delete('/api/v1/food-court/menu/{id}', fn (string $id) => $foodCourt->destroyMenuItem($id));
+
+$router->get('/api/v1/food-court/orders', fn () => $foodCourt->orders());
+$router->post('/api/v1/food-court/orders', fn () => $foodCourt->storeOrder());
+$router->put('/api/v1/food-court/orders/{id}/cancel', fn (string $id) => $foodCourt->cancelOrder($id));
+$router->put('/api/v1/food-court/orders/{id}/status', fn (string $id) => $foodCourt->updateOrderStatus($id));
+$router->get('/api/v1/food-court/orders/{id}', fn (string $id) => $foodCourt->order($id));
+
+$router->post('/api/v1/food-court/reviews', fn () => $foodCourt->storeReview());
+$router->delete('/api/v1/food-court/reviews/{id}', fn (string $id) => $foodCourt->destroyReview($id));
+
+
+$reports = new ReportController();
+
+$router->get('/api/v1/reports', fn () => $reports->index());
+$router->post('/api/v1/reports/export', fn () => $reports->export());
+$router->get(
+    '/api/v1/reports/{category}/{name}',
+    fn (string $category, string $name) => $reports->generate($category, $name)
+);
+
+
+$downloads = new DownloadCenterController();
+
+$router->get('/api/v1/download-center/files', fn () => $downloads->files());
+$router->post('/api/v1/download-center/files', fn () => $downloads->store());
+$router->get('/api/v1/download-center/files/{id}/download', fn (string $id) => $downloads->download($id));
+$router->get('/api/v1/download-center/files/{id}', fn (string $id) => $downloads->file($id));
+$router->put('/api/v1/download-center/files/{id}', fn (string $id) => $downloads->update($id));
+$router->delete('/api/v1/download-center/files/{id}', fn (string $id) => $downloads->destroy($id));
+
+$router->get('/api/v1/download-center/history', fn () => $downloads->history());
+$router->get('/api/v1/download-center/transcript', fn () => $downloads->transcript());
+$router->get('/api/v1/download-center/schedule', fn () => $downloads->schedule());
+$router->get('/api/v1/download-center/invoices/{id}', fn (string $id) => $downloads->invoice($id));
+
+return $router;

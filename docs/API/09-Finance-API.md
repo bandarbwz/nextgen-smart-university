@@ -1,17 +1,17 @@
-# AI Examination API
+# Finance API
 
 ## Purpose
 
-This document defines the AI Examination REST APIs for the NextGen Smart University Platform.
+This document defines the Finance REST APIs for the NextGen Smart University Platform.
 
-The AI Examination API manages online examinations, AI monitoring, face detection, eye tracking, head pose detection, browser monitoring, violation detection, examination recordings, and AI-generated reports.
+The Finance API manages tuition fee structures, student invoices, payments, scholarships, financial holds, and financial reporting.
 
 ---
 
 # Base URL
 
 ```
-/api/v1/ai-exam
+/api/v1/finance
 ```
 
 ---
@@ -28,252 +28,340 @@ Authorization: Bearer <JWT_TOKEN>
 
 # Content Type
 
-Standard Requests
-
 ```
-application/json
-```
-
-Media Upload
-
-```
-multipart/form-data
+Content-Type: application/json
 ```
 
 ---
 
-# Examination APIs
+# Tuition Fee APIs
 
 ---
 
-## Get Examinations
+## Get Tuition Fees
 
 ```
-GET /api/v1/ai-exam/examinations
+GET /api/v1/finance/tuition-fees
 ```
+
+Optional filters: `program_id`, `semester_id`
+
+### Permissions
+
+- Administrator
 
 ---
 
-## Get Examination
+## Create Tuition Fee
 
 ```
-GET /api/v1/ai-exam/examinations/{id}
+POST /api/v1/finance/tuition-fees
 ```
+
+### Request Body
+
+```json
+{
+    "program_id": 1,
+    "semester_id": 1,
+    "fee_type": "Tuition",
+    "amount": 4500.00
+}
+```
+
+### Permissions
+
+- Administrator
 
 ---
 
-## Create Examination
+## Update Tuition Fee
 
 ```
-POST /api/v1/ai-exam/examinations
-```
-
-Permissions
-
-- Lecturer
-
----
-
-## Update Examination
-
-```
-PUT /api/v1/ai-exam/examinations/{id}
-```
-
----
-
-## Delete Examination
-
-```
-DELETE /api/v1/ai-exam/examinations/{id}
-```
-
----
-
-# Examination Session APIs
-
----
-
-## Start Examination
-
-```
-POST /api/v1/ai-exam/session/start
-```
-
-Permissions
-
-- Student
-
----
-
-## Finish Examination
-
-```
-POST /api/v1/ai-exam/session/end
-```
-
-Permissions
-
-- Student
-
----
-
-## Pause Examination
-
-```
-PUT /api/v1/ai-exam/session/pause
+PUT /api/v1/finance/tuition-fees/{id}
 ```
 
 ---
 
-## Resume Examination
+## Delete Tuition Fee
 
 ```
-PUT /api/v1/ai-exam/session/resume
-```
-
----
-
-# AI Verification APIs
-
----
-
-## Face Verification
-
-```
-POST /api/v1/ai-exam/verify-face
+DELETE /api/v1/finance/tuition-fees/{id}
 ```
 
 ---
 
-## Eye Tracking
+# Invoice APIs
+
+---
+
+## Get Invoices
 
 ```
-POST /api/v1/ai-exam/eye-tracking
+GET /api/v1/finance/invoices
+```
+
+A student receives only their own invoices. Administrators may pass `student_id`.
+
+---
+
+## Get Invoice
+
+```
+GET /api/v1/finance/invoices/{id}
+```
+
+Returns the invoice with its payment history.
+
+---
+
+## Generate Invoice
+
+Generates an invoice for a student for a semester from the tuition fee structure of their programme, less any active scholarship.
+
+```
+POST /api/v1/finance/invoices/generate
+```
+
+### Request Body
+
+```json
+{
+    "student_id": 1,
+    "semester_id": 1,
+    "due_date": "2026-10-01"
+}
+```
+
+### Permissions
+
+- Administrator
+
+### Error Responses
+
+- 404 No tuition fees configured for the programme and semester
+- 409 An invoice already exists for that student and semester
+
+---
+
+## Cancel Invoice
+
+```
+PUT /api/v1/finance/invoices/{id}/cancel
+```
+
+An invoice that has received a payment cannot be cancelled.
+
+### Permissions
+
+- Administrator
+
+---
+
+# Payment APIs
+
+---
+
+## Get Payments
+
+```
+GET /api/v1/finance/payments
 ```
 
 ---
 
-## Head Pose Detection
+## Record Payment
 
 ```
-POST /api/v1/ai-exam/head-pose
+POST /api/v1/finance/payments
+```
+
+### Request Body
+
+```json
+{
+    "invoice_id": 1,
+    "payment_reference": "TXN-2026-0001",
+    "payment_method": "Online Banking",
+    "amount": 1500.00
+}
+```
+
+### Permissions
+
+- Administrator
+
+### Error Responses
+
+- 409 The payment exceeds the outstanding balance
+- 409 The payment reference has already been used
+- 409 The invoice is cancelled
+
+---
+
+## Get Receipt
+
+```
+GET /api/v1/finance/payments/{id}
 ```
 
 ---
 
-## Browser Monitoring
+# Scholarship APIs
+
+---
+
+## Get Scholarships
 
 ```
-POST /api/v1/ai-exam/browser-monitor
+GET /api/v1/finance/scholarships
 ```
 
 ---
 
-## Device Monitoring
+## Award Scholarship
 
 ```
-POST /api/v1/ai-exam/device-monitor
+POST /api/v1/finance/scholarships
+```
+
+### Request Body
+
+```json
+{
+    "student_id": 1,
+    "scholarship_name": "Merit Award",
+    "amount": 1000.00,
+    "start_date": "2026-09-01",
+    "end_date": "2027-01-15"
+}
+```
+
+### Permissions
+
+- Administrator
+
+---
+
+## Update Scholarship
+
+```
+PUT /api/v1/finance/scholarships/{id}
 ```
 
 ---
 
-# Violation APIs
-
----
-
-## Report Violation
+## Revoke Scholarship
 
 ```
-POST /api/v1/ai-exam/violations
+PUT /api/v1/finance/scholarships/{id}/revoke
 ```
 
 ---
 
-## Get Violations
+# Financial Hold APIs
+
+---
+
+## Get Holds
 
 ```
-GET /api/v1/ai-exam/violations
+GET /api/v1/finance/holds
 ```
 
 ---
 
-## Get Student Violations
+## Apply Hold
 
 ```
-GET /api/v1/ai-exam/violations/{student_id}
+POST /api/v1/finance/holds
+```
+
+### Request Body
+
+```json
+{
+    "student_id": 1,
+    "reason": "Outstanding tuition balance"
+}
+```
+
+### Permissions
+
+- Administrator
+
+---
+
+## Release Hold
+
+```
+PUT /api/v1/finance/holds/{id}/release
 ```
 
 ---
 
-# Recording APIs
+## Check My Standing
 
----
-
-## Upload Recording
+Returns whether the authenticated student is currently blocked from registration.
 
 ```
-POST /api/v1/ai-exam/recordings
+GET /api/v1/finance/standing
 ```
 
 ---
 
-## View Recording
+# Report APIs
+
+---
+
+## Student Balance Report
 
 ```
-GET /api/v1/ai-exam/recordings/{id}
+GET /api/v1/finance/reports/balances
 ```
 
 ---
 
-# AI Report APIs
+## Revenue Report
+
+```
+GET /api/v1/finance/reports/revenue
+```
+
+Optional filters: `semester_id`
 
 ---
 
-## Generate AI Report
+## Outstanding Invoice Report
 
 ```
-POST /api/v1/ai-exam/reports/generate
-```
-
----
-
-## Get AI Report
-
-```
-GET /api/v1/ai-exam/reports/{id}
-```
-
----
-
-## Download AI Report
-
-```
-GET /api/v1/ai-exam/reports/{id}/download
+GET /api/v1/finance/reports/outstanding
 ```
 
 ---
 
 # Validation Rules
 
-Examination
+Invoice
 
-- Examination must be active.
-- Student must be enrolled.
-- Examination time must be valid.
+- Amount must be greater than zero.
+- Due date is required.
 
-AI Verification
+Payment
 
-- Camera access required.
-- Single face detected.
-- Face must match registered student.
-- Eye tracking must remain active.
+- Amount must be greater than zero.
+- Payment reference must be unique.
+- Payment method must be one of the supported methods.
 
-Violation
+Scholarship
 
-- Violation type required.
-- Timestamp required.
-- AI confidence score required.
+- Amount must be greater than zero.
+- Amount cannot exceed the tuition fees for the programme.
+- End date must be after the start date.
+
+Financial Hold
+
+- Reason is required.
 
 ---
 
@@ -281,12 +369,9 @@ Violation
 
 - JWT Authentication
 - Role-Based Access Control
-- HTTPS Only
-- Camera Verification
-- Browser Lockdown
-- Device Validation
-- Secure Video Storage
-- Audit Logging
+- Students may read only their own financial records
+- Payment records are never deleted
+- All financial changes are logged
 
 ---
 
@@ -310,35 +395,30 @@ Violation
 
 Student
 
-- Start Examination
-- Submit Examination
-- View Personal AI Report
-
-Lecturer
-
-- Create Examination
-- View AI Reports
-- Review Violations
-
-Coordinator
-
-- Review Examination Reports
+- View own invoices
+- View own payment history
+- View own scholarships
+- View own financial standing
 
 Administrator
 
-- Full AI Examination Management
+- Full finance management
 
 ---
 
 # Business Rules
 
-- Only enrolled students may access examinations.
-- AI verification must succeed before the examination begins.
-- Camera must remain active throughout the examination.
-- Browser tab switching is recorded as a violation.
-- Multiple faces trigger an immediate violation.
-- AI violations are automatically included in the examination report.
-- Examination sessions are automatically terminated when critical security policies are violated.
+- Every invoice belongs to one student and one semester.
+- An invoice is generated from the tuition fee structure of the student's
+  programme for that semester, less any active scholarship.
+- Payments cannot exceed the outstanding balance of the invoice.
+- A payment reference is unique across the platform.
+- Invoice status moves from Pending to Partially Paid to Paid automatically as
+  payments are recorded, and to Overdue once the due date passes while a
+  balance remains.
+- Payment history is never deleted.
+- Scholarships reduce the invoiced amount at generation time.
+- Students with an active financial hold cannot register for courses.
 
 ---
 
@@ -351,14 +431,23 @@ This API depends on:
 
 Related APIs
 
-- Attendance API
-- Assessment API
-- Notification API
 - Reports API
-- Reset Examination API
+- Notification API
 
 ---
 
 # Notes
 
-The AI Examination API provides secure online examination management using artificial intelligence. It integrates face verification, eye tracking, head pose detection, browser monitoring, and automated violation reporting to maintain academic integrity while supporting large-scale online examinations.
+This specification was reconstructed from `docs/FEATURES/09-Finance.md`. The
+original file at this path was a duplicate of the AI Examination API and
+contained no finance content.
+
+Endpoint paths use the `/api/v1` prefix used by every other API document. The
+feature document's API mapping section uses a shorter `/api/finance` form, which
+is not the convention the implemented modules follow.
+
+The feature document lists a "Finance Staff" actor, but there is no such role in
+`docs/FEATURES/01-Authentication.md`, which defines six roles: Student,
+Lecturer, Coordinator, Administrator, Restaurant Owner and STAD Staff. Finance
+management is therefore assigned to Administrator until a Finance Staff role is
+added to the authentication module.
