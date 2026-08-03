@@ -14,6 +14,7 @@ import { TranscriptPage } from './pages/student/TranscriptPage';
 import { AttendancePage } from './pages/student/AttendancePage';
 import { CourseContentPage } from './pages/student/CourseContentPage';
 import { FinancePage } from './pages/student/FinancePage';
+import { FoodCourtPage } from './pages/student/FoodCourtPage';
 import { AttendanceSessionPage } from './pages/lecturer/AttendanceSessionPage';
 import { TeachingPage } from './pages/lecturer/TeachingPage';
 import { CalendarPage } from './pages/CalendarPage';
@@ -40,6 +41,7 @@ export default function App() {
                                 <Route path="/courses" element={<CourseCatalogPage />} />
                                 <Route path="/calendar" element={<CalendarPage />} />
                                 <Route path="/chat" element={<ChatPage />} />
+                                <Route path="/food-court" element={<FoodCourtPage />} />
                                 <Route path="/profile" element={<ProfilePage />} />
 
                                 <Route element={<ProtectedRoute allowedRoles={['Student']} />}>

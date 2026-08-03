@@ -1,7 +1,6 @@
 import {
     BookOpen,
     CalendarCheck,
-    Wallet,
     CalendarDays,
     ClipboardList,
     GraduationCap,
@@ -12,6 +11,8 @@ import {
     ScanLine,
     ScrollText,
     Users,
+    Utensils,
+    Wallet,
 } from 'lucide-react';
 
 export const navigationGroups = [
@@ -21,6 +22,7 @@ export const navigationGroups = [
             { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, roles: null },
             { to: '/calendar', label: 'Calendar', icon: CalendarDays, roles: null },
             { to: '/chat', label: 'Chat', icon: MessagesSquare, roles: null },
+            { to: '/food-court', label: 'Food Court', icon: Utensils, roles: null },
         ],
     },
     {
