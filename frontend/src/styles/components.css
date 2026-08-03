@@ -818,3 +818,39 @@
         max-height: 620px;
     }
 }
+
+.nsu-menu-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.nsu-menu-line:last-child {
+    border-bottom: none;
+}
+
+.nsu-menu-line__name {
+    margin: 0;
+    font-weight: 600;
+    font-size: var(--text-sm);
+}
+
+.nsu-menu-line__meta {
+    margin: 2px 0 0;
+    font-size: var(--text-xs);
+    color: var(--color-muted-foreground);
+}
+
+.nsu-menu-line__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+.nsu-menu-line__actions button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}

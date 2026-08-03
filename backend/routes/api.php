@@ -10,6 +10,7 @@ use App\Controllers\ChatController;
 use App\Controllers\CourseController;
 use App\Controllers\ExcuseController;
 use App\Controllers\FinanceController;
+use App\Controllers\FoodCourtController;
 use App\Controllers\LmsContentController;
 use App\Controllers\MaterialController;
 use App\Controllers\QuizController;
@@ -314,5 +315,34 @@ $router->get('/api/v1/finance/standing', fn () => $finance->standing());
 $router->get('/api/v1/finance/reports/balances', fn () => $finance->balanceReport());
 $router->get('/api/v1/finance/reports/revenue', fn () => $finance->revenueReport());
 $router->get('/api/v1/finance/reports/outstanding', fn () => $finance->outstandingReport());
+
+
+$foodCourt = new FoodCourtController();
+
+$router->get('/api/v1/food-court/restaurants', fn () => $foodCourt->restaurants());
+$router->post('/api/v1/food-court/restaurants', fn () => $foodCourt->storeRestaurant());
+$router->get('/api/v1/food-court/restaurants/{id}/menu', fn (string $id) => $foodCourt->menu($id));
+$router->get('/api/v1/food-court/restaurants/{id}/reviews', fn (string $id) => $foodCourt->reviews($id));
+$router->get('/api/v1/food-court/restaurants/{id}/sales', fn (string $id) => $foodCourt->salesReport($id));
+$router->get('/api/v1/food-court/restaurants/{id}', fn (string $id) => $foodCourt->restaurant($id));
+$router->put('/api/v1/food-court/restaurants/{id}', fn (string $id) => $foodCourt->updateRestaurant($id));
+$router->delete('/api/v1/food-court/restaurants/{id}', fn (string $id) => $foodCourt->destroyRestaurant($id));
+
+$router->get('/api/v1/food-court/categories', fn () => $foodCourt->categories());
+$router->post('/api/v1/food-court/categories', fn () => $foodCourt->storeCategory());
+$router->delete('/api/v1/food-court/categories/{id}', fn (string $id) => $foodCourt->destroyCategory($id));
+
+$router->post('/api/v1/food-court/menu', fn () => $foodCourt->storeMenuItem());
+$router->put('/api/v1/food-court/menu/{id}', fn (string $id) => $foodCourt->updateMenuItem($id));
+$router->delete('/api/v1/food-court/menu/{id}', fn (string $id) => $foodCourt->destroyMenuItem($id));
+
+$router->get('/api/v1/food-court/orders', fn () => $foodCourt->orders());
+$router->post('/api/v1/food-court/orders', fn () => $foodCourt->storeOrder());
+$router->put('/api/v1/food-court/orders/{id}/cancel', fn (string $id) => $foodCourt->cancelOrder($id));
+$router->put('/api/v1/food-court/orders/{id}/status', fn (string $id) => $foodCourt->updateOrderStatus($id));
+$router->get('/api/v1/food-court/orders/{id}', fn (string $id) => $foodCourt->order($id));
+
+$router->post('/api/v1/food-court/reviews', fn () => $foodCourt->storeReview());
+$router->delete('/api/v1/food-court/reviews/{id}', fn (string $id) => $foodCourt->destroyReview($id));
 
 return $router;
