@@ -1,6 +1,7 @@
 import {
     BookOpen,
     CalendarCheck,
+    Wallet,
     CalendarDays,
     ClipboardList,
     GraduationCap,
@@ -31,6 +32,7 @@ export const navigationGroups = [
             { to: '/course-content', label: 'Course Content', icon: BookOpen, roles: ['Student'] },
             { to: '/attendance', label: 'My Attendance', icon: CalendarCheck, roles: ['Student'] },
             { to: '/transcript', label: 'Transcript', icon: ScrollText, roles: ['Student'] },
+            { to: '/finance', label: 'Finance', icon: Wallet, roles: ['Student'] },
         ],
     },
     {

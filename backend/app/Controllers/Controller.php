@@ -36,6 +36,11 @@ abstract class Controller
         return $user;
     }
 
+    protected function authenticateAsAdministrator(): array
+    {
+        return $this->authenticateAs([]);
+    }
+
     protected function run(Closure $action): mixed
     {
         try {

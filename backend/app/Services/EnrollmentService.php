@@ -8,6 +8,8 @@ use App\Helpers\Database;
 use App\Models\ClassSchedule;
 use App\Models\Course;
 use App\Models\Enrollment;
+use App\Models\FinancialHold;
+use App\Models\Invoice;
 use App\Models\Section;
 use App\Models\Semester;
 use App\Models\Student;
@@ -24,7 +26,9 @@ class EnrollmentService
         private readonly Student $students = new Student(),
         private readonly Semester $semesters = new Semester(),
         private readonly ClassSchedule $schedules = new ClassSchedule(),
-        private readonly CourseChatProvisioner $chat = new CourseChatProvisioner()
+        private readonly CourseChatProvisioner $chat = new CourseChatProvisioner(),
+        private readonly FinancialHold $holds = new FinancialHold(),
+        private readonly Invoice $invoices = new Invoice()
     ) {
     }
 
@@ -41,6 +45,7 @@ class EnrollmentService
         $semesterId = (int) $section['semester_id'];
 
         $this->guardRegistrationPeriod($semesterId);
+        $this->guardFinancialStanding($studentId);
         $this->guardSectionIsOpen($section);
         $this->guardNotAlreadyRegistered($studentId, (int) $section['course_id']);
         $this->guardPrerequisites($studentId, (int) $section['course_id']);
@@ -201,6 +206,23 @@ class EnrollmentService
     {
         if (!$this->semesters->registrationIsOpen($semesterId)) {
             throw new ApiException('The registration period is closed.', 403);
+        }
+    }
+
+    private function guardFinancialStanding(int $studentId): void
+    {
+        if ($this->holds->activeForStudent($studentId) !== null) {
+            throw new ApiException(
+                'A financial hold is active on your account. Please contact the finance office.',
+                403
+            );
+        }
+
+        if ($this->invoices->hasOverdueInvoice($studentId)) {
+            throw new ApiException(
+                'You have an overdue tuition invoice and cannot register until it is settled.',
+                403
+            );
         }
     }
 
