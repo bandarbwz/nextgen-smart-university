@@ -19,6 +19,8 @@ import { AttendanceSessionPage } from './pages/lecturer/AttendanceSessionPage';
 import { TeachingPage } from './pages/lecturer/TeachingPage';
 import { CalendarPage } from './pages/CalendarPage';
 import { ChatPage } from './pages/ChatPage';
+import { ReportsPage } from './pages/ReportsPage';
+import { DownloadCenterPage } from './pages/DownloadCenterPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import './styles/components.css';
@@ -42,6 +44,8 @@ export default function App() {
                                 <Route path="/calendar" element={<CalendarPage />} />
                                 <Route path="/chat" element={<ChatPage />} />
                                 <Route path="/food-court" element={<FoodCourtPage />} />
+                                <Route path="/reports" element={<ReportsPage />} />
+                                <Route path="/downloads" element={<DownloadCenterPage />} />
                                 <Route path="/profile" element={<ProfilePage />} />
 
                                 <Route element={<ProtectedRoute allowedRoles={['Student']} />}>

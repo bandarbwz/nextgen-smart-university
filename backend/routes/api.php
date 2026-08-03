@@ -8,12 +8,14 @@ use App\Controllers\AuthController;
 use App\Controllers\CalendarController;
 use App\Controllers\ChatController;
 use App\Controllers\CourseController;
+use App\Controllers\DownloadCenterController;
 use App\Controllers\ExcuseController;
 use App\Controllers\FinanceController;
 use App\Controllers\FoodCourtController;
 use App\Controllers\LmsContentController;
 use App\Controllers\MaterialController;
 use App\Controllers\QuizController;
+use App\Controllers\ReportController;
 use App\Controllers\DepartmentController;
 use App\Controllers\EnrollmentController;
 use App\Controllers\FacultyController;
@@ -344,5 +346,30 @@ $router->get('/api/v1/food-court/orders/{id}', fn (string $id) => $foodCourt->or
 
 $router->post('/api/v1/food-court/reviews', fn () => $foodCourt->storeReview());
 $router->delete('/api/v1/food-court/reviews/{id}', fn (string $id) => $foodCourt->destroyReview($id));
+
+
+$reports = new ReportController();
+
+$router->get('/api/v1/reports', fn () => $reports->index());
+$router->post('/api/v1/reports/export', fn () => $reports->export());
+$router->get(
+    '/api/v1/reports/{category}/{name}',
+    fn (string $category, string $name) => $reports->generate($category, $name)
+);
+
+
+$downloads = new DownloadCenterController();
+
+$router->get('/api/v1/download-center/files', fn () => $downloads->files());
+$router->post('/api/v1/download-center/files', fn () => $downloads->store());
+$router->get('/api/v1/download-center/files/{id}/download', fn (string $id) => $downloads->download($id));
+$router->get('/api/v1/download-center/files/{id}', fn (string $id) => $downloads->file($id));
+$router->put('/api/v1/download-center/files/{id}', fn (string $id) => $downloads->update($id));
+$router->delete('/api/v1/download-center/files/{id}', fn (string $id) => $downloads->destroy($id));
+
+$router->get('/api/v1/download-center/history', fn () => $downloads->history());
+$router->get('/api/v1/download-center/transcript', fn () => $downloads->transcript());
+$router->get('/api/v1/download-center/schedule', fn () => $downloads->schedule());
+$router->get('/api/v1/download-center/invoices/{id}', fn (string $id) => $downloads->invoice($id));
 
 return $router;

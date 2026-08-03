@@ -18,6 +18,7 @@ class TestDatabase
         '06-chat.sql',
         '07-finance.sql',
         '08-food-court.sql',
+        '09-reports-download-center.sql',
     ];
 
     private const SEED_FILES = [
@@ -57,6 +58,7 @@ class TestDatabase
     public static function truncateBusinessTables(PDO $pdo): void
     {
         $tables = [
+            'DownloadHistory', 'DownloadFile', 'ReportHistory',
             'RestaurantReview', 'OrderPayment', 'OrderItem', 'FoodOrder',
             'MenuItem', 'FoodCategory', 'Restaurant',
             'Payment', 'Invoice', 'Scholarship', 'FinancialHold', 'TuitionFee',

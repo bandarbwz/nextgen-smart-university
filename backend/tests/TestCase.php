@@ -118,9 +118,12 @@ abstract class TestCase extends BaseTestCase
         return ['user_id' => $userId, 'lecturer_id' => (int) $this->db->lastInsertId()];
     }
 
-    protected function createStudent(array $structure, string $email = 'student@test.edu'): array
-    {
-        $userId = $this->createUser('Student', $email, 'Test Student');
+    protected function createStudent(
+        array $structure,
+        string $email = 'student@test.edu',
+        string $fullName = 'Test Student'
+    ): array {
+        $userId = $this->createUser('Student', $email, $fullName);
 
         $statement = $this->db->prepare(
             'INSERT INTO Student
