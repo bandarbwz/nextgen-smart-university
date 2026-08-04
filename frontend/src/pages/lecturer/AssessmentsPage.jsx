@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ClipboardCheck, Send } from 'lucide-react';
+import { ClipboardCheck, Send, ShieldCheck } from 'lucide-react';
 import { PageHeader } from '../../components/PageHeader';
 import { EmptyState } from '../../components/EmptyState';
 import { SkeletonRows } from '../../components/Skeleton';
@@ -7,6 +7,7 @@ import { Badge } from '../../components/Badge';
 import { Alert } from '../../components/Alert';
 import { Button } from '../../components/Button';
 import { assessmentService } from '../../services/assessmentService';
+import { gradeApprovalService } from '../../services/gradeApprovalService';
 import { readApiError } from '../../services/apiClient';
 import { useToast } from '../../hooks/useToast';
 
@@ -79,6 +80,15 @@ export function AssessmentsPage() {
         }
     };
 
+    const submitForApproval = async () => {
+        try {
+            await gradeApprovalService.submit(detail.section_id);
+            notify('Grades submitted to the coordinator.', 'success');
+        } catch (error) {
+            notify(readApiError(error, 'Unable to submit the grades.').message, 'error');
+        }
+    };
+
     const publish = async () => {
         try {
             const outcome = await assessmentService.publish(selectedId);
@@ -118,10 +128,24 @@ export function AssessmentsPage() {
                 title="Assessments"
                 subtitle="Weighted components and grade entry."
                 actions={
-                    detail && detail.status !== 'closed' ? (
-                        <Button variant="primary" icon={Send} onClick={publish}>
-                            Publish results
-                        </Button>
+                    detail ? (
+                        <div className="nsu-table__actions">
+                            {detail.status !== 'closed' && (
+                                <Button variant="secondary" icon={Send} onClick={publish}>
+                                    Publish results
+                                </Button>
+                            )}
+
+                            {weights?.is_complete && (
+                                <Button
+                                    variant="primary"
+                                    icon={ShieldCheck}
+                                    onClick={submitForApproval}
+                                >
+                                    Submit for approval
+                                </Button>
+                            )}
+                        </div>
                     ) : null
                 }
             />

@@ -48,6 +48,7 @@ Phase 1 and Phase 2 are complete and tested. Student Activities, the first modul
 | 3 | Student Activities | Done | Done | Yes |
 | 3 | Notification Center | Done | Done | Yes |
 | 3 | Assessment System | Done | Done | Yes |
+| 3 | Grade Approval | Done | Done | Yes |
 
 Totals: 67 database tables, 157 backend PHP files, 63 frontend files,
 223 tests with 401 assertions.
@@ -230,6 +231,23 @@ student who could pause their own timer could stop the clock at will. Pause and
 resume are Lecturer and Coordinator only, and resuming extends the deadline by
 exactly the time paused.
 
+**Grade approval is the only thing that writes a transcript row.** Until this
+module existed, nothing in the platform ever inserted into `Transcript`, so
+`GpaService` and the transcript page read an empty table and every student sat
+at a GPA of zero forever. Approval now writes the row and recalculates the GPA,
+which is what makes the academic record real rather than decorative.
+
+**Grades must be finished before they can be submitted.** The scheme has to add
+up to a hundred and every enrolled student needs a complete set of published
+components. Submitting half marked grades would ask the coordinator to approve
+something incomplete.
+
+**Rejecting or returning grades requires remarks.** A refusal with no reason
+leaves the lecturer nothing to act on.
+
+**The approval log is append only.** Rows are never updated or deleted, because
+the point of an audit log is that it cannot be tidied up afterwards.
+
 **The Assessment module is the weighting layer, not a second grade book.** The
 Academic module already had `Grade`, which records individual marked items with
 no weighting. Assessment adds what `Grade` never had: a weighted scheme per
@@ -391,8 +409,8 @@ archive.
 - **No frontend tests.** The backend is covered, the React side is not.
 - **`docs/ARCHITECTURE/03-Backend-Architecture.md` still describes Node.js** and
   contradicts the rest of the documentation.
-- **Grade Approval, Reset Examination, Settings, System and Role Management
-  modules** are documented but not built.
+- **Reset Examination, Settings, System and Role Management modules** are
+  documented but not built.
 - **Push and SMS notifications are not implemented.** Both endpoints exist and
   return 501 with a plain explanation rather than accepting a request and
   quietly doing nothing. Neither has a provider.

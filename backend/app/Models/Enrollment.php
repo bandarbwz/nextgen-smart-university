@@ -168,6 +168,19 @@ class Enrollment extends Model
         return array_map('intval', $statement->fetchAll(\PDO::FETCH_COLUMN));
     }
 
+    public function approvedStudentIds(int $sectionId): array
+    {
+        $statement = $this->db->prepare(
+            "SELECT student_id FROM Enrollment
+             WHERE section_id = :section_id AND enrollment_status IN ('Approved', 'Completed')
+             ORDER BY student_id"
+        );
+
+        $statement->execute(['section_id' => $sectionId]);
+
+        return array_map('intval', $statement->fetchAll(\PDO::FETCH_COLUMN));
+    }
+
     public function updateStatus(int $id, string $status): bool
     {
         $statement = $this->db->prepare(

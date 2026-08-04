@@ -16,6 +16,7 @@ use App\Controllers\DownloadCenterController;
 use App\Controllers\ExcuseController;
 use App\Controllers\FinanceController;
 use App\Controllers\FoodCourtController;
+use App\Controllers\GradeApprovalController;
 use App\Controllers\LmsContentController;
 use App\Controllers\MaterialController;
 use App\Controllers\NotificationController;
@@ -545,5 +546,19 @@ $router->put('/api/v1/assessments/{id}/publish', fn (string $id) => $assessments
 $router->get('/api/v1/assessments/{id}', fn (string $id) => $assessments->show($id));
 $router->put('/api/v1/assessments/{id}', fn (string $id) => $assessments->update($id));
 $router->delete('/api/v1/assessments/{id}', fn (string $id) => $assessments->destroy($id));
+
+
+$gradeApprovals = new GradeApprovalController();
+
+$router->get('/api/v1/grade-approvals/history', fn () => $gradeApprovals->history());
+$router->get('/api/v1/grade-approvals', fn () => $gradeApprovals->index());
+$router->post('/api/v1/grade-approvals', fn () => $gradeApprovals->store());
+$router->put('/api/v1/grade-approvals/{id}/approve', fn (string $id) => $gradeApprovals->approve($id));
+$router->put('/api/v1/grade-approvals/{id}/reject', fn (string $id) => $gradeApprovals->reject($id));
+$router->put(
+    '/api/v1/grade-approvals/{id}/return',
+    fn (string $id) => $gradeApprovals->returnForRevision($id)
+);
+$router->get('/api/v1/grade-approvals/{id}', fn (string $id) => $gradeApprovals->show($id));
 
 return $router;

@@ -42,4 +42,36 @@ class Transcript extends Model
 
         return $statement->fetchAll();
     }
+
+    /**
+     * One row per student per course. Re-approving a corrected grade replaces
+     * the entry rather than leaving two conflicting records behind.
+     */
+    public function record(
+        int $studentId,
+        int $courseId,
+        int $semesterId,
+        string $grade,
+        float $gradePoints,
+        int $earnedCreditHours
+    ): bool {
+        $statement = $this->db->prepare(
+            'INSERT INTO Transcript
+                (student_id, course_id, semester_id, grade, grade_points, earned_credit_hours)
+             VALUES (:student_id, :course_id, :semester_id, :grade, :grade_points, :earned)
+             ON DUPLICATE KEY UPDATE
+                grade = VALUES(grade),
+                grade_points = VALUES(grade_points),
+                earned_credit_hours = VALUES(earned_credit_hours)'
+        );
+
+        return $statement->execute([
+            'student_id' => $studentId,
+            'course_id' => $courseId,
+            'semester_id' => $semesterId,
+            'grade' => $grade,
+            'grade_points' => $gradePoints,
+            'earned' => $earnedCreditHours,
+        ]);
+    }
 }
