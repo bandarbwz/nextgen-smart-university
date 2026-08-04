@@ -67,7 +67,7 @@ Each layer communicates only through defined interfaces.
 Technology
 
 - React 19
-- Bootstrap 5
+- Design tokens (custom CSS, replaced Bootstrap 5 on 2026-08-05)
 - Axios
 - React Router
 
@@ -277,7 +277,7 @@ The architecture follows:
 
 Frontend
 
-React + Bootstrap
+React + design tokens
 
 ↓
 
