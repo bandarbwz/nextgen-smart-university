@@ -55,6 +55,12 @@ export const navigationGroups = [
             { to: '/teaching', label: 'Course Content', icon: NotebookPen, roles: ['Lecturer'] },
             { to: '/assessments', label: 'Assessments', icon: ClipboardCheck, roles: ['Lecturer'] },
             {
+                to: '/grade-approvals',
+                label: 'Grade Approvals',
+                icon: ShieldCheck,
+                roles: ['Lecturer', 'Coordinator'],
+            },
+            {
                 to: '/attendance-session',
                 label: 'Attendance Session',
                 icon: ScanLine,

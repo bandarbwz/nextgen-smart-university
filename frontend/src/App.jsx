@@ -20,6 +20,7 @@ import { EventManagementPage } from './pages/stad/EventManagementPage';
 import { ExaminationsPage } from './pages/student/ExaminationsPage';
 import { MyResultsPage } from './pages/student/MyResultsPage';
 import { AssessmentsPage } from './pages/lecturer/AssessmentsPage';
+import { GradeApprovalsPage } from './pages/coordinator/GradeApprovalsPage';
 import { ExamSessionPage } from './pages/student/ExamSessionPage';
 import { AttendanceSessionPage } from './pages/lecturer/AttendanceSessionPage';
 import { ExamMonitorPage } from './pages/lecturer/ExamMonitorPage';
@@ -91,6 +92,15 @@ export default function App() {
 
                                 <Route element={<ProtectedRoute allowedRoles={['Administrator']} />}>
                                     <Route path="/lecturers" element={<LecturersPage />} />
+                                </Route>
+
+                                <Route
+                                    element={<ProtectedRoute allowedRoles={['Lecturer', 'Coordinator']} />}
+                                >
+                                    <Route
+                                        path="/grade-approvals"
+                                        element={<GradeApprovalsPage />}
+                                    />
                                 </Route>
 
                                 <Route element={<ProtectedRoute allowedRoles={['STAD Staff']} />}>
