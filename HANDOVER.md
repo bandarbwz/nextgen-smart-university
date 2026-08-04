@@ -47,6 +47,7 @@ Phase 1 and Phase 2 are complete and tested. Student Activities, the first modul
 | 2 | AI Examination | Done | Done | Yes |
 | 3 | Student Activities | Done | Done | Yes |
 | 3 | Notification Center | Done | Done | Yes |
+| 3 | Assessment System | Done | Done | Yes |
 
 Totals: 67 database tables, 157 backend PHP files, 63 frontend files,
 223 tests with 401 assertions.
@@ -229,6 +230,25 @@ student who could pause their own timer could stop the clock at will. Pause and
 resume are Lecturer and Coordinator only, and resuming extends the deadline by
 exactly the time paused.
 
+**The Assessment module is the weighting layer, not a second grade book.** The
+Academic module already had `Grade`, which records individual marked items with
+no weighting. Assessment adds what `Grade` never had: a weighted scheme per
+section, and a course total computed from it. A midterm worth thirty per cent
+counts for thirty per cent whatever its mark total happens to be, so a student
+scoring 80 on a 50 mark midterm and 95 on a 200 mark final gets 90.5, not the
+87.5 a plain average would give. `Grade` is left alone.
+
+**A section's assessment weights must reach exactly a hundred.** Anything else
+makes the course total meaningless, so the sum is checked on every write and a
+course result reports whether the scheme is complete rather than pretending.
+
+**A published result is locked.** Until publication a mark can be corrected
+freely; afterwards the student has seen it and changing it needs approval.
+
+**The letter scale lives in one place.** It was private inside `GradeService`
+until Assessment needed the same thresholds. It is now `GradeScale`, because two
+copies of a grading scale is exactly the kind of thing that silently drifts.
+
 **A notification never breaks the thing that caused it.** `NotificationService`
 catches everything and logs. An enrolment approval, a payment or a grade must
 not roll back because a notification row could not be written.
@@ -371,8 +391,8 @@ archive.
 - **No frontend tests.** The backend is covered, the React side is not.
 - **`docs/ARCHITECTURE/03-Backend-Architecture.md` still describes Node.js** and
   contradicts the rest of the documentation.
-- **Assessment, Grade Approval, Reset Examination, Settings, System and Role
-  Management modules** are documented but not built.
+- **Grade Approval, Reset Examination, Settings, System and Role Management
+  modules** are documented but not built.
 - **Push and SMS notifications are not implemented.** Both endpoints exist and
   return 501 with a plain explanation rather than accepting a request and
   quietly doing nothing. Neither has a provider.

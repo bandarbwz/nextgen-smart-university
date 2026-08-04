@@ -4,6 +4,7 @@ import {
     CalendarCheck,
     FolderOpen,
     CalendarDays,
+    ClipboardCheck,
     ClipboardList,
     GraduationCap,
     LayoutDashboard,
@@ -43,6 +44,7 @@ export const navigationGroups = [
             { to: '/attendance', label: 'My Attendance', icon: CalendarCheck, roles: ['Student'] },
             { to: '/examinations', label: 'Examinations', icon: ShieldCheck, roles: ['Student'] },
             { to: '/activities', label: 'Student Activities', icon: PartyPopper, roles: ['Student'] },
+            { to: '/my-results', label: 'My Results', icon: ClipboardCheck, roles: ['Student'] },
             { to: '/transcript', label: 'Transcript', icon: ScrollText, roles: ['Student'] },
             { to: '/finance', label: 'Finance', icon: Wallet, roles: ['Student'] },
         ],
@@ -51,6 +53,7 @@ export const navigationGroups = [
         label: 'Teaching',
         items: [
             { to: '/teaching', label: 'Course Content', icon: NotebookPen, roles: ['Lecturer'] },
+            { to: '/assessments', label: 'Assessments', icon: ClipboardCheck, roles: ['Lecturer'] },
             {
                 to: '/attendance-session',
                 label: 'Attendance Session',

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Controllers\ActivityPointController;
 use App\Controllers\AnnouncementBroadcastController;
+use App\Controllers\AssessmentController;
 use App\Controllers\AssignmentController;
 use App\Controllers\AttendanceController;
 use App\Controllers\AuthController;
@@ -520,5 +521,29 @@ $router->put('/api/v1/notifications/{id}/read', fn (string $id) => $notification
 $router->put('/api/v1/notifications/{id}/archive', fn (string $id) => $notifications->archive($id));
 $router->get('/api/v1/notifications/{id}', fn (string $id) => $notifications->show($id));
 $router->delete('/api/v1/notifications/{id}', fn (string $id) => $notifications->destroy($id));
+
+
+$assessments = new AssessmentController();
+
+$router->get('/api/v1/assessments/results', fn () => $assessments->myResults());
+$router->get(
+    '/api/v1/assessments/sections/{id}/weights',
+    fn (string $id) => $assessments->weights($id)
+);
+$router->get(
+    '/api/v1/assessments/sections/{id}/course-result',
+    fn (string $id) => $assessments->courseResult($id)
+);
+
+$router->get('/api/v1/assessments', fn () => $assessments->index());
+$router->post('/api/v1/assessments', fn () => $assessments->store());
+
+$router->get('/api/v1/assessments/{id}/results', fn (string $id) => $assessments->results($id));
+$router->post('/api/v1/assessments/{id}/results', fn (string $id) => $assessments->storeResult($id));
+$router->put('/api/v1/assessments/{id}/publish', fn (string $id) => $assessments->publish($id));
+
+$router->get('/api/v1/assessments/{id}', fn (string $id) => $assessments->show($id));
+$router->put('/api/v1/assessments/{id}', fn (string $id) => $assessments->update($id));
+$router->delete('/api/v1/assessments/{id}', fn (string $id) => $assessments->destroy($id));
 
 return $router;
