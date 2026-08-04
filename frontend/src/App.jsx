@@ -15,6 +15,8 @@ import { AttendancePage } from './pages/student/AttendancePage';
 import { CourseContentPage } from './pages/student/CourseContentPage';
 import { FinancePage } from './pages/student/FinancePage';
 import { FoodCourtPage } from './pages/student/FoodCourtPage';
+import { ActivitiesPage } from './pages/student/ActivitiesPage';
+import { EventManagementPage } from './pages/stad/EventManagementPage';
 import { ExaminationsPage } from './pages/student/ExaminationsPage';
 import { ExamSessionPage } from './pages/student/ExamSessionPage';
 import { AttendanceSessionPage } from './pages/lecturer/AttendanceSessionPage';
@@ -33,6 +35,7 @@ import './styles/components.css';
 import './styles/auth.css';
 import './styles/shell.css';
 import './styles/admin.css';
+import './styles/activities.css';
 import './styles/exam.css';
 
 export default function App() {
@@ -64,6 +67,7 @@ export default function App() {
                                     <Route path="/course-content" element={<CourseContentPage />} />
                                     <Route path="/finance" element={<FinancePage />} />
                                     <Route path="/examinations" element={<ExaminationsPage />} />
+                                    <Route path="/activities" element={<ActivitiesPage />} />
                                     <Route
                                         path="/examinations/:id/sit"
                                         element={<ExamSessionPage />}
@@ -81,6 +85,13 @@ export default function App() {
 
                                 <Route element={<ProtectedRoute allowedRoles={['Administrator']} />}>
                                     <Route path="/lecturers" element={<LecturersPage />} />
+                                </Route>
+
+                                <Route element={<ProtectedRoute allowedRoles={['STAD Staff']} />}>
+                                    <Route
+                                        path="/event-management"
+                                        element={<EventManagementPage />}
+                                    />
                                 </Route>
 
                                 <Route element={<ProtectedRoute allowedRoles={['Lecturer']} />}>

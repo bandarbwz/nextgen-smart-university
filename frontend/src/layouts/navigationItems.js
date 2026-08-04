@@ -10,6 +10,7 @@ import {
     Library,
     MessagesSquare,
     NotebookPen,
+    PartyPopper,
     ScanLine,
     ScrollText,
     ShieldCheck,
@@ -39,6 +40,7 @@ export const navigationGroups = [
             { to: '/course-content', label: 'Course Content', icon: BookOpen, roles: ['Student'] },
             { to: '/attendance', label: 'My Attendance', icon: CalendarCheck, roles: ['Student'] },
             { to: '/examinations', label: 'Examinations', icon: ShieldCheck, roles: ['Student'] },
+            { to: '/activities', label: 'Student Activities', icon: PartyPopper, roles: ['Student'] },
             { to: '/transcript', label: 'Transcript', icon: ScrollText, roles: ['Student'] },
             { to: '/finance', label: 'Finance', icon: Wallet, roles: ['Student'] },
         ],
@@ -58,6 +60,17 @@ export const navigationGroups = [
                 label: 'Examination Monitor',
                 icon: ShieldCheck,
                 roles: ['Lecturer', 'Coordinator'],
+            },
+        ],
+    },
+    {
+        label: 'Student Affairs',
+        items: [
+            {
+                to: '/event-management',
+                label: 'Event Management',
+                icon: PartyPopper,
+                roles: ['STAD Staff'],
             },
         ],
     },
