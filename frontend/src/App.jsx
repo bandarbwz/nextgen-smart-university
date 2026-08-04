@@ -32,6 +32,7 @@ import { CalendarPage } from './pages/CalendarPage';
 import { ChatPage } from './pages/ChatPage';
 import { ReportsPage } from './pages/ReportsPage';
 import { DownloadCenterPage } from './pages/DownloadCenterPage';
+import { ExamResetPage } from './pages/ExamResetPage';
 import { NotificationsPage } from './pages/NotificationsPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { NotFoundPage } from './pages/NotFoundPage';
@@ -102,6 +103,8 @@ export default function App() {
                                         element={<GradeApprovalsPage />}
                                     />
                                 </Route>
+
+                                <Route path="/exam-resets" element={<ExamResetPage />} />
 
                                 <Route element={<ProtectedRoute allowedRoles={['STAD Staff']} />}>
                                     <Route
