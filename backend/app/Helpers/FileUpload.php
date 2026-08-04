@@ -14,6 +14,8 @@ class FileUpload
 
     public const PROFILE_CHAT_FILE = 'chat_file';
 
+    public const PROFILE_EXAM_RECORDING = 'exam_recording';
+
     private const PROFILES = [
         self::PROFILE_DOCUMENT => [
             'max_bytes' => 5 * 1024 * 1024,
@@ -55,6 +57,15 @@ class FileUpload
                 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
                 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'xlsx',
                 'application/vnd.openxmlformats-officedocument.presentationml.presentation' => 'pptx',
+            ],
+        ],
+        self::PROFILE_EXAM_RECORDING => [
+            'max_bytes' => 200 * 1024 * 1024,
+            'label' => 'WebM and MP4 video',
+            'types' => [
+                'video/webm' => 'webm',
+                'video/mp4' => 'mp4',
+                'video/x-matroska' => 'mkv',
             ],
         ],
     ];
