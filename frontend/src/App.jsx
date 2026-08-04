@@ -17,6 +17,9 @@ import { FinancePage } from './pages/student/FinancePage';
 import { FoodCourtPage } from './pages/student/FoodCourtPage';
 import { AttendanceSessionPage } from './pages/lecturer/AttendanceSessionPage';
 import { TeachingPage } from './pages/lecturer/TeachingPage';
+import { StudentsPage } from './pages/admin/StudentsPage';
+import { LecturersPage } from './pages/admin/LecturersPage';
+import { SectionsPage } from './pages/admin/SectionsPage';
 import { CalendarPage } from './pages/CalendarPage';
 import { ChatPage } from './pages/ChatPage';
 import { ReportsPage } from './pages/ReportsPage';
@@ -26,6 +29,7 @@ import { NotFoundPage } from './pages/NotFoundPage';
 import './styles/components.css';
 import './styles/auth.css';
 import './styles/shell.css';
+import './styles/admin.css';
 
 export default function App() {
     return (
@@ -55,6 +59,19 @@ export default function App() {
                                     <Route path="/attendance" element={<AttendancePage />} />
                                     <Route path="/course-content" element={<CourseContentPage />} />
                                     <Route path="/finance" element={<FinancePage />} />
+                                </Route>
+
+                                <Route
+                                    element={
+                                        <ProtectedRoute allowedRoles={['Coordinator', 'Administrator']} />
+                                    }
+                                >
+                                    <Route path="/students" element={<StudentsPage />} />
+                                    <Route path="/sections" element={<SectionsPage />} />
+                                </Route>
+
+                                <Route element={<ProtectedRoute allowedRoles={['Administrator']} />}>
+                                    <Route path="/lecturers" element={<LecturersPage />} />
                                 </Route>
 
                                 <Route element={<ProtectedRoute allowedRoles={['Lecturer']} />}>
