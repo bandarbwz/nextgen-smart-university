@@ -103,3 +103,56 @@
         justify-content: flex-start;
     }
 }
+
+.nsu-assessment-summary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+}
+
+.nsu-assessment-summary__meta {
+    margin: 4px 0 0;
+    color: var(--color-muted-foreground);
+    font-size: 0.875rem;
+}
+
+.nsu-rubric {
+    display: grid;
+    gap: var(--space-xs);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nsu-rubric__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding: var(--space-xs) 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.nsu-rubric__row:last-child {
+    border-bottom: none;
+}
+
+.nsu-rubric__row > span:first-child {
+    display: grid;
+}
+
+.nsu-mark-entry {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    justify-content: flex-end;
+}
+
+.nsu-mark-entry__input {
+    width: 5.5rem;
+    min-height: 44px;
+    text-align: right;
+}

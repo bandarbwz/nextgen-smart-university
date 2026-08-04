@@ -8,18 +8,6 @@ use App\Models\Grade;
 
 class GradeService
 {
-    private const LETTER_SCALE = [
-        [90, 'A', 4.00],
-        [85, 'A-', 3.70],
-        [80, 'B+', 3.30],
-        [75, 'B', 3.00],
-        [70, 'B-', 2.70],
-        [65, 'C+', 2.30],
-        [60, 'C', 2.00],
-        [55, 'C-', 1.70],
-        [50, 'D', 1.00],
-    ];
-
     public function __construct(
         private readonly Grade $grades = new Grade(),
         private readonly CourseAccessService $access = new CourseAccessService()
@@ -110,14 +98,6 @@ class GradeService
 
     private function letterFor(float $marks, float $totalMarks): array
     {
-        $percentage = $totalMarks <= 0 ? 0 : $marks / $totalMarks * 100;
-
-        foreach (self::LETTER_SCALE as [$threshold, $letter, $points]) {
-            if ($percentage >= $threshold) {
-                return [$letter, $points];
-            }
-        }
-
-        return ['F', 0.00];
+        return GradeScale::forMarks($marks, $totalMarks);
     }
 }

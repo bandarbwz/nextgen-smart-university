@@ -18,6 +18,8 @@ import { FoodCourtPage } from './pages/student/FoodCourtPage';
 import { ActivitiesPage } from './pages/student/ActivitiesPage';
 import { EventManagementPage } from './pages/stad/EventManagementPage';
 import { ExaminationsPage } from './pages/student/ExaminationsPage';
+import { MyResultsPage } from './pages/student/MyResultsPage';
+import { AssessmentsPage } from './pages/lecturer/AssessmentsPage';
 import { ExamSessionPage } from './pages/student/ExamSessionPage';
 import { AttendanceSessionPage } from './pages/lecturer/AttendanceSessionPage';
 import { ExamMonitorPage } from './pages/lecturer/ExamMonitorPage';
@@ -71,6 +73,7 @@ export default function App() {
                                     <Route path="/finance" element={<FinancePage />} />
                                     <Route path="/examinations" element={<ExaminationsPage />} />
                                     <Route path="/activities" element={<ActivitiesPage />} />
+                                    <Route path="/my-results" element={<MyResultsPage />} />
                                     <Route
                                         path="/examinations/:id/sit"
                                         element={<ExamSessionPage />}
@@ -103,6 +106,7 @@ export default function App() {
                                         element={<AttendanceSessionPage />}
                                     />
                                     <Route path="/teaching" element={<TeachingPage />} />
+                                    <Route path="/assessments" element={<AssessmentsPage />} />
                                 </Route>
 
                                 <Route
