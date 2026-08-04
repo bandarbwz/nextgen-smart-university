@@ -2,7 +2,9 @@
 
 ## Purpose
 
-The Chat Module provides secure real-time communication between students, lecturers, coordinators, administrators, STAD staff, and restaurant owners.
+The Chat Module provides secure messaging between students, lecturers, coordinators, administrators, STAD staff, and restaurant owners.
+
+Delivery is by **short polling**, not by a socket connection. The client asks for messages newer than the last one it holds, every few seconds. New messages therefore appear within a few seconds rather than instantly. This is a consequence of the native PHP backend, which cannot hold a persistent socket open.
 
 Each course automatically has its own chat room. Students are automatically added after successful course registration and removed after dropping the course.
 
@@ -12,14 +14,14 @@ The module also supports private messaging, group messaging, announcements, medi
 
 # Objectives
 
-- Provide real-time communication.
+- Provide prompt messaging between users.
 - Support course discussions.
 - Support private messaging.
 - Support group messaging.
 - Share files and media securely.
 - Improve collaboration between users.
 - Maintain communication history.
-- Deliver real-time notifications.
+- Show unread counts so new messages are noticed.
 
 ---
 
@@ -377,9 +379,9 @@ Chat Reports
 
 # Performance
 
-- Use Socket.IO for real-time communication.
-- Cache active chat rooms.
-- Optimize message retrieval.
+- Poll with an `after_id` cursor so each request returns only new messages.
+- Pause polling while the browser tab is hidden, and catch up when it is shown again.
+- Index the message table on room and identifier so the cursor query stays cheap.
 - Load previous messages using pagination.
 - Compress uploaded media.
 

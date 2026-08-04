@@ -193,7 +193,6 @@ Integration includes:
 - React ↔ PHP
 - PHP ↔ MySQL
 - PHP ↔ Python AI
-- React ↔ Socket.IO
 
 Verify:
 
@@ -254,7 +253,6 @@ Tasks
 - Configure PHP
 - Configure MySQL
 - Configure Python AI
-- Configure Socket.IO
 - Configure HTTPS
 - Restore Initial Database
 - Configure Backups

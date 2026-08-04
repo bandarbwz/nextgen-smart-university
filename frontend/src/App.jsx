@@ -15,7 +15,10 @@ import { AttendancePage } from './pages/student/AttendancePage';
 import { CourseContentPage } from './pages/student/CourseContentPage';
 import { FinancePage } from './pages/student/FinancePage';
 import { FoodCourtPage } from './pages/student/FoodCourtPage';
+import { ExaminationsPage } from './pages/student/ExaminationsPage';
+import { ExamSessionPage } from './pages/student/ExamSessionPage';
 import { AttendanceSessionPage } from './pages/lecturer/AttendanceSessionPage';
+import { ExamMonitorPage } from './pages/lecturer/ExamMonitorPage';
 import { TeachingPage } from './pages/lecturer/TeachingPage';
 import { StudentsPage } from './pages/admin/StudentsPage';
 import { LecturersPage } from './pages/admin/LecturersPage';
@@ -30,6 +33,7 @@ import './styles/components.css';
 import './styles/auth.css';
 import './styles/shell.css';
 import './styles/admin.css';
+import './styles/exam.css';
 
 export default function App() {
     return (
@@ -59,6 +63,11 @@ export default function App() {
                                     <Route path="/attendance" element={<AttendancePage />} />
                                     <Route path="/course-content" element={<CourseContentPage />} />
                                     <Route path="/finance" element={<FinancePage />} />
+                                    <Route path="/examinations" element={<ExaminationsPage />} />
+                                    <Route
+                                        path="/examinations/:id/sit"
+                                        element={<ExamSessionPage />}
+                                    />
                                 </Route>
 
                                 <Route
@@ -80,6 +89,12 @@ export default function App() {
                                         element={<AttendanceSessionPage />}
                                     />
                                     <Route path="/teaching" element={<TeachingPage />} />
+                                </Route>
+
+                                <Route
+                                    element={<ProtectedRoute allowedRoles={['Lecturer', 'Coordinator']} />}
+                                >
+                                    <Route path="/exam-monitor" element={<ExamMonitorPage />} />
                                 </Route>
                             </Route>
                         </Route>

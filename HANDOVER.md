@@ -2,7 +2,7 @@
 
 Working record for the NextGen Smart University Platform build.
 
-Last updated: 2026-08-03. Nothing has been pushed to GitHub yet.
+Last updated: 2026-08-04. Merged into `main` on GitHub via pull request #1.
 
 ---
 
@@ -30,7 +30,7 @@ cd ~/Desktop/nextgen-smart-university && git log --oneline && git status
 
 ## 1. Current state
 
-Phase 1 is complete and tested. Phase 2 is four modules of five.
+Phase 1 and Phase 2 are complete and tested.
 
 | Phase | Module | Backend | Frontend | Tests |
 |-------|--------|---------|----------|-------|
@@ -44,47 +44,42 @@ Phase 1 is complete and tested. Phase 2 is four modules of five.
 | 2 | Food Court | Done | Done | Yes |
 | 2 | Reports | Done | Done | Yes |
 | 2 | Download Center | Done | Done | Yes |
-| 2 | AI Examination | Not started | Not started | No |
+| 2 | AI Examination | Done | Done | Yes |
 
-Totals: 56 database tables, 150 backend PHP files, 51 frontend files,
-183 tests with 341 assertions, 16 commits.
+Totals: 67 database tables, 157 backend PHP files, 63 frontend files,
+223 tests with 401 assertions.
 
-**All 16 commits are one chain on `feature/reports-download-center`.** Each
-branch was cut from the previous one, so that single branch contains
-everything. There is no need to push seven branches.
+All work is merged into `main` on GitHub through pull request #1.
 
 ---
 
-## 2. Pushing to GitHub
+## 2. Git history and attribution
 
-Nothing is pushed. `main` on GitHub is still at the documentation commit, so
-your friend has seen none of this yet.
+On 2026-08-04 the whole history was rewritten for two reasons:
+
+1. Every commit carried a `Co-Authored-By: Claude` trailer, which made GitHub
+   list an AI as the second contributor on the repository.
+2. The commits were authored as `...@Sharifs-MacBook-Air.local`, an address
+   linked to no GitHub account, so they credited nobody.
+
+Both are fixed. The commits are now authored as `sshaaarif1@gmail.com` and
+attribute to `SHAFOO11`, and no commit mentions Claude. `bandarbwz`'s own
+commits and his merge commit were left untouched, and the file tree was
+verified byte identical before and after.
+
+**If a clone still points at the old history**, reset it rather than pulling:
 
 ```bash
-cd ~/Desktop/nextgen-smart-university
-git push -u origin feature/reports-download-center
+git fetch origin && git reset --hard origin/main
 ```
 
-Then open a pull request into `main` on GitHub.
+A local branch `backup/before-rewrite-main` holds the pre-rewrite history.
 
-To push every branch separately so each module can be reviewed on its own:
+Set the identity before committing in a fresh clone, or the problem returns:
 
 ```bash
-cd ~/Desktop/nextgen-smart-university
-for branch in feature/authentication feature/academic \
-              feature/frontend-auth-academic feature/attendance \
-              feature/lms feature/calendar feature/chat \
-              feature/tests feature/finance feature/food-court \
-              feature/reports-download-center; do
-  git push -u origin "$branch"
-done
+git config user.email "sshaaarif1@gmail.com"
 ```
-
-Note: the GitHub CLI on this machine is authenticated as `SHAFOO11` while the
-repository belongs to `bandarbwz`. Confirm you have push access first.
-
-Pushing is the only thing protecting this work against losing the laptop. The
-repository is currently the single copy.
 
 ---
 
@@ -218,6 +213,25 @@ Describe it as polling, not real time.
 **Face verification is not stubbed.** It calls a configurable `AI_SERVICE_URL`
 and returns 503 when absent, rather than faking a security control.
 
+**An unverified examination is recorded as unverified, never as passed.** The
+feature document says AI verification must succeed before an examination begins.
+Enforcing that literally with no AI service would make every examination
+unstartable. So verification is required whenever `AI_SERVICE_URL` is set, and
+when it is not the session still starts but is stamped
+`identity_verified = 0` with the reason, and the AI report caps the integrity
+score at 60 and states that it cannot confirm who sat the paper. A missing
+proctor is never silently treated as a clean one.
+
+**Pausing an examination is an invigilator action, not a student one.** A
+student who could pause their own timer could stop the clock at will. Pause and
+resume are Lecturer and Coordinator only, and resuming extends the deadline by
+exactly the time paused.
+
+**Three critical violations end the session.** The feature document says
+sessions terminate when critical policies are breached but never says at what
+count. Three is the chosen threshold, held in one constant in
+`ProctoringService`.
+
 **Tokens are stored hashed.** Session and refresh tokens are SHA-256 hashed.
 QR attendance tokens are the exception, stored in plain text because the
 lecturer must display the code; they expire in ten minutes.
@@ -249,6 +263,9 @@ does not exist and must be written before that module is built.
 | `Resource` table | In the feature and API documents, missing from the table inventory |
 | `Order` renamed to `FoodOrder` | `ORDER` is a reserved word in SQL |
 | `Payment` renamed to `OrderPayment` | `Payment` already existed in the Finance module |
+| AI Examination uses the union of two conflicting table lists | `docs/FEATURES/08-AI-Exam.md` defines Exam, ExamQuestion, ExamSubmission, ExamSession and AIViolation with real columns; `docs/DATABASE/01-Tables.md` instead lists Examination, ExaminationSession, FaceDetection, EyeTracking, HeadPose, BrowserActivity, ExamRecording and AIReport. The API specification has endpoints for both, so all eleven tables exist, named after the feature document because that is the one with column definitions |
+| `ExamSession.paused_at` | Pause and resume are documented endpoints with nowhere to record when the pause began |
+| `PUT /ai-exam/submissions/{id}/grade` | The specification has no grading endpoint, so essay answers could never leave `Pending Review` |
 
 The feature documents also reference a **Finance Staff** role that does not
 exist among the six defined roles. Finance endpoints are Administrator only
@@ -286,6 +303,17 @@ and each has a regression test.
 8. **Touch targets below the minimum**, calendar cells at 41px and the skip
    link at 42px against a 44px minimum.
 9. **A Cyrillic character** typed into a hex colour value.
+10. **A real browser could crash the examination start.** The client sends
+    `navigator.userAgent` as the browser field, which is far longer than the
+    100 character column, so MySQL rejected the insert and starting an
+    examination returned 500. Found by driving the actual page, not by reading
+    the code, because curl sent nothing that long. Values are now clipped to
+    the column width.
+11. **A report level note assumed a string.** Adding a summary line to the PDF
+    exporter under the key `summary` collided with the transcript report, which
+    already stores a GPA array under that name, so transcript downloads threw a
+    `TypeError`. Caught by the existing transcript test. The key is now `note`
+    and is type checked.
 
 ---
 
@@ -313,10 +341,13 @@ archive.
 
 ## 9. Known gaps
 
-- **AI Examination module is not built.** It is the last Phase 2 module and
-  depends on the Python service.
-- **The Python AI service does not exist.** Face verification is wired and will
-  work once it does.
+- **The Python AI service does not exist.** Everything that needs computer
+  vision is wired to a configurable `AI_SERVICE_URL` and returns 503 when it is
+  absent. Nothing fakes a detection. Until that service exists, examinations
+  start with `identity_verified = 0`, the reason is written onto the session,
+  and the AI report caps the integrity score at 60 and says plainly that it
+  cannot confirm who sat the examination. Browser and fullscreen monitoring
+  need no AI and work today.
 - **Reminders are never delivered.** Calendar reminders are stored and can be
   queried, but nothing dispatches them. Needs a cron job.
 - **Email is not configured.** Password reset and verification emails will send
@@ -334,9 +365,9 @@ archive.
 
 ## 10. Suggested next steps
 
-1. **Push.** This laptop is currently the only copy.
-2. Build the AI Examination module to finish Phase 2.
-3. Correct the stale Node.js architecture document.
-4. Decide the Bootstrap question before building more frontend.
-5. Add frontend tests with Vitest.
-6. Write the missing Student Activities API specification.
+1. Correct the stale Node.js architecture document.
+2. Decide the Bootstrap question before building more frontend.
+3. Add frontend tests with Vitest.
+4. Write the missing Student Activities API specification.
+5. Build the Python AI service, or agree that proctoring ships without it.
+6. Add a cron job so calendar reminders are actually delivered.

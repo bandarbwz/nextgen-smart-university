@@ -50,8 +50,11 @@ Supported Roles
 # Database Security
 
 - Prepared Statements
-- Prisma ORM
+- PDO with emulated prepares disabled
 - Foreign Key Constraints
+- Escaped LIKE wildcards
+
+Emulation is turned off so values are bound by the database rather than interpolated into the SQL string by the driver.
 
 ---
 

@@ -18,7 +18,11 @@ use App\Controllers\QuizController;
 use App\Controllers\ReportController;
 use App\Controllers\DepartmentController;
 use App\Controllers\EnrollmentController;
+use App\Controllers\ExamController;
+use App\Controllers\ExamReportController;
+use App\Controllers\ExamSessionController;
 use App\Controllers\FacultyController;
+use App\Controllers\ProctoringController;
 use App\Controllers\LecturerController;
 use App\Controllers\ProgramController;
 use App\Controllers\ScheduleController;
@@ -371,5 +375,51 @@ $router->get('/api/v1/download-center/history', fn () => $downloads->history());
 $router->get('/api/v1/download-center/transcript', fn () => $downloads->transcript());
 $router->get('/api/v1/download-center/schedule', fn () => $downloads->schedule());
 $router->get('/api/v1/download-center/invoices/{id}', fn (string $id) => $downloads->invoice($id));
+
+
+$exams = new ExamController();
+
+$router->get('/api/v1/ai-exam/examinations', fn () => $exams->index());
+$router->post('/api/v1/ai-exam/examinations', fn () => $exams->store());
+$router->get('/api/v1/ai-exam/examinations/{id}', fn (string $id) => $exams->show($id));
+$router->put('/api/v1/ai-exam/examinations/{id}', fn (string $id) => $exams->update($id));
+$router->delete('/api/v1/ai-exam/examinations/{id}', fn (string $id) => $exams->destroy($id));
+
+$router->get('/api/v1/ai-exam/examinations/{id}/submissions', fn (string $id) => $exams->submissions($id));
+$router->put('/api/v1/ai-exam/submissions/{id}/grade', fn (string $id) => $exams->grade($id));
+
+
+$examSessions = new ExamSessionController();
+
+$router->post('/api/v1/ai-exam/session/start', fn () => $examSessions->start());
+$router->post('/api/v1/ai-exam/session/end', fn () => $examSessions->end());
+$router->put('/api/v1/ai-exam/session/pause', fn () => $examSessions->pause());
+$router->put('/api/v1/ai-exam/session/resume', fn () => $examSessions->resume());
+
+$router->get('/api/v1/ai-exam/sessions', fn () => $examSessions->mine());
+$router->get('/api/v1/ai-exam/examinations/{id}/sessions', fn (string $id) => $examSessions->forExam($id));
+
+
+$proctoring = new ProctoringController();
+
+$router->post('/api/v1/ai-exam/verify-face', fn () => $proctoring->verifyFace());
+$router->post('/api/v1/ai-exam/eye-tracking', fn () => $proctoring->eyeTracking());
+$router->post('/api/v1/ai-exam/head-pose', fn () => $proctoring->headPose());
+$router->post('/api/v1/ai-exam/browser-monitor', fn () => $proctoring->browserMonitor());
+$router->post('/api/v1/ai-exam/device-monitor', fn () => $proctoring->deviceMonitor());
+
+$router->get('/api/v1/ai-exam/violations', fn () => $proctoring->violations());
+$router->post('/api/v1/ai-exam/violations', fn () => $proctoring->storeViolation());
+$router->get('/api/v1/ai-exam/violations/{id}', fn (string $id) => $proctoring->studentViolations($id));
+
+$router->post('/api/v1/ai-exam/recordings', fn () => $proctoring->storeRecording());
+$router->get('/api/v1/ai-exam/recordings/{id}', fn (string $id) => $proctoring->recording($id));
+
+
+$examReports = new ExamReportController();
+
+$router->post('/api/v1/ai-exam/reports/generate', fn () => $examReports->generate());
+$router->get('/api/v1/ai-exam/reports/{id}/download', fn (string $id) => $examReports->download($id));
+$router->get('/api/v1/ai-exam/reports/{id}', fn (string $id) => $examReports->show($id));
 
 return $router;

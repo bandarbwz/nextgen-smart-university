@@ -1,0 +1,315 @@
+.nsu-exam-list {
+    display: grid;
+    gap: var(--space-md);
+}
+
+.nsu-exam-card {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-lg);
+    justify-content: space-between;
+}
+
+.nsu-exam-card__main {
+    flex: 1 1 22rem;
+}
+
+.nsu-exam-card__heading {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-xs);
+}
+
+.nsu-exam-card__title {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.nsu-exam-card__course {
+    color: var(--color-muted-foreground);
+    font-size: 0.875rem;
+    margin: 0 0 var(--space-md);
+}
+
+.nsu-exam-card__facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: var(--space-md);
+    margin: 0;
+}
+
+.nsu-exam-card__facts dt {
+    color: var(--color-muted-foreground);
+    font-size: 0.75rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+.nsu-exam-card__facts dd {
+    margin: 0;
+    font-size: 0.9375rem;
+}
+
+.nsu-exam-card__aside {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: var(--space-sm);
+    min-width: 12rem;
+}
+
+.nsu-exam-card__done,
+.nsu-exam-card__proctor {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    color: var(--color-muted-foreground);
+    font-size: 0.8125rem;
+    margin: 0;
+}
+
+.nsu-exam-timer {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-xs) var(--space-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    font-size: 1.125rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    min-height: 44px;
+}
+
+.nsu-exam-timer--low {
+    border-color: var(--color-destructive);
+    color: var(--color-destructive);
+}
+
+.nsu-exam-proctor {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    margin-bottom: var(--space-lg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-muted);
+}
+
+.nsu-exam-proctor p {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: 0.8125rem;
+    margin: 0;
+}
+
+.nsu-exam-proctor__line {
+    color: var(--color-muted-foreground);
+}
+
+.nsu-exam-proctor__verified {
+    color: var(--color-success);
+}
+
+.nsu-exam-proctor__unverified {
+    color: var(--color-warning);
+}
+
+.nsu-exam-questions {
+    display: grid;
+    gap: var(--space-md);
+    list-style: none;
+    margin: 0 0 var(--space-lg);
+    padding: 0;
+}
+
+.nsu-exam-question__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-sm);
+}
+
+.nsu-exam-question__number {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+}
+
+.nsu-exam-question__marks {
+    font-size: 0.8125rem;
+    color: var(--color-muted-foreground);
+}
+
+.nsu-exam-question__text {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0 0 var(--space-md);
+}
+
+.nsu-exam-options {
+    display: grid;
+    gap: var(--space-xs);
+}
+
+.nsu-exam-option {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    min-height: 44px;
+    transition: border-color 160ms ease, background-color 160ms ease;
+}
+
+.nsu-exam-option:hover {
+    border-color: var(--color-primary);
+    background: var(--color-muted);
+}
+
+.nsu-exam-option:focus-within {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.nsu-exam-option__label {
+    font-weight: 600;
+    min-width: 1.25rem;
+}
+
+.nsu-exam-essay {
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.nsu-exam-submit {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-md);
+}
+
+.nsu-exam-submit__count {
+    margin: 0;
+    color: var(--color-muted-foreground);
+    font-size: 0.875rem;
+}
+
+.nsu-table__hint {
+    display: block;
+    color: var(--color-muted-foreground);
+    font-size: 0.75rem;
+}
+
+.nsu-table__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+}
+
+.nsu-exam-report__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+}
+
+.nsu-exam-report__summary {
+    line-height: 1.6;
+    margin: var(--space-sm) 0;
+}
+
+.nsu-violation-list {
+    display: grid;
+    gap: var(--space-xs);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nsu-violation {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.nsu-violation:last-child {
+    border-bottom: none;
+}
+
+.nsu-violation__mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    border-radius: var(--radius-sm);
+}
+
+.nsu-violation__mark--critical {
+    background: var(--color-destructive-surface);
+    color: var(--color-destructive);
+}
+
+.nsu-violation__mark--warning {
+    background: var(--color-warning-surface);
+    color: var(--color-warning);
+}
+
+.nsu-violation__mark--info {
+    background: var(--color-muted);
+    color: var(--color-muted-foreground);
+}
+
+.nsu-violation__title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    margin: 0 0 2px;
+}
+
+.nsu-violation__meta {
+    color: var(--color-muted-foreground);
+    font-size: 0.8125rem;
+    margin: 0;
+}
+
+@media (max-width: 640px) {
+    .nsu-exam-card__aside {
+        width: 100%;
+    }
+
+    .nsu-exam-submit {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
