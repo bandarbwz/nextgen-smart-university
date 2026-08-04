@@ -16,6 +16,8 @@ This document defines the local development environment for the NextGen Smart Un
 
 # Required Software
 
+- PHP 8.4 or later
+- Composer
 - Node.js (LTS)
 - npm
 - Git
@@ -23,6 +25,8 @@ This document defines the local development environment for the NextGen Smart Un
 - MySQL 8
 - Python 3.12
 - Postman
+
+Node.js is needed to build and run the React frontend with Vite. It is **not** used by the backend, which runs on PHP.
 
 ---
 
@@ -36,9 +40,16 @@ This document defines the local development environment for the NextGen Smart Un
 
 # Backend
 
-- Node.js
-- Express.js
-- Prisma ORM
+- PHP 8.4
+- Composer
+- PDO
+- PHPUnit
+
+Run the API with PHP's built in server during development:
+
+```
+php -S 127.0.0.1:8000 -t backend/public backend/public/index.php
+```
 
 ---
 

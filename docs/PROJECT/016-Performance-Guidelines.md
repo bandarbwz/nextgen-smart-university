@@ -126,11 +126,11 @@ Requirements
 
 Requirements
 
-- Use Socket.IO for realtime communication.
-- Broadcast only necessary events.
+- Poll with an `after_id` cursor so a request that finds nothing new is cheap.
+- Pause polling while the browser tab is hidden.
 - Store messages efficiently.
-- Limit unnecessary socket connections.
-- Reconnect clients automatically after connection loss.
+- Keep the polling interval long enough that a full class does not overload the server.
+- Tolerate a failed poll and retry on the next tick rather than erroring the page.
 
 ---
 
@@ -186,7 +186,7 @@ Monitor continuously:
 - Database Performance
 - PHP Performance
 - Python AI Performance
-- Socket.IO Performance
+- Polling Request Volume
 - Storage Usage
 - Server Health
 

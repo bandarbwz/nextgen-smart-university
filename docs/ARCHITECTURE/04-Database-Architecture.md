@@ -11,7 +11,10 @@ The system uses a relational database to ensure data consistency, integrity, and
 # Database Engine
 
 - MySQL 8.x
-- Prisma ORM
+- InnoDB storage engine
+- PDO with native prepared statements
+
+There is no ORM. Queries are written as SQL inside model classes.
 
 ---
 

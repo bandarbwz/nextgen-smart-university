@@ -4,7 +4,9 @@
 
 This document defines the Chat REST APIs for the NextGen Smart University Platform.
 
-The Chat API provides secure real-time communication between students, lecturers, coordinators, administrators, STAD staff, and restaurant owners. It supports private messaging, course chat rooms, file sharing, media sharing, message reactions, and read receipts.
+The Chat API provides secure messaging between students, lecturers, coordinators, administrators, STAD staff, and restaurant owners. It supports private messaging, course chat rooms, file sharing, media sharing, message reactions, and read receipts.
+
+Delivery is by short polling. Clients call `GET /chat/rooms/{id}/messages` with an `after_id` cursor to fetch only messages newer than the last one they hold. There is no socket connection.
 
 ---
 
@@ -365,4 +367,4 @@ Related APIs
 
 # Notes
 
-The Chat API provides secure real-time communication for the NextGen Smart University Platform. It supports course discussions, private messaging, media sharing, reactions, read receipts, and integrates with the Notification and Academic modules.
+The Chat API provides secure messaging for the NextGen Smart University Platform. It supports course discussions, private messaging, media sharing, reactions, read receipts, and integrates with the Notification and Academic modules. Clients poll with an `after_id` cursor rather than holding a socket open.

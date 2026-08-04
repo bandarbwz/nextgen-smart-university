@@ -14,7 +14,7 @@ It is built using React, Bootstrap, and modern frontend development practices.
 - React Router
 - Bootstrap
 - Axios
-- Socket.IO Client
+- Lucide React
 
 ---
 
@@ -103,14 +103,18 @@ Frontend communicates using:
 
 ---
 
-# Real-Time Features
+# Live Updates
 
-Socket.IO is used for:
+The backend is native PHP and cannot host a persistent socket server, so there is no Socket.IO and no WebSocket connection. Screens that need fresh data poll the REST API instead.
 
-- Chat
-- Notifications
-- Live AI Alerts
-- Food Order Updates
+Polling is used by:
+
+- **Chat**, which requests messages after the last identifier it holds, every few seconds
+- **Examination Monitor**, which refreshes sessions and violations every ten seconds
+
+Polling pauses while the browser tab is hidden and catches up when it becomes visible again, so a background tab costs nothing.
+
+Everything else loads on navigation or after an action, not on a timer. Describe this behaviour as polling, not as real time.
 
 ---
 
