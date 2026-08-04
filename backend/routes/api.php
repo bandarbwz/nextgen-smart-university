@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
+use App\Controllers\ActivityPointController;
 use App\Controllers\AssignmentController;
 use App\Controllers\AttendanceController;
 use App\Controllers\AuthController;
 use App\Controllers\CalendarController;
 use App\Controllers\ChatController;
+use App\Controllers\ClubController;
 use App\Controllers\CourseController;
 use App\Controllers\DownloadCenterController;
 use App\Controllers\ExcuseController;
@@ -18,6 +20,9 @@ use App\Controllers\QuizController;
 use App\Controllers\ReportController;
 use App\Controllers\DepartmentController;
 use App\Controllers\EnrollmentController;
+use App\Controllers\EventAttendanceController;
+use App\Controllers\EventController;
+use App\Controllers\EventRegistrationController;
 use App\Controllers\ExamController;
 use App\Controllers\ExamReportController;
 use App\Controllers\ExamSessionController;
@@ -421,5 +426,64 @@ $examReports = new ExamReportController();
 $router->post('/api/v1/ai-exam/reports/generate', fn () => $examReports->generate());
 $router->get('/api/v1/ai-exam/reports/{id}/download', fn (string $id) => $examReports->download($id));
 $router->get('/api/v1/ai-exam/reports/{id}', fn (string $id) => $examReports->show($id));
+
+
+$clubs = new ClubController();
+
+$router->get('/api/v1/activities/clubs', fn () => $clubs->index());
+$router->post('/api/v1/activities/clubs', fn () => $clubs->store());
+$router->get('/api/v1/activities/clubs/{id}', fn (string $id) => $clubs->show($id));
+$router->put('/api/v1/activities/clubs/{id}', fn (string $id) => $clubs->update($id));
+$router->delete('/api/v1/activities/clubs/{id}', fn (string $id) => $clubs->destroy($id));
+
+
+$events = new EventController();
+$eventRegistrations = new EventRegistrationController();
+$eventAttendance = new EventAttendanceController();
+
+$router->get('/api/v1/activities/events', fn () => $events->index());
+$router->post('/api/v1/activities/events', fn () => $events->store());
+
+$router->get(
+    '/api/v1/activities/events/{id}/registrations',
+    fn (string $id) => $eventRegistrations->forEvent($id)
+);
+$router->get(
+    '/api/v1/activities/events/{id}/attendance',
+    fn (string $id) => $eventAttendance->forEvent($id)
+);
+$router->post('/api/v1/activities/events/{id}/qr', fn (string $id) => $eventAttendance->openQr($id));
+$router->delete('/api/v1/activities/events/{id}/qr', fn (string $id) => $eventAttendance->closeQr($id));
+$router->put('/api/v1/activities/events/{id}/cancel', fn (string $id) => $events->cancel($id));
+
+$router->get('/api/v1/activities/events/{id}', fn (string $id) => $events->show($id));
+$router->put('/api/v1/activities/events/{id}', fn (string $id) => $events->update($id));
+$router->delete('/api/v1/activities/events/{id}', fn (string $id) => $events->destroy($id));
+
+$router->post('/api/v1/activities/register', fn () => $eventRegistrations->store());
+$router->get('/api/v1/activities/registrations', fn () => $eventRegistrations->mine());
+$router->put(
+    '/api/v1/activities/registrations/{id}/cancel',
+    fn (string $id) => $eventRegistrations->cancel($id)
+);
+$router->put(
+    '/api/v1/activities/registrations/{id}/approve',
+    fn (string $id) => $eventRegistrations->approve($id)
+);
+$router->put(
+    '/api/v1/activities/registrations/{id}/reject',
+    fn (string $id) => $eventRegistrations->reject($id)
+);
+
+$router->post('/api/v1/activities/attendance', fn () => $eventAttendance->scan());
+$router->post('/api/v1/activities/attendance/manual', fn () => $eventAttendance->storeManual());
+
+
+$activityPoints = new ActivityPointController();
+
+$router->get('/api/v1/activities/points', fn () => $activityPoints->mine());
+$router->post('/api/v1/activities/points', fn () => $activityPoints->store());
+$router->get('/api/v1/activities/points/leaderboard', fn () => $activityPoints->leaderboard());
+$router->get('/api/v1/activities/points/{id}', fn (string $id) => $activityPoints->forStudent($id));
 
 return $router;

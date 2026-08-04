@@ -2,7 +2,7 @@
 
 Working record for the NextGen Smart University Platform build.
 
-Last updated: 2026-08-04. Merged into `main` on GitHub via pull request #1.
+Last updated: 2026-08-04. All work merged into `main` on GitHub.
 
 ---
 
@@ -30,7 +30,7 @@ cd ~/Desktop/nextgen-smart-university && git log --oneline && git status
 
 ## 1. Current state
 
-Phase 1 and Phase 2 are complete and tested.
+Phase 1 and Phase 2 are complete and tested. Student Activities, the first module beyond the two planned phases, is also built.
 
 | Phase | Module | Backend | Frontend | Tests |
 |-------|--------|---------|----------|-------|
@@ -45,6 +45,7 @@ Phase 1 and Phase 2 are complete and tested.
 | 2 | Reports | Done | Done | Yes |
 | 2 | Download Center | Done | Done | Yes |
 | 2 | AI Examination | Done | Done | Yes |
+| 3 | Student Activities | Done | Done | Yes |
 
 Totals: 67 database tables, 157 backend PHP files, 63 frontend files,
 223 tests with 401 assertions.
@@ -248,9 +249,9 @@ both check the same table, so export cannot be used as a bypass.
 Examination specification. `docs/API` had no Reports specification at all.
 Both were written from their feature documents.
 
-**Still broken:** `docs/API/06-Student-Activities-API.md` is a byte for byte
-duplicate of the Chat specification. The Student Activities endpoint contract
-does not exist and must be written before that module is built.
+`docs/API/06-Student-Activities-API.md` was also a byte for byte duplicate of
+the Chat specification. It was written from the feature document before the
+Student Activities module was built, and the module follows it.
 
 ### Additions and renames beyond the documented schema
 
@@ -266,6 +267,9 @@ does not exist and must be written before that module is built.
 | AI Examination uses the union of two conflicting table lists | `docs/FEATURES/08-AI-Exam.md` defines Exam, ExamQuestion, ExamSubmission, ExamSession and AIViolation with real columns; `docs/DATABASE/01-Tables.md` instead lists Examination, ExaminationSession, FaceDetection, EyeTracking, HeadPose, BrowserActivity, ExamRecording and AIReport. The API specification has endpoints for both, so all eleven tables exist, named after the feature document because that is the one with column definitions |
 | `ExamSession.paused_at` | Pause and resume are documented endpoints with nowhere to record when the pause began |
 | `PUT /ai-exam/submissions/{id}/grade` | The specification has no grading endpoint, so essay answers could never leave `Pending Review` |
+| `EventQrSession` table | Event attendance is documented as QR based with an expiring token, with nowhere to record the token. Mirrors `QRSession` from Attendance |
+| `Event.event_type` and `Event.award_points` | The feature document lists competitions, workshops and seminars as separate things but gave `Event` no type column, and describes awarding points per event with no place to store the value |
+| `EventRegistration.decision_reason`, `decided_by`, `decided_at` | Approval and rejection are documented and required to be logged, with no columns to log them |
 
 The feature documents also reference a **Finance Staff** role that does not
 exist among the six defined roles. Finance endpoints are Administrator only
@@ -353,13 +357,10 @@ archive.
 - **Email is not configured.** Password reset and verification emails will send
   once SMTP credentials are in `.env`. Until then they fail and are logged.
 - **No frontend tests.** The backend is covered, the React side is not.
-- **`docs/API/06-Student-Activities-API.md` is a duplicate** of the Chat
-  specification and must be written before that module is built.
 - **`docs/ARCHITECTURE/03-Backend-Architecture.md` still describes Node.js** and
   contradicts the rest of the documentation.
-- **Student Activities, Notification Center, Assessment, Grade Approval, Reset
-  Examination, Settings, System and Role Management modules** are documented but
-  not built.
+- **Notification Center, Assessment, Grade Approval, Reset Examination,
+  Settings, System and Role Management modules** are documented but not built.
 
 ---
 
@@ -368,6 +369,5 @@ archive.
 1. Correct the stale Node.js architecture document.
 2. Decide the Bootstrap question before building more frontend.
 3. Add frontend tests with Vitest.
-4. Write the missing Student Activities API specification.
-5. Build the Python AI service, or agree that proctoring ships without it.
-6. Add a cron job so calendar reminders are actually delivered.
+4. Build the Python AI service, or agree that proctoring ships without it.
+5. Add a cron job so calendar reminders are actually delivered.
