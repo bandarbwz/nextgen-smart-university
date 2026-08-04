@@ -123,7 +123,7 @@ Never expose sensitive information.
 
 Create responsive pages.
 
-Use Bootstrap 5.
+Use the design token system in `frontend/src/styles/tokens.css`. Do not introduce a CSS framework.
 
 Keep UI consistent.
 

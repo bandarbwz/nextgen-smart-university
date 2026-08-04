@@ -207,9 +207,17 @@ with PDO. `docs/ARCHITECTURE/03-Backend-Architecture.md` contradicts them by
 describing Node.js, Express and Prisma. That file looks like a leftover from a
 different template and should be corrected.
 
-**Frontend does not use Bootstrap 5.** The stack document names Bootstrap, but
-the UI is built on design tokens instead. If Bootstrap is a hard requirement
-for marking, this needs reworking. **Still undecided.**
+**Frontend uses design tokens, not Bootstrap. Decided, not a deviation.** The
+stack document originally named Bootstrap 5. On 2026-08-05 the supervisor
+replaced it with the custom design token system that was actually built, and
+every document naming Bootstrap was updated to match. The unused `bootstrap`
+package was removed from `frontend/package.json`; it had been installed but
+imported nowhere, and no Bootstrap class name appeared in the source.
+
+The reasoning is recorded in `docs/PROJECT/004-Technology-Stack.md`: themes come
+from swapping tokens rather than fighting a framework palette, every interactive
+element meets the 44 pixel touch target minimum, and no unused framework CSS
+ships to the browser.
 
 **Chat uses short polling, not Socket.IO.** A native PHP backend cannot host
 Socket.IO. The client polls every five seconds with an `after_id` cursor.

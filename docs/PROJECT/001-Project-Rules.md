@@ -81,7 +81,7 @@ Every developer and AI assistant must follow these rules throughout the project 
 # UI Rules
 
 - Build responsive pages.
-- Use Bootstrap 5.
+- Use the design token system in `frontend/src/styles/tokens.css`. Do not introduce a CSS framework.
 - Follow the project design system.
 - Use Lucide React icons.
 - Keep navigation consistent across all portals.

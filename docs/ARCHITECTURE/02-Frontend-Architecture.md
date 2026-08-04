@@ -4,7 +4,7 @@
 
 The frontend provides a responsive web interface for all platform users.
 
-It is built using React, Bootstrap, and modern frontend development practices.
+It is built using React and a custom design token system. Bootstrap was the original choice and was replaced by the supervisor on 2026-08-05; see `docs/PROJECT/004-Technology-Stack.md` for the reasoning.
 
 ---
 
@@ -12,7 +12,7 @@ It is built using React, Bootstrap, and modern frontend development practices.
 
 - React
 - React Router
-- Bootstrap
+- Design tokens (custom CSS)
 - Axios
 - Lucide React
 

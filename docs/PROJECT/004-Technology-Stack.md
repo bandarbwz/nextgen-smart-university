@@ -18,7 +18,26 @@ Framework
 
 UI Framework
 
-- Bootstrap 5
+- Custom design token system (CSS custom properties)
+
+**Superseded 2026-08-05 by the project supervisor.** Bootstrap 5 was the
+original choice and was never used. The interface is built on a custom design
+token system instead: CSS custom properties for colour, spacing, radius and
+shadow, with component styles written against them.
+
+The reasons for the change:
+
+- Light and dark themes come from swapping one set of tokens, rather than
+  fighting a framework built around a single palette.
+- Every interactive element meets the 44 pixel touch target minimum, which
+  Bootstrap's defaults do not guarantee.
+- No unused framework CSS ships to the browser.
+- The interface is not tied to a version of somebody else's design language.
+
+The `bootstrap` package has been removed from `frontend/package.json`. It had
+been installed but was imported in zero files and no Bootstrap class name
+appeared anywhere in the source, so its presence only misled anyone reading the
+dependency list.
 
 Routing
 
@@ -242,7 +261,7 @@ The project follows the following engineering principles:
 Frontend
 
 - React
-- Bootstrap
+- Design tokens (custom CSS)
 - Axios
 - React Router
 - Lucide React

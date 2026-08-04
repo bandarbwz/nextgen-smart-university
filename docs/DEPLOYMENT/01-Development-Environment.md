@@ -33,7 +33,7 @@ Node.js is needed to build and run the React frontend with Vite. It is **not** u
 # Frontend
 
 - React
-- Bootstrap
+- Design tokens (custom CSS)
 - Axios
 
 ---
