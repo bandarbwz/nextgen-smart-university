@@ -14,7 +14,8 @@ class EventRegistrationService
         private readonly EventRegistration $registrations = new EventRegistration(),
         private readonly EventAttendance $attendance = new EventAttendance(),
         private readonly Student $students = new Student(),
-        private readonly EventService $events = new EventService()
+        private readonly EventService $events = new EventService(),
+        private readonly NotificationService $notifications = new NotificationService()
     ) {
     }
 
@@ -99,6 +100,13 @@ class EventRegistrationService
 
         $this->registrations->decide($id, 'Approved', $user['user_id'], null);
 
+        $this->notifyStudent(
+            (int) $registration['student_id'],
+            'Event registration approved',
+            'You are confirmed for ' . $event['event_name'] . '.',
+            'success'
+        );
+
         return $this->registrations->findDetailed($id);
     }
 
@@ -112,7 +120,34 @@ class EventRegistrationService
 
         $this->registrations->decide($id, 'Rejected', $user['user_id'], $reason);
 
+        $event = $this->events->requireEvent((int) $registration['event_id']);
+
+        $this->notifyStudent(
+            (int) $registration['student_id'],
+            'Event registration not approved',
+            'Your place at ' . $event['event_name'] . ' was not confirmed.'
+                . ($reason === null ? '' : ' Reason: ' . $reason),
+            'warning'
+        );
+
         return $this->registrations->findDetailed($id);
+    }
+
+    private function notifyStudent(int $studentId, string $title, string $message, string $type): void
+    {
+        $student = $this->students->find($studentId);
+
+        if ($student === null) {
+            return;
+        }
+
+        $this->notifications->notify(
+            (int) $student['user_id'],
+            'Student Activities',
+            $title,
+            $message,
+            ['type' => $type, 'priority' => 'Normal']
+        );
     }
 
     public function requireOwnRegistration(int $id, array $user): array

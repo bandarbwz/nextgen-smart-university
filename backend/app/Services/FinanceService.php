@@ -21,7 +21,8 @@ class FinanceService
         private readonly Scholarship $scholarships = new Scholarship(),
         private readonly FinancialHold $holds = new FinancialHold(),
         private readonly TuitionFee $fees = new TuitionFee(),
-        private readonly Student $students = new Student()
+        private readonly Student $students = new Student(),
+        private readonly NotificationService $notifications = new NotificationService()
     ) {
     }
 
@@ -275,6 +276,16 @@ class FinanceService
             'status' => 'active',
             'applied_by' => $user['user_id'],
         ]);
+
+        $student = $this->students->find($studentId);
+
+        $this->notifications->notify(
+            (int) $student['user_id'],
+            'Finance',
+            'A financial hold has been placed on your account',
+            'You cannot register for courses until this is resolved. Reason: ' . $fields['reason'],
+            ['type' => 'error', 'priority' => 'Critical']
+        );
 
         return $this->holds->find($id);
     }

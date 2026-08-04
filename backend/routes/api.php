@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Controllers\ActivityPointController;
+use App\Controllers\AnnouncementBroadcastController;
 use App\Controllers\AssignmentController;
 use App\Controllers\AttendanceController;
 use App\Controllers\AuthController;
@@ -16,6 +17,7 @@ use App\Controllers\FinanceController;
 use App\Controllers\FoodCourtController;
 use App\Controllers\LmsContentController;
 use App\Controllers\MaterialController;
+use App\Controllers\NotificationController;
 use App\Controllers\QuizController;
 use App\Controllers\ReportController;
 use App\Controllers\DepartmentController;
@@ -485,5 +487,38 @@ $router->get('/api/v1/activities/points', fn () => $activityPoints->mine());
 $router->post('/api/v1/activities/points', fn () => $activityPoints->store());
 $router->get('/api/v1/activities/points/leaderboard', fn () => $activityPoints->leaderboard());
 $router->get('/api/v1/activities/points/{id}', fn (string $id) => $activityPoints->forStudent($id));
+
+
+$notifications = new NotificationController();
+$announcements = new AnnouncementBroadcastController();
+
+$router->get('/api/v1/notifications/unread', fn () => $notifications->unread());
+$router->get('/api/v1/notifications/preferences', fn () => $notifications->preferences());
+$router->put('/api/v1/notifications/preferences', fn () => $notifications->updatePreferences());
+$router->put('/api/v1/notifications/read-all', fn () => $notifications->markAllRead());
+
+$router->get('/api/v1/notifications/announcements', fn () => $announcements->index());
+$router->post('/api/v1/notifications/announcements', fn () => $announcements->store());
+$router->put(
+    '/api/v1/notifications/announcements/{id}',
+    fn (string $id) => $announcements->update($id)
+);
+$router->delete(
+    '/api/v1/notifications/announcements/{id}',
+    fn (string $id) => $announcements->destroy($id)
+);
+
+$router->post('/api/v1/notifications/broadcast', fn () => $announcements->broadcast());
+$router->post('/api/v1/notifications/push', fn () => $notifications->push());
+$router->post('/api/v1/notifications/sms', fn () => $notifications->sms());
+
+$router->get('/api/v1/notifications', fn () => $notifications->index());
+$router->post('/api/v1/notifications', fn () => $notifications->store());
+$router->delete('/api/v1/notifications', fn () => $notifications->destroyAll());
+
+$router->put('/api/v1/notifications/{id}/read', fn (string $id) => $notifications->markRead($id));
+$router->put('/api/v1/notifications/{id}/archive', fn (string $id) => $notifications->archive($id));
+$router->get('/api/v1/notifications/{id}', fn (string $id) => $notifications->show($id));
+$router->delete('/api/v1/notifications/{id}', fn (string $id) => $notifications->destroy($id));
 
 return $router;

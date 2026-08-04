@@ -46,6 +46,7 @@ Phase 1 and Phase 2 are complete and tested. Student Activities, the first modul
 | 2 | Download Center | Done | Done | Yes |
 | 2 | AI Examination | Done | Done | Yes |
 | 3 | Student Activities | Done | Done | Yes |
+| 3 | Notification Center | Done | Done | Yes |
 
 Totals: 67 database tables, 157 backend PHP files, 63 frontend files,
 223 tests with 401 assertions.
@@ -228,6 +229,14 @@ student who could pause their own timer could stop the clock at will. Pause and
 resume are Lecturer and Coordinator only, and resuming extends the deadline by
 exactly the time paused.
 
+**A notification never breaks the thing that caused it.** `NotificationService`
+catches everything and logs. An enrolment approval, a payment or a grade must
+not roll back because a notification row could not be written.
+
+**A critical notification ignores the user's preference.** Someone who has muted
+notifications still has to be told their examination was terminated or their
+account is on hold. Everything below critical respects the setting.
+
 **Three critical violations end the session.** The feature document says
 sessions terminate when critical policies are breached but never says at what
 count. Three is the chosen threshold, held in one constant in
@@ -270,6 +279,9 @@ Student Activities module was built, and the module follows it.
 | `EventQrSession` table | Event attendance is documented as QR based with an expiring token, with nowhere to record the token. Mirrors `QRSession` from Attendance |
 | `Event.event_type` and `Event.award_points` | The feature document lists competitions, workshops and seminars as separate things but gave `Event` no type column, and describes awarding points per event with no place to store the value |
 | `EventRegistration.decision_reason`, `decided_by`, `decided_at` | Approval and rejection are documented and required to be logged, with no columns to log them |
+| `Announcement` renamed to `SystemAnnouncement` | The LMS module already owns `Announcement` for course announcements scoped to a section. The notification one is university wide |
+| `SystemAnnouncement` table itself | The API specification has announcement endpoints with no table behind them in the feature document |
+| `Notification.reference_type`, `reference_id`, `read_at`, `archived_at` | Archiving and marking read are documented endpoints with nowhere to record when, and a notification needs to point at the thing it is about |
 
 The feature documents also reference a **Finance Staff** role that does not
 exist among the six defined roles. Finance endpoints are Administrator only
@@ -359,8 +371,11 @@ archive.
 - **No frontend tests.** The backend is covered, the React side is not.
 - **`docs/ARCHITECTURE/03-Backend-Architecture.md` still describes Node.js** and
   contradicts the rest of the documentation.
-- **Notification Center, Assessment, Grade Approval, Reset Examination,
-  Settings, System and Role Management modules** are documented but not built.
+- **Assessment, Grade Approval, Reset Examination, Settings, System and Role
+  Management modules** are documented but not built.
+- **Push and SMS notifications are not implemented.** Both endpoints exist and
+  return 501 with a plain explanation rather than accepting a request and
+  quietly doing nothing. Neither has a provider.
 
 ---
 

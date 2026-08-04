@@ -8,6 +8,7 @@ import {
     GraduationCap,
     LayoutDashboard,
     Library,
+    Bell,
     MessagesSquare,
     NotebookPen,
     PartyPopper,
@@ -25,6 +26,7 @@ export const navigationGroups = [
         items: [
             { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, roles: null },
             { to: '/calendar', label: 'Calendar', icon: CalendarDays, roles: null },
+            { to: '/notifications', label: 'Notifications', icon: Bell, roles: null },
             { to: '/chat', label: 'Chat', icon: MessagesSquare, roles: null },
             { to: '/food-court', label: 'Food Court', icon: Utensils, roles: null },
             { to: '/downloads', label: 'Download Center', icon: FolderOpen, roles: null },

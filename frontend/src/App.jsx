@@ -29,6 +29,7 @@ import { CalendarPage } from './pages/CalendarPage';
 import { ChatPage } from './pages/ChatPage';
 import { ReportsPage } from './pages/ReportsPage';
 import { DownloadCenterPage } from './pages/DownloadCenterPage';
+import { NotificationsPage } from './pages/NotificationsPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import './styles/components.css';
@@ -36,6 +37,7 @@ import './styles/auth.css';
 import './styles/shell.css';
 import './styles/admin.css';
 import './styles/activities.css';
+import './styles/notifications.css';
 import './styles/exam.css';
 
 export default function App() {
@@ -57,6 +59,7 @@ export default function App() {
                                 <Route path="/food-court" element={<FoodCourtPage />} />
                                 <Route path="/reports" element={<ReportsPage />} />
                                 <Route path="/downloads" element={<DownloadCenterPage />} />
+                                <Route path="/notifications" element={<NotificationsPage />} />
                                 <Route path="/profile" element={<ProfilePage />} />
 
                                 <Route element={<ProtectedRoute allowedRoles={['Student']} />}>
