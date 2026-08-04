@@ -29,6 +29,7 @@ use App\Controllers\EventController;
 use App\Controllers\EventRegistrationController;
 use App\Controllers\ExamController;
 use App\Controllers\ExamReportController;
+use App\Controllers\ExamResetController;
 use App\Controllers\ExamSessionController;
 use App\Controllers\FacultyController;
 use App\Controllers\ProctoringController;
@@ -560,5 +561,16 @@ $router->put(
     fn (string $id) => $gradeApprovals->returnForRevision($id)
 );
 $router->get('/api/v1/grade-approvals/{id}', fn (string $id) => $gradeApprovals->show($id));
+
+
+$examResets = new ExamResetController();
+
+$router->get('/api/v1/exam-reset/history', fn () => $examResets->history());
+$router->get('/api/v1/exam-reset', fn () => $examResets->index());
+$router->post('/api/v1/exam-reset', fn () => $examResets->store());
+$router->put('/api/v1/exam-reset/{id}/recommend', fn (string $id) => $examResets->recommend($id));
+$router->put('/api/v1/exam-reset/{id}/approve', fn (string $id) => $examResets->approve($id));
+$router->put('/api/v1/exam-reset/{id}/reject', fn (string $id) => $examResets->reject($id));
+$router->get('/api/v1/exam-reset/{id}', fn (string $id) => $examResets->show($id));
 
 return $router;

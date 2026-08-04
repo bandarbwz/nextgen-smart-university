@@ -112,6 +112,8 @@ CREATE TABLE IF NOT EXISTS ExamSubmission (
     exam_id BIGINT UNSIGNED NOT NULL,
     session_id BIGINT UNSIGNED NULL,
     student_id BIGINT UNSIGNED NOT NULL,
+    attempt_number SMALLINT UNSIGNED NOT NULL DEFAULT 1,
+    reset_at DATETIME NULL,
     answers JSON NULL,
     auto_scored_marks DECIMAL(6,2) NOT NULL DEFAULT 0,
     score DECIMAL(6,2) NULL,
@@ -124,7 +126,7 @@ CREATE TABLE IF NOT EXISTS ExamSubmission (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (id),
-    UNIQUE KEY uq_exam_submission_student (exam_id, student_id),
+    UNIQUE KEY uq_exam_submission_student (exam_id, student_id, attempt_number),
     KEY idx_exam_submission_student (student_id),
     KEY idx_exam_submission_exam (exam_id),
 

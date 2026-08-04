@@ -10,11 +10,16 @@ class ExamSubmission extends Model
 
     protected string $defaultOrder = 'submitted_at DESC';
 
+    /**
+     * The live submission only. A submission that has been reset is history,
+     * not a reason to refuse the student a second sitting.
+     */
     public function findForStudent(int $examId, int $studentId): ?array
     {
         $statement = $this->db->prepare(
             'SELECT * FROM ExamSubmission
-             WHERE exam_id = :exam_id AND student_id = :student_id
+             WHERE exam_id = :exam_id AND student_id = :student_id AND reset_at IS NULL
+             ORDER BY attempt_number DESC
              LIMIT 1'
         );
 
@@ -26,6 +31,36 @@ class ExamSubmission extends Model
         return $statement->fetch() ?: null;
     }
 
+    public function nextAttemptNumber(int $examId, int $studentId): int
+    {
+        $statement = $this->db->prepare(
+            'SELECT COALESCE(MAX(attempt_number), 0) + 1 FROM ExamSubmission
+             WHERE exam_id = :exam_id AND student_id = :student_id'
+        );
+
+        $statement->execute([
+            'exam_id' => $examId,
+            'student_id' => $studentId,
+        ]);
+
+        return (int) $statement->fetchColumn();
+    }
+
+    public function markReset(int $examId, int $studentId): int
+    {
+        $statement = $this->db->prepare(
+            'UPDATE ExamSubmission SET reset_at = UTC_TIMESTAMP()
+             WHERE exam_id = :exam_id AND student_id = :student_id AND reset_at IS NULL'
+        );
+
+        $statement->execute([
+            'exam_id' => $examId,
+            'student_id' => $studentId,
+        ]);
+
+        return $statement->rowCount();
+    }
+
     public function forExam(int $examId): array
     {
         $statement = $this->db->prepare(
@@ -35,7 +70,7 @@ class ExamSubmission extends Model
              JOIN Student st ON st.id = sub.student_id
              JOIN User u ON u.id = st.user_id
              LEFT JOIN ExamSession sess ON sess.id = sub.session_id
-             WHERE sub.exam_id = :exam_id
+             WHERE sub.exam_id = :exam_id AND sub.reset_at IS NULL
              ORDER BY st.student_number'
         );
 

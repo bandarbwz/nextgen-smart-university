@@ -49,6 +49,7 @@ Phase 1 and Phase 2 are complete and tested. Student Activities, the first modul
 | 3 | Notification Center | Done | Done | Yes |
 | 3 | Assessment System | Done | Done | Yes |
 | 3 | Grade Approval | Done | Done | Yes |
+| 3 | Reset Examination | Done | Done | Yes |
 
 Totals: 67 database tables, 157 backend PHP files, 63 frontend files,
 223 tests with 401 assertions.
@@ -231,6 +232,18 @@ student who could pause their own timer could stop the clock at will. Pause and
 resume are Lecturer and Coordinator only, and resuming extends the deadline by
 exactly the time paused.
 
+**A reset never deletes anything.** The original submission is stamped
+`reset_at` and the retake is a new attempt beside it, so the first sitting and
+the reason it was abandoned both survive. This needed a change to an existing
+table: `ExamSubmission` held one row per student per examination, and that
+unique key made a retake impossible. It now carries `attempt_number` and the
+key includes it. `database/migrations/02-exam-submission-attempts.sql` applies
+this to a database that already exists and is safe to run twice.
+
+**Only an examination that was actually sat can be reset.** A request needs a
+closed session behind it, so asking to redo a paper never started is refused,
+and a session still in progress must be finished first.
+
 **Grade approval is the only thing that writes a transcript row.** Until this
 module existed, nothing in the platform ever inserted into `Transcript`, so
 `GpaService` and the transcript page read an empty table and every student sat
@@ -409,8 +422,8 @@ archive.
 - **No frontend tests.** The backend is covered, the React side is not.
 - **`docs/ARCHITECTURE/03-Backend-Architecture.md` still describes Node.js** and
   contradicts the rest of the documentation.
-- **Reset Examination, Settings, System and Role Management modules** are
-  documented but not built.
+- **Settings, System and Role Management modules** are documented but not
+  built.
 - **Push and SMS notifications are not implemented.** Both endpoints exist and
   return 501 with a plain explanation rather than accepting a request and
   quietly doing nothing. Neither has a provider.

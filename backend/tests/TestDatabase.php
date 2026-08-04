@@ -24,6 +24,7 @@ class TestDatabase
         '12-notification-center.sql',
         '13-assessment.sql',
         '14-grade-approval.sql',
+        '15-exam-reset.sql',
     ];
 
     private const SEED_FILES = [
@@ -63,6 +64,7 @@ class TestDatabase
     public static function truncateBusinessTables(PDO $pdo): void
     {
         $tables = [
+            'ExamResetLog', 'ExamResetRequest',
             'GradeApprovalLog', 'GradeApproval',
             'AssessmentResult', 'AssessmentRubric', 'Assessment',
             'Notification', 'NotificationPreference', 'SystemAnnouncement',

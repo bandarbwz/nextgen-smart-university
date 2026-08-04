@@ -209,6 +209,10 @@ class ExamSessionService
                 'exam_id' => (int) $session['exam_id'],
                 'session_id' => (int) $session['id'],
                 'student_id' => (int) $session['student_id'],
+                'attempt_number' => $this->submissions->nextAttemptNumber(
+                    (int) $session['exam_id'],
+                    (int) $session['student_id']
+                ),
                 'answers' => json_encode($scored['answers']),
                 'auto_scored_marks' => $scored['marks'],
                 'score' => $scored['manual'] ? null : $scored['marks'],
