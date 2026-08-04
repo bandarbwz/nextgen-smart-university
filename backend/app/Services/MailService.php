@@ -43,6 +43,24 @@ class MailService
         return $this->send($email, $fullName, 'Verify your email address', $body);
     }
 
+    public function sendNotification(
+        string $email,
+        string $fullName,
+        string $title,
+        string $message
+    ): bool {
+        $body = $this->template(
+            $title,
+            $fullName,
+            $message,
+            Config::get('app.frontend_url') . '/notifications',
+            'Open Notification Center',
+            'You are receiving this because email notifications are enabled on your account.'
+        );
+
+        return $this->send($email, $fullName, $title, $body);
+    }
+
     public function sendSecurityAlert(string $email, string $fullName, string $event): bool
     {
         $body = $this->template(

@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { GraduationCap, LogOut, Menu, Moon, Sun, User } from 'lucide-react';
+import { Bell, GraduationCap, LogOut, Menu, Moon, Sun, User } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useTheme } from '../hooks/useTheme';
 import { visibleGroupsForRole } from './navigationItems';
+import { NOTIFICATIONS_CHANGED, notificationService } from '../services/notificationService';
 
 function initialsOf(fullName) {
     return fullName
@@ -21,6 +22,34 @@ export function AppLayout() {
     const location = useLocation();
 
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [unread, setUnread] = useState(0);
+
+    useEffect(() => {
+        const load = () =>
+            notificationService
+                .unreadCount()
+                .then(setUnread)
+                .catch(() => undefined);
+
+        const refresh = () => {
+            if (!document.hidden) {
+                load();
+            }
+        };
+
+        load();
+
+        const timer = setInterval(refresh, 60000);
+
+        document.addEventListener('visibilitychange', refresh);
+        window.addEventListener(NOTIFICATIONS_CHANGED, load);
+
+        return () => {
+            clearInterval(timer);
+            document.removeEventListener('visibilitychange', refresh);
+            window.removeEventListener(NOTIFICATIONS_CHANGED, load);
+        };
+    }, [location.pathname]);
 
     useEffect(() => {
         setIsSidebarOpen(false);
@@ -66,6 +95,21 @@ export function AppLayout() {
                 >
                     {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
                 </button>
+
+                <NavLink
+                    to="/notifications"
+                    className="nsu-bell"
+                    aria-label={
+                        unread > 0 ? `Notifications, ${unread} unread` : 'Notifications'
+                    }
+                >
+                    <Bell size={20} />
+                    {unread > 0 && (
+                        <span className="nsu-bell__count" aria-hidden="true">
+                            {unread > 99 ? '99+' : unread}
+                        </span>
+                    )}
+                </NavLink>
 
                 <NavLink to="/profile" className="nsu-shell__icon-button" aria-label="Open profile">
                     <User size={20} />

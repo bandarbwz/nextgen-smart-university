@@ -28,7 +28,8 @@ class EnrollmentService
         private readonly ClassSchedule $schedules = new ClassSchedule(),
         private readonly CourseChatProvisioner $chat = new CourseChatProvisioner(),
         private readonly FinancialHold $holds = new FinancialHold(),
-        private readonly Invoice $invoices = new Invoice()
+        private readonly Invoice $invoices = new Invoice(),
+        private readonly NotificationService $notifications = new NotificationService()
     ) {
     }
 
@@ -148,7 +149,17 @@ class EnrollmentService
 
         $this->chat->addStudent((int) $enrollment['section_id'], (int) $enrollment['student_id']);
 
-        return $this->enrollments->findDetailed((int) $enrollment['id']);
+        $detailed = $this->enrollments->findDetailed((int) $enrollment['id']);
+
+        $this->notifyStudent(
+            (int) $enrollment['student_id'],
+            'Course registration approved',
+            'Your registration for ' . $detailed['course_code'] . ' ' . $detailed['course_name']
+                . ' has been approved.',
+            'success'
+        );
+
+        return $detailed;
     }
 
     public function reject(int $enrollmentId, int $approvedByUserId): array
@@ -169,7 +180,34 @@ class EnrollmentService
             throw $exception;
         }
 
-        return $this->enrollments->findDetailed($enrollmentId);
+        $detailed = $this->enrollments->findDetailed($enrollmentId);
+
+        $this->notifyStudent(
+            (int) $enrollment['student_id'],
+            'Course registration rejected',
+            'Your registration for ' . $detailed['course_code'] . ' ' . $detailed['course_name']
+                . ' was not approved. Speak to your coordinator if you need help.',
+            'warning'
+        );
+
+        return $detailed;
+    }
+
+    private function notifyStudent(int $studentId, string $title, string $message, string $type): void
+    {
+        $student = $this->students->find($studentId);
+
+        if ($student === null) {
+            return;
+        }
+
+        $this->notifications->notify(
+            (int) $student['user_id'],
+            'Academic',
+            $title,
+            $message,
+            ['type' => $type, 'priority' => 'High']
+        );
     }
 
     private function requirePendingEnrollment(int $enrollmentId): array

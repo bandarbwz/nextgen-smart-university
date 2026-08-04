@@ -193,6 +193,30 @@ class User
         ]);
     }
 
+    public function idsForRole(string $role): array
+    {
+        $statement = $this->db->prepare(
+            "SELECT u.id
+             FROM User u
+             JOIN Role r ON r.id = u.role_id
+             WHERE r.name = :role AND u.status = 'active' AND u.deleted_at IS NULL"
+        );
+
+        $statement->execute(['role' => $role]);
+
+        return array_map('intval', $statement->fetchAll(\PDO::FETCH_COLUMN));
+    }
+
+    public function activeIds(): array
+    {
+        return array_map(
+            'intval',
+            $this->db
+                ->query("SELECT id FROM User WHERE status = 'active' AND deleted_at IS NULL")
+                ->fetchAll(\PDO::FETCH_COLUMN)
+        );
+    }
+
     public function emailExists(string $email, ?int $excludeUserId = null): bool
     {
         $sql = 'SELECT 1 FROM User WHERE email = :email AND deleted_at IS NULL';

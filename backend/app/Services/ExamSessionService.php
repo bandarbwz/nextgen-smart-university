@@ -9,6 +9,7 @@ use App\Models\Exam;
 use App\Models\ExamQuestion;
 use App\Models\ExamSession;
 use App\Models\ExamSubmission;
+use App\Models\Student;
 use Throwable;
 
 class ExamSessionService
@@ -23,7 +24,9 @@ class ExamSessionService
         private readonly ExamService $examService = new ExamService(),
         private readonly CourseAccessService $access = new CourseAccessService(),
         private readonly FaceVerificationService $faces = new FaceVerificationService(),
-        private readonly AiProctorService $proctor = new AiProctorService()
+        private readonly AiProctorService $proctor = new AiProctorService(),
+        private readonly NotificationService $notifications = new NotificationService(),
+        private readonly Student $students = new Student()
     ) {
     }
 
@@ -128,6 +131,18 @@ class ExamSessionService
         $exam = $this->exams->find((int) $session['exam_id']) ?? [];
 
         $this->finish($session, $exam, [], 'Auto Submitted', 'terminated', $reason);
+
+        $student = $this->students->find((int) $session['student_id']);
+
+        if ($student !== null) {
+            $this->notifications->notify(
+                (int) $student['user_id'],
+                'AI Examination',
+                'Examination terminated',
+                'Your examination was ended early and submitted automatically. ' . $reason,
+                ['type' => 'error', 'priority' => 'Critical']
+            );
+        }
     }
 
     public function mine(array $user): array
