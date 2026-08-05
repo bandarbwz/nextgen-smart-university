@@ -21,7 +21,79 @@
     gap: var(--space-sm);
     font-family: var(--font-heading);
     font-weight: 600;
-    color: var(--color-primary);
+    color: var(--color-foreground);
+}
+
+.nsu-shell__crest {
+    width: 26px;
+    height: auto;
+}
+
+.nsu-shell__menu {
+    position: relative;
+}
+
+.nsu-shell__dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    z-index: var(--z-drawer);
+    min-width: 230px;
+    padding: var(--space-xs);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+}
+
+.nsu-shell__dropdown a,
+.nsu-shell__dropdown button {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    width: 100%;
+    padding: 9px 10px;
+    background: none;
+    border: none;
+    border-radius: var(--radius-sm);
+    color: var(--color-foreground);
+    font-family: inherit;
+    font-size: var(--text-sm);
+    text-align: left;
+    cursor: pointer;
+}
+
+.nsu-shell__dropdown a:hover,
+.nsu-shell__dropdown button:hover {
+    background: var(--color-muted);
+    text-decoration: none;
+}
+
+.nsu-shell__dropdown button.is-danger {
+    color: var(--color-destructive);
+}
+
+.nsu-shell__dropdown-sep {
+    height: 1px;
+    margin: var(--space-xs) var(--space-xs);
+    background: var(--color-border);
+}
+
+.nsu-shell__profile {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: 5px 10px 5px 5px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.nsu-shell__profile:hover {
+    background: var(--color-muted);
+    border-color: var(--color-border);
 }
 
 .nsu-shell__brand-text {
@@ -88,6 +160,11 @@
 
 .nsu-shell__body {
     display: flex;
+    align-items: flex-start;
+    gap: var(--space-lg);
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: var(--space-lg) var(--space-md) var(--space-2xl);
 }
 
 .nsu-shell__sidebar {
@@ -152,7 +229,7 @@
 }
 
 .nsu-nav__link--active {
-    background: var(--color-info-surface);
+    background: var(--brand-red-light);
     color: var(--color-primary);
     font-weight: 600;
 }
@@ -160,12 +237,14 @@
 .nsu-shell__main {
     flex: 1;
     min-width: 0;
-    padding: var(--space-lg) var(--space-md);
 }
 
 .nsu-shell__content {
-    max-width: 1280px;
-    margin: 0 auto;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-lg) var(--space-md);
 }
 
 .nsu-grid {
@@ -279,8 +358,21 @@
 @media (min-width: 1024px) {
     .nsu-shell__sidebar {
         position: sticky;
-        top: var(--topbar-height);
-        height: calc(100dvh - var(--topbar-height));
+        top: calc(var(--topbar-height) + var(--space-lg));
+        inset: auto;
+        z-index: auto;
+        align-self: flex-start;
+        width: var(--sidebar-width);
+        height: auto;
+        max-height: calc(100dvh - var(--topbar-height) - var(--space-2xl));
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: var(--color-border-strong) transparent;
+        padding: var(--space-sm);
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-sm);
         transform: none;
         flex-shrink: 0;
     }
@@ -290,7 +382,7 @@
         display: none;
     }
 
-    .nsu-shell__main {
+    .nsu-shell__content {
         padding: var(--space-xl);
     }
 }

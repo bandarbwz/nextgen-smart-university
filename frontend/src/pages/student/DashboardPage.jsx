@@ -1,40 +1,119 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Award, BookOpen, CalendarClock, GraduationCap, Layers } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Award, BookOpen, CalendarClock, GraduationCap, Layers, Plus } from 'lucide-react';
 import { PageHeader } from '../../components/PageHeader';
 import { EmptyState } from '../../components/EmptyState';
 import { SkeletonRows } from '../../components/Skeleton';
 import { StatusBadge } from '../../components/Badge';
+import { Button } from '../../components/Button';
 import { Alert } from '../../components/Alert';
 import { useAuth } from '../../hooks/useAuth';
+import { useToast } from '../../hooks/useToast';
 import { academicService } from '../../services/academicService';
 import { readApiError } from '../../services/apiClient';
+import '../../styles/dashboard.css';
+
+const TABS = [
+    ['all', 'All'],
+    ['approved', 'In Progress'],
+    ['completed', 'Completed'],
+    ['dropped', 'Dropped'],
+];
+
+const GROUPS = [
+    ['approved', 'In progress', ['Pending', 'Approved']],
+    ['completed', 'Completed', ['Completed']],
+    ['dropped', 'Dropped', ['Dropped', 'Withdrawn', 'Rejected']],
+];
+
+function initialsOf(name) {
+    return (name || '')
+        .split(' ')
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((part) => part[0].toUpperCase())
+        .join('');
+}
 
 function StatCard({ label, value, hint, icon: Icon }) {
     return (
-        <article className="nsu-card">
-            <div className="nsu-stat">
-                <div>
-                    <p className="nsu-stat__label">{label}</p>
-                    <p className="nsu-stat__value tabular">{value}</p>
-                    {hint && <p className="nsu-stat__hint">{hint}</p>}
-                </div>
-                <span className="nsu-stat__icon">
-                    <Icon size={20} aria-hidden="true" />
+        <article className="nsu-dash__stat">
+            <div className="nsu-dash__stat-top">
+                <span>{label}</span>
+                <span className="nsu-dash__stat-icon">
+                    <Icon size={16} aria-hidden="true" />
                 </span>
             </div>
+            <p className="nsu-dash__stat-value tabular">{value}</p>
+            <p className="nsu-dash__stat-foot">{hint}</p>
+        </article>
+    );
+}
+
+function CourseCard({ enrollment, isOpen, onToggle, onDrop }) {
+    const canDrop = ['Pending', 'Approved'].includes(enrollment.enrollment_status);
+
+    return (
+        <article className={`nsu-course${isOpen ? ' nsu-course--open' : ''}`}>
+            <button type="button" className="nsu-course__row" onClick={onToggle}>
+                <div>
+                    <div className="nsu-course__code tabular">{enrollment.course_code}</div>
+                    <div className="nsu-course__section">
+                        Section {enrollment.section_number} &middot; {enrollment.credit_hours}{' '}
+                        credits
+                    </div>
+                </div>
+
+                <div className="nsu-course__name">{enrollment.course_name}</div>
+
+                <div className="nsu-course__lecturer">
+                    <span className="nsu-avatar-sm" aria-hidden="true">
+                        {initialsOf(enrollment.lecturer_name)}
+                    </span>
+                    <span>{enrollment.lecturer_name}</span>
+                </div>
+
+                <div className="nsu-course__right">
+                    <StatusBadge status={enrollment.enrollment_status} />
+                    <span className="nsu-course__toggle">{isOpen ? 'Show less' : 'Show more'}</span>
+                </div>
+            </button>
+
+            {isOpen && (
+                <div className="nsu-course__details">
+                    <div className="nsu-course__actions">
+                        {canDrop && (
+                            <Button variant="danger" onClick={() => onDrop(enrollment)}>
+                                Drop
+                            </Button>
+                        )}
+                        <Link className="nsu-button nsu-button--secondary" to="/course-content">
+                            Course content
+                        </Link>
+                        <Link className="nsu-button nsu-button--primary" to="/my-results">
+                            {enrollment.enrollment_status === 'Completed'
+                                ? 'View grades'
+                                : 'Go to course'}
+                        </Link>
+                    </div>
+                </div>
+            )}
         </article>
     );
 }
 
 export function DashboardPage() {
     const { user } = useAuth();
+    const { notify } = useToast();
+    const navigate = useNavigate();
 
     const [student, setStudent] = useState(null);
     const [enrollments, setEnrollments] = useState([]);
     const [semester, setSemester] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [notice, setNotice] = useState('');
+    const [filter, setFilter] = useState('all');
+    const [openId, setOpenId] = useState(null);
 
     const isStudent = user.role === 'Student';
 
@@ -55,15 +134,26 @@ export function DashboardPage() {
                     return;
                 }
 
-                const [studentData, enrollmentData] = await Promise.all([
+                const [studentData, current, history] = await Promise.all([
                     academicService.studentProfile(),
                     academicService.currentEnrollments(),
+                    academicService.enrollmentHistory().catch(() => []),
                 ]);
 
-                if (isActive) {
-                    setStudent(studentData);
-                    setEnrollments(enrollmentData);
+                if (!isActive) {
+                    return;
                 }
+
+                const merged = [...current];
+
+                history.forEach((item) => {
+                    if (!merged.some((existing) => existing.id === item.id)) {
+                        merged.push(item);
+                    }
+                });
+
+                setStudent(studentData);
+                setEnrollments(merged);
             } catch (error) {
                 if (isActive) {
                     setNotice(readApiError(error, 'Unable to load your dashboard.').message);
@@ -86,6 +176,40 @@ export function DashboardPage() {
         .filter((item) => ['Pending', 'Approved'].includes(item.enrollment_status))
         .reduce((total, item) => total + Number(item.credit_hours), 0);
 
+    const activeCount = enrollments.filter((item) =>
+        ['Pending', 'Approved'].includes(item.enrollment_status),
+    ).length;
+
+    const groups = useMemo(
+        () =>
+            GROUPS.filter(([key]) => filter === 'all' || filter === key).map(
+                ([key, label, statuses]) => [
+                    key,
+                    label,
+                    enrollments.filter((item) => statuses.includes(item.enrollment_status)),
+                ],
+            ),
+        [enrollments, filter],
+    );
+
+    async function handleDrop(enrollment) {
+        try {
+            await academicService.drop(enrollment.id);
+
+            setEnrollments((current) =>
+                current.map((item) =>
+                    item.id === enrollment.id
+                        ? { ...item, enrollment_status: 'Dropped' }
+                        : item,
+                ),
+            );
+
+            notify(`${enrollment.course_code} dropped.`, 'success');
+        } catch (error) {
+            notify(readApiError(error, 'Unable to drop this course.').message, 'error');
+        }
+    }
+
     return (
         <>
             <PageHeader
@@ -103,7 +227,7 @@ export function DashboardPage() {
                 <SkeletonRows rows={3} height={96} />
             ) : isStudent ? (
                 <>
-                    <div className="nsu-grid nsu-grid--stats" style={{ marginBottom: 'var(--space-xl)' }}>
+                    <div className="nsu-dash__stats">
                         <StatCard
                             label="Cumulative GPA"
                             value={student ? Number(student.cumulative_gpa).toFixed(2) : '0.00'}
@@ -124,56 +248,62 @@ export function DashboardPage() {
                         />
                         <StatCard
                             label="Active courses"
-                            value={enrollments.length}
+                            value={activeCount}
                             hint="Including pending approval"
                             icon={BookOpen}
                         />
                     </div>
 
-                    <h2 className="nsu-section-title">This semester</h2>
-
-                    <div className="nsu-card">
-                        {enrollments.length === 0 ? (
-                            <EmptyState
-                                icon={CalendarClock}
-                                title="No courses registered yet"
-                                description="Browse the catalog and register for sections while the registration period is open."
-                                action={<Link to="/registration">Go to course registration</Link>}
-                            />
-                        ) : (
-                            <div className="nsu-table-wrap">
-                                <table className="nsu-table">
-                                    <caption className="visually-hidden">
-                                        Courses registered this semester
-                                    </caption>
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Code</th>
-                                            <th scope="col">Course</th>
-                                            <th scope="col">Section</th>
-                                            <th scope="col">Credits</th>
-                                            <th scope="col">Lecturer</th>
-                                            <th scope="col">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {enrollments.map((item) => (
-                                            <tr key={item.id}>
-                                                <td className="tabular">{item.course_code}</td>
-                                                <td>{item.course_name}</td>
-                                                <td className="tabular">{item.section_number}</td>
-                                                <td className="tabular">{item.credit_hours}</td>
-                                                <td>{item.lecturer_name}</td>
-                                                <td>
-                                                    <StatusBadge status={item.enrollment_status} />
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        )}
+                    <div className="nsu-dash__head">
+                        <h2>This semester</h2>
+                        <Button icon={Plus} onClick={() => navigate('/registration')}>
+                            Register Course
+                        </Button>
                     </div>
+
+                    <div className="nsu-dash__tabs">
+                        {TABS.map(([key, label]) => (
+                            <button
+                                type="button"
+                                key={key}
+                                className={`nsu-dash__tab${filter === key ? ' nsu-dash__tab--active' : ''}`}
+                                onClick={() => setFilter(key)}
+                            >
+                                {label}
+                            </button>
+                        ))}
+                    </div>
+
+                    {enrollments.length === 0 ? (
+                        <EmptyState
+                            icon={CalendarClock}
+                            title="No courses registered yet"
+                            description="Browse the catalog and register for sections while the registration period is open."
+                            action={<Link to="/registration">Go to course registration</Link>}
+                        />
+                    ) : (
+                        groups.map(([key, label, items]) =>
+                            items.length === 0 ? null : (
+                                <div key={key}>
+                                    <p className="nsu-dash__group">{label}</p>
+
+                                    <div className="nsu-dash__list">
+                                        {items.map((item) => (
+                                            <CourseCard
+                                                key={item.id}
+                                                enrollment={item}
+                                                isOpen={openId === item.id}
+                                                onToggle={() =>
+                                                    setOpenId(openId === item.id ? null : item.id)
+                                                }
+                                                onDrop={handleDrop}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                            ),
+                        )
+                    )}
                 </>
             ) : (
                 <div className="nsu-card">

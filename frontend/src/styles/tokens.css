@@ -33,6 +33,7 @@
     --color-border-strong: rgba(23, 18, 19, 0.22);
 
     --color-destructive: #b5202e;
+    --color-on-destructive: #ffffff;
     --color-destructive-surface: #fdf2f3;
     --color-success: #1f7a52;
     --color-success-surface: #edf7f2;
@@ -99,6 +100,7 @@
     --color-border-strong: #4d4040;
 
     --color-destructive: #f08b93;
+    --color-on-destructive: #2a0d10;
     --color-destructive-surface: #2d1518;
     --color-success: #5cc79a;
     --color-success-surface: #10281e;

@@ -50,7 +50,7 @@
 
 .nsu-button--danger {
     background: var(--color-destructive);
-    color: #ffffff;
+    color: var(--color-on-destructive);
 }
 
 .nsu-button--ghost {
