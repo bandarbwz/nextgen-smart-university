@@ -27,6 +27,7 @@ import { ExamMonitorPage } from './pages/lecturer/ExamMonitorPage';
 import { TeachingPage } from './pages/lecturer/TeachingPage';
 import { StudentsPage } from './pages/admin/StudentsPage';
 import { LecturersPage } from './pages/admin/LecturersPage';
+import { RolesPage } from './pages/admin/RolesPage';
 import { SectionsPage } from './pages/admin/SectionsPage';
 import { CalendarPage } from './pages/CalendarPage';
 import { ChatPage } from './pages/ChatPage';
@@ -93,6 +94,7 @@ export default function App() {
 
                                 <Route element={<ProtectedRoute allowedRoles={['Administrator']} />}>
                                     <Route path="/lecturers" element={<LecturersPage />} />
+                                    <Route path="/roles" element={<RolesPage />} />
                                 </Route>
 
                                 <Route

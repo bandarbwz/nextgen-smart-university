@@ -22,6 +22,7 @@ use App\Controllers\MaterialController;
 use App\Controllers\NotificationController;
 use App\Controllers\QuizController;
 use App\Controllers\ReportController;
+use App\Controllers\RoleManagementController;
 use App\Controllers\DepartmentController;
 use App\Controllers\EnrollmentController;
 use App\Controllers\EventAttendanceController;
@@ -572,5 +573,22 @@ $router->put('/api/v1/exam-reset/{id}/recommend', fn (string $id) => $examResets
 $router->put('/api/v1/exam-reset/{id}/approve', fn (string $id) => $examResets->approve($id));
 $router->put('/api/v1/exam-reset/{id}/reject', fn (string $id) => $examResets->reject($id));
 $router->get('/api/v1/exam-reset/{id}', fn (string $id) => $examResets->show($id));
+
+
+$roleManagement = new RoleManagementController();
+
+$router->get('/api/v1/permissions', fn () => $roleManagement->permissions());
+$router->get('/api/v1/roles/audit-log', fn () => $roleManagement->auditLog());
+$router->get('/api/v1/roles', fn () => $roleManagement->index());
+$router->post('/api/v1/roles', fn () => $roleManagement->store());
+$router->put(
+    '/api/v1/roles/{id}/permissions',
+    fn (string $id) => $roleManagement->assignPermissions($id)
+);
+$router->get('/api/v1/roles/{id}', fn (string $id) => $roleManagement->show($id));
+$router->put('/api/v1/roles/{id}', fn (string $id) => $roleManagement->update($id));
+$router->delete('/api/v1/roles/{id}', fn (string $id) => $roleManagement->destroy($id));
+
+$router->put('/api/v1/users/{id}/role', fn (string $id) => $roleManagement->assignUserRole($id));
 
 return $router;

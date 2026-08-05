@@ -193,6 +193,16 @@ class User
         ]);
     }
 
+    public function changeRole(int $id, int $roleId): bool
+    {
+        $statement = $this->db->prepare('UPDATE User SET role_id = :role_id WHERE id = :id');
+
+        return $statement->execute([
+            'role_id' => $roleId,
+            'id' => $id,
+        ]);
+    }
+
     public function idsForRole(string $role): array
     {
         $statement = $this->db->prepare(

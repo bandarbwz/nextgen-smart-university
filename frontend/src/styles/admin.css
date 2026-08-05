@@ -160,3 +160,65 @@
         flex: 1 1 auto;
     }
 }
+
+.nsu-row--selected {
+    background: var(--color-muted);
+}
+
+.nsu-permission-group {
+    margin-bottom: var(--space-lg);
+}
+
+.nsu-permission-group:last-child {
+    margin-bottom: 0;
+}
+
+.nsu-permission-group__title {
+    margin: 0 0 var(--space-xs);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+}
+
+.nsu-permission-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: var(--space-xs);
+}
+
+.nsu-permission {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    padding: var(--space-sm);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    min-height: 44px;
+    transition: border-color 160ms ease, background-color 160ms ease;
+}
+
+.nsu-permission:hover {
+    border-color: var(--color-primary);
+    background: var(--color-muted);
+}
+
+.nsu-permission:focus-within {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+}
+
+.nsu-permission input {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.nsu-permission > span {
+    display: grid;
+    font-size: 0.875rem;
+}

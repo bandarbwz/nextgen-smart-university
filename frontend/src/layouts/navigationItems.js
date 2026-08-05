@@ -8,6 +8,7 @@ import {
     ClipboardList,
     GraduationCap,
     LayoutDashboard,
+    KeyRound,
     Library,
     Bell,
     MessagesSquare,
@@ -97,6 +98,7 @@ export const navigationGroups = [
         items: [
             { to: '/students', label: 'Students', icon: Users, roles: ['Coordinator', 'Administrator'] },
             { to: '/lecturers', label: 'Lecturers', icon: GraduationCap, roles: ['Administrator'] },
+            { to: '/roles', label: 'Roles and Permissions', icon: KeyRound, roles: ['Administrator'] },
             { to: '/sections', label: 'Sections', icon: BookOpen, roles: ['Coordinator', 'Administrator'] },
         ],
     },

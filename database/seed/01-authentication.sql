@@ -4,14 +4,14 @@
 USE nextgen_university;
 
 
-INSERT INTO Role (name, description) VALUES
-    ('Student', 'Enrolled university student'),
-    ('Lecturer', 'Teaching staff member'),
-    ('Coordinator', 'Academic program coordinator'),
-    ('Administrator', 'System administrator with full access'),
-    ('Restaurant Owner', 'Campus food court restaurant owner'),
-    ('STAD Staff', 'Student affairs and activities staff')
-ON DUPLICATE KEY UPDATE description = VALUES(description);
+INSERT INTO Role (name, description, is_system) VALUES
+    ('Student', 'Enrolled university student', TRUE),
+    ('Lecturer', 'Teaching staff member', TRUE),
+    ('Coordinator', 'Academic program coordinator', TRUE),
+    ('Administrator', 'System administrator with full access', TRUE),
+    ('Restaurant Owner', 'Campus food court restaurant owner', TRUE),
+    ('STAD Staff', 'Student affairs and activities staff', TRUE)
+ON DUPLICATE KEY UPDATE description = VALUES(description), is_system = TRUE;
 
 
 INSERT INTO Permission (module, name, description) VALUES
