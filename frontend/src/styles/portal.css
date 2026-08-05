@@ -1,0 +1,547 @@
+body.nsu-portal-open {
+    overflow: hidden;
+}
+
+.nsu-portal {
+    position: relative;
+    z-index: 1;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--brand-paper);
+    isolation: isolate;
+    font-family: var(--font-body);
+}
+
+.nsu-portal .bg-ambient {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(1px 1px at 2.9% 72.9%, rgba(181, 32, 46, 0.45), transparent 65%),
+        radial-gradient(1.2px 1.2px at 6.9% 38.0%, rgba(23, 18, 19, 0.35), transparent 65%),
+        radial-gradient(1px 1px at 11.7% 56.0%, rgba(181, 32, 46, 0.45), transparent 65%),
+        radial-gradient(1.2px 1.2px at 15.1% 32.1%, rgba(23, 18, 19, 0.35), transparent 65%),
+        radial-gradient(1.2px 1.2px at 21.6% 71.8%, rgba(181, 32, 46, 0.45), transparent 65%),
+        radial-gradient(1px 1px at 23.3% 58.0%, rgba(23, 18, 19, 0.35), transparent 65%),
+        radial-gradient(1.5px 1.5px at 31.0% 13.1%, rgba(181, 32, 46, 0.45), transparent 65%),
+        radial-gradient(1px 1px at 33.7% 68.3%, rgba(23, 18, 19, 0.35), transparent 65%),
+        radial-gradient(1.5px 1.5px at 38.3% 11.8%, rgba(181, 32, 46, 0.45), transparent 65%),
+        radial-gradient(1.2px 1.2px at 44.1% 38.2%, rgba(23, 18, 19, 0.35), transparent 65%),
+        radial-gradient(1px 1px at 48.0% 47.7%, rgba(181, 32, 46, 0.45), transparent 65%),
+        radial-gradient(1px 1px at 53.3% 87.9%, rgba(23, 18, 19, 0.35), transparent 65%),
+        radial-gradient(1px 1px at 57.8% 54.3%, rgba(181, 32, 46, 0.45), transparent 65%),
+        radial-gradient(1px 1px at 62.4% 37.7%, rgba(23, 18, 19, 0.35), transparent 65%),
+        radial-gradient(1.5px 1.5px at 64.6% 46.9%, rgba(181, 32, 46, 0.45), transparent 65%),
+        radial-gradient(1.5px 1.5px at 68.7% 43.5%, rgba(23, 18, 19, 0.35), transparent 65%),
+        radial-gradient(1.5px 1.5px at 75.3% 49.3%, rgba(181, 32, 46, 0.45), transparent 65%),
+        radial-gradient(1px 1px at 79.1% 82.8%, rgba(23, 18, 19, 0.35), transparent 65%),
+        radial-gradient(1px 1px at 85.5% 24.8%, rgba(181, 32, 46, 0.45), transparent 65%),
+        radial-gradient(1.2px 1.2px at 88.5% 43.2%, rgba(23, 18, 19, 0.35), transparent 65%),
+        radial-gradient(1.5px 1.5px at 94.7% 45.3%, rgba(181, 32, 46, 0.45), transparent 65%),
+        radial-gradient(1.5px 1.5px at 97.4% 68.5%, rgba(23, 18, 19, 0.35), transparent 65%),
+        radial-gradient(ellipse 140% 55% at 50% 122%, rgba(181, 32, 46, 0.20), transparent 68%),
+        radial-gradient(420px 420px at 12% 10%, rgba(181, 32, 46, 0.05), transparent 60%),
+        radial-gradient(520px 520px at 88% 90%, rgba(23, 18, 19, 0.045), transparent 60%);
+    animation: nsuBlobDrift 18s ease-in-out infinite;
+}
+
+@keyframes nsuBlobDrift {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    50% {
+        transform: translate(-2%, 2%) scale(1.05);
+    }
+}
+
+.nsu-portal .grain {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.nsu-portal .loader-panel {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 32px;
+    text-align: center;
+    opacity: 1;
+    transition: opacity .7s ease, transform .7s ease, filter .7s ease;
+}
+
+.nsu-portal.loaded .loader-panel {
+    opacity: 0;
+    transform: translateY(-14px) scale(0.97);
+    filter: blur(2px);
+    pointer-events: none;
+}
+
+.nsu-portal .crest-wrap {
+    position: relative;
+    width: 200px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(10px) scale(.94);
+}
+
+.nsu-portal .crest-glow {
+    position: absolute;
+    inset: -22px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(181, 32, 46, 0.30), rgba(181, 32, 46, 0) 70%);
+    opacity: 0.06;
+    filter: blur(8px);
+    transition: opacity .08s linear;
+}
+
+.nsu-portal .crest-img {
+    position: relative;
+    z-index: 1;
+    width: 186px;
+    height: auto;
+    filter: drop-shadow(0 8px 16px rgba(23, 18, 19, 0.18));
+}
+
+.nsu-portal .crest-ring {
+    position: absolute;
+    inset: -16px;
+    border-radius: 50%;
+    border: 1px solid var(--brand-red);
+    opacity: 0;
+    transform: scale(.85);
+    pointer-events: none;
+}
+
+.nsu-portal .crest-ring.flash {
+    animation: nsuStampFlash .7s ease-out;
+}
+
+@keyframes nsuStampFlash {
+    0% {
+        opacity: 0;
+        transform: scale(0.85);
+    }
+
+    35% {
+        opacity: 0.75;
+        transform: scale(1.08);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.32);
+    }
+}
+
+.nsu-portal .loader-panel.play .crest-wrap {
+    animation: nsuFadeUp .85s cubic-bezier(.2, .8, .2, 1) forwards;
+    animation-delay: .1s;
+}
+
+@keyframes nsuFadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.nsu-portal .loader-title {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: clamp(26px, 4vw, 36px);
+    color: var(--brand-black);
+    opacity: 0;
+    transform: translateY(8px);
+}
+
+.nsu-portal .loader-panel.play .loader-title {
+    animation: nsuTitleUp .7s ease forwards;
+    animation-delay: 1.05s;
+}
+
+@keyframes nsuTitleUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.nsu-portal .bar-wrap {
+    width: min(320px, 70%);
+    margin-top: 6px;
+    opacity: 0;
+}
+
+.nsu-portal .loader-panel.play .bar-wrap {
+    animation: nsuFadeUp .7s ease forwards;
+    animation-delay: 1.4s;
+}
+
+.nsu-portal .bar-track {
+    width: 100%;
+    height: 2px;
+    border-radius: 2px;
+    overflow: hidden;
+    background: var(--brand-line);
+}
+
+.nsu-portal .bar-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--brand-red-dark), var(--brand-red), #d9707c);
+}
+
+.nsu-portal .bar-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--brand-muted);
+    letter-spacing: .04em;
+}
+
+.nsu-portal .bar-pct {
+    font-variant-numeric: tabular-nums;
+    color: var(--brand-red);
+    font-weight: 600;
+}
+
+.nsu-portal .status {
+    text-transform: uppercase;
+    letter-spacing: .18em;
+    font-size: 10px;
+}
+
+.nsu-portal .dots span {
+    display: inline-block;
+    animation: nsuDotPulse 1.2s infinite;
+    opacity: .2;
+}
+
+.nsu-portal .dots span:nth-child(2) {
+    animation-delay: .2s;
+}
+
+.nsu-portal .dots span:nth-child(3) {
+    animation-delay: .4s;
+}
+
+@keyframes nsuDotPulse {
+    0%, 80%, 100% {
+        opacity: .15;
+    }
+
+    40% {
+        opacity: 1;
+    }
+}
+
+.nsu-portal .hero-panel {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 32px;
+    opacity: 0;
+    transform: translateY(14px) scale(1.02);
+    transition: opacity .8s ease .1s, transform .8s ease .1s;
+    pointer-events: none;
+}
+
+.nsu-portal.loaded .hero-panel {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+.nsu-portal .hero-eyebrow {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(15px, 2vw, 19px);
+    color: var(--brand-red);
+    margin-bottom: 6px;
+}
+
+.nsu-portal .hero-title {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: clamp(38px, 6.6vw, 68px);
+    color: var(--brand-black);
+    line-height: 1.04;
+    margin: 0 0 14px;
+}
+
+.nsu-portal .hero-sub {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-size: clamp(14px, 1.8vw, 18px);
+    color: var(--brand-muted);
+    margin-bottom: 26px;
+    letter-spacing: .01em;
+}
+
+.nsu-portal .hero-btn {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--brand-red);
+    background: transparent;
+    border: 1px solid var(--brand-red);
+    border-radius: 3px;
+    padding: 14px 30px;
+    cursor: pointer;
+    transition: background .25s ease, color .25s ease, transform .15s ease;
+}
+
+.nsu-portal .hero-btn:hover {
+    background: var(--brand-red);
+    color: var(--brand-white);
+}
+
+.nsu-portal .hero-btn:active {
+    transform: scale(.97);
+}
+
+.nsu-portal .login-panel {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 28px 32px;
+    opacity: 0;
+    transform: translateY(14px) scale(1.02);
+    transition: opacity .8s ease .1s, transform .8s ease .1s;
+    pointer-events: none;
+}
+
+.nsu-portal.login .login-panel {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+.nsu-portal .back-link {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    color: var(--brand-muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: color .2s ease;
+}
+
+.nsu-portal .back-link:hover {
+    color: var(--brand-red);
+}
+
+.nsu-portal .login-crest {
+    width: 98px;
+    height: auto;
+    margin-bottom: 6px;
+}
+
+.nsu-portal .login-tag {
+    display: inline-block;
+    margin: 6px 0 22px;
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--brand-red);
+    background: var(--brand-red-light);
+    border-radius: 999px;
+    padding: 7px 16px;
+}
+
+.nsu-portal .login-form {
+    width: min(300px, 78%);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.nsu-portal .field {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.nsu-portal .field span {
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--brand-muted);
+}
+
+.nsu-portal .field input {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--brand-black);
+    border: none;
+    border-bottom: 1px solid var(--brand-line);
+    background: transparent;
+    padding: 6px 2px;
+    outline: none;
+    transition: border-color .2s ease;
+}
+
+.nsu-portal .field input:focus {
+    border-bottom-color: var(--brand-red);
+}
+
+.nsu-portal .field input::placeholder {
+    color: rgba(23, 18, 19, 0.32);
+}
+
+.nsu-portal .login-error {
+    font-family: var(--font-body);
+    font-size: 12px;
+    line-height: 1.45;
+    color: var(--brand-red-dark);
+    background: var(--brand-red-light);
+    border-radius: 6px;
+    padding: 10px 12px;
+    text-align: left;
+}
+
+.nsu-portal .login-submit {
+    margin-top: 6px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--brand-white);
+    background: var(--brand-red);
+    border: none;
+    border-radius: 999px;
+    padding: 14px;
+    cursor: pointer;
+    transition: background .2s ease, transform .15s ease;
+}
+
+.nsu-portal .login-submit:hover {
+    background: var(--brand-red-dark);
+}
+
+.nsu-portal .login-submit:active {
+    transform: scale(.98);
+}
+
+.nsu-portal .login-submit:disabled {
+    opacity: .7;
+    cursor: default;
+}
+
+.nsu-portal .login-links {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--brand-muted);
+}
+
+.nsu-portal .login-links a {
+    color: var(--brand-red);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.nsu-portal .login-links a:hover {
+    text-decoration: underline;
+}
+
+.nsu-portal .footer-bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 14px;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 20px;
+    font-family: var(--font-body);
+    pointer-events: none;
+}
+
+.nsu-portal .sound-btn {
+    pointer-events: auto;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--brand-muted);
+    background: rgba(23, 18, 19, 0.03);
+    border: 1px solid var(--brand-line);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: color .2s ease, border-color .2s ease, background .2s ease;
+}
+
+.nsu-portal .sound-btn:hover {
+    color: var(--brand-red);
+    border-color: var(--brand-red);
+    background: var(--brand-red-light);
+}
+
+.nsu-portal .sound-btn svg {
+    width: 14px;
+    height: 14px;
+}
+
+@media (max-width: 520px) {
+    .nsu-portal .footer-bar {
+        padding: 0 14px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nsu-portal * {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+    }
+}

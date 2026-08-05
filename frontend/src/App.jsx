@@ -1,7 +1,9 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { ToastProvider } from './contexts/ToastContext';
 import { ProtectedRoute } from './routes/ProtectedRoute';
+import { PublicOnlyRoute } from './routes/PublicOnlyRoute';
+import { PortalLandingPage } from './pages/PortalLandingPage';
 import { AppLayout } from './layouts/AppLayout';
 import { LoginPage } from './pages/auth/LoginPage';
 import { ForgotPasswordPage } from './pages/auth/ForgotPasswordPage';
@@ -53,6 +55,14 @@ export default function App() {
             <AuthProvider>
                 <ToastProvider>
                     <Routes>
+                        <Route
+                            path="/"
+                            element={
+                                <PublicOnlyRoute>
+                                    <PortalLandingPage />
+                                </PublicOnlyRoute>
+                            }
+                        />
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                         <Route path="/reset-password" element={<ResetPasswordPage />} />
@@ -136,7 +146,6 @@ export default function App() {
                             </Route>
                         </Route>
 
-                        <Route path="/" element={<Navigate to="/dashboard" replace />} />
                         <Route path="*" element={<NotFoundPage />} />
                     </Routes>
                 </ToastProvider>

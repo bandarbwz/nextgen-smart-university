@@ -1,39 +1,54 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LogIn } from 'lucide-react';
-import { AuthLayout } from '../../layouts/AuthLayout';
-import { Alert } from '../../components/Alert';
-import { Button } from '../../components/Button';
-import { FormField } from '../../components/FormField';
+import { SoundToggle } from '../../components/SoundToggle';
+import { usePortalSound } from '../../hooks/usePortalSound';
+import { usePortalBody } from '../../hooks/usePortalBody';
+import { playClick } from '../../services/portalSound';
 import { useAuth } from '../../hooks/useAuth';
 import { readApiError } from '../../services/apiClient';
-import { validateEmail, validateRequired } from '../../utils/validators';
+import '../../styles/portal.css';
+
+const CREST = '/city-university-crest.png';
 
 export function LoginPage() {
     const { login } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
+    const { soundOn, toggleSound } = usePortalSound();
+
+    usePortalBody();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [errors, setErrors] = useState({});
-    const [formError, setFormError] = useState('');
+    const [error, setError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
 
     const redirectTo = location.state?.from ?? '/dashboard';
+
+    useEffect(() => {
+        const frame = requestAnimationFrame(() => setIsVisible(true));
+
+        return () => cancelAnimationFrame(frame);
+    }, []);
+
+    const goBack = () => {
+        playClick();
+        navigate('/');
+    };
 
     async function handleSubmit(event) {
         event.preventDefault();
 
-        const nextErrors = {
-            email: validateEmail(email),
-            password: validateRequired(password, 'Password'),
-        };
+        if (isSubmitting) {
+            return;
+        }
 
-        setErrors(nextErrors);
-        setFormError('');
+        setError('');
 
-        if (nextErrors.email || nextErrors.password) {
+        if (!email.trim() || !password) {
+            setError('Enter your email address and password.');
+
             return;
         }
 
@@ -43,64 +58,66 @@ export function LoginPage() {
             await login(email.trim(), password);
 
             navigate(redirectTo, { replace: true });
-        } catch (error) {
-            const { message, fieldErrors } = readApiError(error, 'Unable to sign in right now.');
-
-            setFormError(message);
-            setErrors({
-                email: fieldErrors.email?.[0] ?? '',
-                password: fieldErrors.password?.[0] ?? '',
-            });
-        } finally {
+        } catch (apiError) {
+            setError(readApiError(apiError, 'Unable to sign in right now.').message);
             setIsSubmitting(false);
         }
     }
 
     return (
-        <AuthLayout
-            title="Sign in"
-            subtitle="Use your university email address to access the platform."
-        >
-            <form onSubmit={handleSubmit} noValidate>
-                {formError && <Alert variant="error">{formError}</Alert>}
+        <div className={`nsu-portal${isVisible ? ' login' : ''}`}>
+            <div className="bg-ambient" />
+            <div className="grain" />
 
-                <FormField
-                    label="University email"
-                    type="email"
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
-                    onBlur={() => setErrors((c) => ({ ...c, email: validateEmail(email) }))}
-                    error={errors.email}
-                    placeholder="student@nextgen.edu"
-                    autoComplete="username"
-                    required
-                />
+            <div className="login-panel">
+                <button type="button" className="back-link" onClick={goBack}>
+                    &larr; Back
+                </button>
 
-                <FormField
-                    label="Password"
-                    type="password"
-                    value={password}
-                    onChange={(event) => setPassword(event.target.value)}
-                    onBlur={() =>
-                        setErrors((c) => ({ ...c, password: validateRequired(password, 'Password') }))
-                    }
-                    error={errors.password}
-                    autoComplete="current-password"
-                    required
-                />
+                <img className="login-crest" src={CREST} alt="City University Malaysia crest" />
 
-                <div className="nsu-auth__meta">
-                    <Link to="/forgot-password">Forgot password?</Link>
+                <div className="login-tag">Student Portal &middot; PJ Campus</div>
+
+                <form className="login-form" onSubmit={handleSubmit} noValidate>
+                    {error && <div className="login-error" role="alert">{error}</div>}
+
+                    <label className="field">
+                        <span>Email</span>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(event) => setEmail(event.target.value)}
+                            placeholder="you@city.edu.my"
+                            autoComplete="username"
+                        />
+                    </label>
+
+                    <label className="field">
+                        <span>Password</span>
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(event) => setPassword(event.target.value)}
+                            placeholder="••••••••"
+                            autoComplete="current-password"
+                        />
+                    </label>
+
+                    <button type="submit" className="login-submit" disabled={isSubmitting}>
+                        {isSubmitting ? 'Signing in…' : 'Login'}
+                    </button>
+                </form>
+
+                <div className="login-links">
+                    <span>
+                        <Link to="/forgot-password">Forgot your password?</Link>
+                    </span>
                 </div>
+            </div>
 
-                <Button type="submit" icon={LogIn} isLoading={isSubmitting} block>
-                    {isSubmitting ? 'Signing in' : 'Sign in'}
-                </Button>
-            </form>
-
-            <p className="nsu-auth__switch">
-                Trouble signing in? Contact the university administration.
-            </p>
-        </AuthLayout>
+            <div className="footer-bar">
+                <SoundToggle soundOn={soundOn} onToggle={toggleSound} />
+            </div>
+        </div>
     );
 }

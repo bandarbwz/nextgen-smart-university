@@ -50,7 +50,7 @@
 
 .nsu-button--danger {
     background: var(--color-destructive);
-    color: #ffffff;
+    color: var(--color-on-destructive);
 }
 
 .nsu-button--ghost {
@@ -209,11 +209,18 @@
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-sm);
+    padding: var(--space-lg);
+}
+
+.nsu-card + .nsu-card,
+.nsu-card + .nsu-section-title,
+.nsu-section-title + .nsu-card,
+.nsu-card + .nsu-toolbar {
+    margin-top: var(--space-md);
 }
 
 .nsu-card__body {
-    padding: var(--space-lg);
+    padding: 0;
 }
 
 .nsu-badge {
@@ -311,8 +318,11 @@
 }
 
 .nsu-table th {
-    font-family: var(--font-heading);
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
     font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     color: var(--color-muted-foreground);
     background: var(--color-muted);
     position: sticky;
@@ -417,13 +427,13 @@
     display: inline-flex;
     align-items: center;
     gap: var(--space-xs);
-    min-height: 44px;
+    min-height: 38px;
     padding: 0 var(--space-md);
     background: transparent;
-    border: 1px solid transparent;
-    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
     color: var(--color-muted-foreground);
-    font-family: var(--font-heading);
+    font-family: var(--font-body);
     font-size: var(--text-sm);
     font-weight: 500;
     cursor: pointer;
@@ -437,8 +447,9 @@
 }
 
 .nsu-tab--active {
-    background: var(--color-info-surface);
-    color: var(--color-primary);
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-on-primary);
     font-weight: 600;
 }
 

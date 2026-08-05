@@ -1,10 +1,22 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { Bell, GraduationCap, LogOut, Menu, Moon, Sun, User } from 'lucide-react';
+import { Bell, LogOut, Menu, Moon, Settings, Sun, User } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useTheme } from '../hooks/useTheme';
 import { visibleGroupsForRole } from './navigationItems';
 import { NOTIFICATIONS_CHANGED, notificationService } from '../services/notificationService';
+
+const NAV_PREFERENCE = 'nsu.navigation-open';
+
+function readNavPreference() {
+    const stored = localStorage.getItem(NAV_PREFERENCE);
+
+    if (stored !== null) {
+        return stored === 'true';
+    }
+
+    return window.matchMedia('(min-width: 1024px)').matches;
+}
 
 function initialsOf(fullName) {
     return fullName
@@ -21,7 +33,8 @@ export function AppLayout() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isNavOpen, setIsNavOpen] = useState(readNavPreference);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [unread, setUnread] = useState(0);
 
     useEffect(() => {
@@ -52,8 +65,36 @@ export function AppLayout() {
     }, [location.pathname]);
 
     useEffect(() => {
-        setIsSidebarOpen(false);
+        setIsMenuOpen(false);
+
+        if (!window.matchMedia('(min-width: 1024px)').matches) {
+            setIsNavOpen(false);
+        }
     }, [location.pathname]);
+
+    function toggleNavigation() {
+        setIsNavOpen((current) => {
+            localStorage.setItem(NAV_PREFERENCE, String(!current));
+
+            return !current;
+        });
+    }
+
+    useEffect(() => {
+        if (!isMenuOpen) {
+            return undefined;
+        }
+
+        const close = (event) => {
+            if (!event.target.closest('.nsu-shell__menu')) {
+                setIsMenuOpen(false);
+            }
+        };
+
+        document.addEventListener('pointerdown', close);
+
+        return () => document.removeEventListener('pointerdown', close);
+    }, [isMenuOpen]);
 
     const groups = visibleGroupsForRole(user.role);
 
@@ -72,17 +113,18 @@ export function AppLayout() {
             <header className="nsu-shell__topbar">
                 <button
                     type="button"
-                    className="nsu-shell__icon-button nsu-shell__menu-button"
-                    onClick={() => setIsSidebarOpen((current) => !current)}
-                    aria-label="Toggle navigation menu"
-                    aria-expanded={isSidebarOpen}
+                    className="nsu-shell__menu-button"
+                    onClick={toggleNavigation}
+                    aria-label={isNavOpen ? 'Hide navigation' : 'Show navigation'}
+                    aria-expanded={isNavOpen}
+                    aria-controls="main-navigation"
                 >
-                    <Menu size={20} />
+                    <Menu size={18} />
                 </button>
 
                 <div className="nsu-shell__brand">
-                    <GraduationCap size={24} aria-hidden="true" />
-                    <span className="nsu-shell__brand-text">NextGen Smart University</span>
+                    <img className="nsu-shell__crest" src="/city-university-crest.png" alt="" />
+                    <span className="nsu-shell__brand-text">City University Platform</span>
                 </div>
 
                 <div className="nsu-shell__spacer" />
@@ -111,34 +153,52 @@ export function AppLayout() {
                     )}
                 </NavLink>
 
-                <NavLink to="/profile" className="nsu-shell__icon-button" aria-label="Open profile">
-                    <User size={20} />
-                </NavLink>
+                <div className="nsu-shell__menu">
+                    <button
+                        type="button"
+                        className="nsu-shell__profile"
+                        onClick={() => setIsMenuOpen((current) => !current)}
+                        aria-haspopup="menu"
+                        aria-expanded={isMenuOpen}
+                    >
+                        <span className="nsu-shell__avatar" aria-hidden="true">
+                            {initialsOf(user.full_name)}
+                        </span>
+                        <span className="nsu-shell__user-meta">
+                            <span className="nsu-shell__user-name">{user.full_name}</span>
+                            <br />
+                            <span className="nsu-shell__user-role">{user.role}</span>
+                        </span>
+                    </button>
 
-                <div className="nsu-shell__user">
-                    <span className="nsu-shell__avatar" aria-hidden="true">
-                        {initialsOf(user.full_name)}
-                    </span>
-                    <span className="nsu-shell__user-meta">
-                        <span className="nsu-shell__user-name">{user.full_name}</span>
-                        <br />
-                        <span className="nsu-shell__user-role">{user.role}</span>
-                    </span>
+                    {isMenuOpen && (
+                        <div className="nsu-shell__dropdown" role="menu">
+                            <NavLink to="/profile" role="menuitem">
+                                <User size={16} aria-hidden="true" /> View profile
+                            </NavLink>
+                            <NavLink to="/settings" role="menuitem">
+                                <Settings size={16} aria-hidden="true" /> Settings
+                            </NavLink>
+
+                            <div className="nsu-shell__dropdown-sep" />
+
+                            <button
+                                type="button"
+                                className="is-danger"
+                                onClick={handleLogout}
+                                role="menuitem"
+                            >
+                                <LogOut size={16} aria-hidden="true" /> Log out
+                            </button>
+                        </div>
+                    )}
                 </div>
-
-                <button
-                    type="button"
-                    className="nsu-shell__icon-button"
-                    onClick={handleLogout}
-                    aria-label="Sign out"
-                >
-                    <LogOut size={20} />
-                </button>
             </header>
 
             <div className="nsu-shell__body">
                 <nav
-                    className={`nsu-shell__sidebar ${isSidebarOpen ? 'nsu-shell__sidebar--open' : ''}`}
+                    id="main-navigation"
+                    className={`nsu-shell__sidebar ${isNavOpen ? 'nsu-shell__sidebar--open' : ''}`}
                     aria-label="Main navigation"
                 >
                     <div className="nsu-nav">
@@ -163,11 +223,11 @@ export function AppLayout() {
                     </div>
                 </nav>
 
-                {isSidebarOpen && (
+                {isNavOpen && (
                     <button
                         type="button"
                         className="nsu-shell__scrim"
-                        onClick={() => setIsSidebarOpen(false)}
+                        onClick={toggleNavigation}
                         aria-label="Close navigation menu"
                     />
                 )}
