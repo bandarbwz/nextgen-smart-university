@@ -161,10 +161,8 @@
 .nsu-shell__body {
     display: flex;
     align-items: flex-start;
-    gap: var(--space-lg);
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: var(--space-lg) var(--space-md) var(--space-2xl);
+    gap: var(--space-md);
+    padding: var(--space-md) var(--space-md) var(--space-xl);
 }
 
 .nsu-shell__sidebar {
@@ -363,6 +361,7 @@
         z-index: auto;
         align-self: flex-start;
         width: var(--sidebar-width);
+        flex: none;
         height: auto;
         max-height: calc(100dvh - var(--topbar-height) - var(--space-2xl));
         overflow-y: auto;
