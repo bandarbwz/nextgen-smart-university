@@ -6,6 +6,18 @@ import { useTheme } from '../hooks/useTheme';
 import { visibleGroupsForRole } from './navigationItems';
 import { NOTIFICATIONS_CHANGED, notificationService } from '../services/notificationService';
 
+const NAV_PREFERENCE = 'nsu.navigation-open';
+
+function readNavPreference() {
+    const stored = localStorage.getItem(NAV_PREFERENCE);
+
+    if (stored !== null) {
+        return stored === 'true';
+    }
+
+    return window.matchMedia('(min-width: 1024px)').matches;
+}
+
 function initialsOf(fullName) {
     return fullName
         .split(' ')
@@ -21,7 +33,7 @@ export function AppLayout() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isNavOpen, setIsNavOpen] = useState(readNavPreference);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [unread, setUnread] = useState(0);
 
@@ -53,9 +65,20 @@ export function AppLayout() {
     }, [location.pathname]);
 
     useEffect(() => {
-        setIsSidebarOpen(false);
         setIsMenuOpen(false);
+
+        if (!window.matchMedia('(min-width: 1024px)').matches) {
+            setIsNavOpen(false);
+        }
     }, [location.pathname]);
+
+    function toggleNavigation() {
+        setIsNavOpen((current) => {
+            localStorage.setItem(NAV_PREFERENCE, String(!current));
+
+            return !current;
+        });
+    }
 
     useEffect(() => {
         if (!isMenuOpen) {
@@ -90,12 +113,13 @@ export function AppLayout() {
             <header className="nsu-shell__topbar">
                 <button
                     type="button"
-                    className="nsu-shell__icon-button nsu-shell__menu-button"
-                    onClick={() => setIsSidebarOpen((current) => !current)}
-                    aria-label="Toggle navigation menu"
-                    aria-expanded={isSidebarOpen}
+                    className="nsu-shell__menu-button"
+                    onClick={toggleNavigation}
+                    aria-label={isNavOpen ? 'Hide navigation' : 'Show navigation'}
+                    aria-expanded={isNavOpen}
+                    aria-controls="main-navigation"
                 >
-                    <Menu size={20} />
+                    <Menu size={18} />
                 </button>
 
                 <div className="nsu-shell__brand">
@@ -173,7 +197,8 @@ export function AppLayout() {
 
             <div className="nsu-shell__body">
                 <nav
-                    className={`nsu-shell__sidebar ${isSidebarOpen ? 'nsu-shell__sidebar--open' : ''}`}
+                    id="main-navigation"
+                    className={`nsu-shell__sidebar ${isNavOpen ? 'nsu-shell__sidebar--open' : ''}`}
                     aria-label="Main navigation"
                 >
                     <div className="nsu-nav">
@@ -198,11 +223,11 @@ export function AppLayout() {
                     </div>
                 </nav>
 
-                {isSidebarOpen && (
+                {isNavOpen && (
                     <button
                         type="button"
                         className="nsu-shell__scrim"
-                        onClick={() => setIsSidebarOpen(false)}
+                        onClick={toggleNavigation}
                         aria-label="Close navigation menu"
                     />
                 )}
