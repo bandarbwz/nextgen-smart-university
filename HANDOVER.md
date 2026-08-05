@@ -3,6 +3,7 @@
 Working record for the NextGen Smart University Platform build.
 
 Last updated: 2026-08-05. All work merged into `main` on GitHub.
+The interface was redesigned on the same day; see section 10.
 
 ---
 
@@ -58,7 +59,7 @@ frontend and covered by tests.
 Totals: 87 database tables, 211 backend PHP files, 87 frontend files,
 370 tests with 636 assertions.
 
-All work is merged into `main` on GitHub through pull requests #1 to #11.
+All work is merged into `main` on GitHub through pull requests #1 to #14.
 
 ---
 
@@ -130,7 +131,9 @@ mysql -u root < database/migrations/01-backfill-course-chat-rooms.sql
 ```
 
 The seeds create roles, permissions, faculties, departments, programmes,
-semesters and courses. They do **not** create user accounts.
+semesters, courses, and the two lecturers in
+`database/seed/03-teaching-staff.sql`. They do not create the other test
+accounts; section 4 lists which are which.
 
 ### Running
 
@@ -158,16 +161,26 @@ The suite builds a separate `nextgen_university_test` database from
 
 ## 4. Test accounts
 
-Local database only. These are **not** in the seed files, so rebuilding the
-database removes them. Password for all: `Password123!`
+Password for all: `Password123!`
 
-| Email | Role |
-|-------|------|
-| `admin@nextgen.edu` | Administrator |
-| `lecturer@nextgen.edu` | Lecturer |
-| `other@nextgen.edu` | Lecturer, used to test cross lecturer denial |
-| `student@nextgen.edu` | Student, STU001 |
-| `owner@nextgen.edu` | Restaurant Owner |
+| Email | Role | In a seed file? |
+|-------|------|-----------------|
+| `admin@nextgen.edu` | Administrator | No |
+| `coordinator@nextgen.edu` | Coordinator | No |
+| `lecturer@nextgen.edu` | Lecturer, teaches CS101 | No |
+| `other@nextgen.edu` | Lecturer, holds no section on purpose | No |
+| `student@nextgen.edu` | Student, STU001 | No |
+| `stad@nextgen.edu` | STAD Staff | No |
+| `owner@nextgen.edu` | Restaurant Owner | No |
+| `aisha@nextgen.edu` | Lecturer, teaches CS102 and CS201 | Yes |
+| `faiz@nextgen.edu` | Lecturer, teaches CS210 and SE201 | Yes |
+
+The accounts marked no exist only in the local database, so rebuilding it
+removes them. The two marked yes come from
+`database/seed/03-teaching-staff.sql` and survive a rebuild.
+
+**`other@nextgen.edu` deliberately teaches nothing.** A second lecturer holding
+no section is what makes the cross lecturer denial check easy to see by hand.
 
 To recreate one:
 
@@ -492,10 +505,50 @@ archive.
 
 ---
 
-## 10. Suggested next steps
+## 10. The interface
 
-1. The UI redesign, which the owner will specify.
-2. Add frontend tests with Vitest.
+Redesigned on 2026-08-05 around the City University brand, from two prototypes
+the owner approved.
+
+**A landing page now exists at `/`.** Before this there was none: `/` redirected
+to `/dashboard`, which bounced a signed out visitor to `/login`. The landing
+page runs a loading sequence and crossfades into a welcome hero, and Enter
+Portal navigates to the real login route. Signed in users skip it.
+
+**Sound lives only on the landing and login pages.** It is synthesised with the
+Web Audio API, there are no audio files, and there is a mute toggle. Nothing
+inside the portal makes a sound. Browsers block audio until the visitor has
+interacted, so the first loading run is silent by design.
+
+**The brand palette and typefaces are in `tokens.css`.** Every component reads
+from them, so a further change is one file. Token names were left alone, which
+is why nothing under `components/` had to be touched.
+
+**The shell is three boxes**: a sticky top bar with the crest, a floating
+navigation card and a content card. The menu button hides and shows the
+navigation at any width and remembers the choice.
+
+**The student dashboard** groups courses into in progress, completed and
+dropped, with filter pills and cards that expand to their actions. Every value
+on it comes from an endpoint that already existed.
+
+Three things in the reference design were deliberately not built. Classmate
+avatars need the section roster, which is restricted to lecturers and
+coordinators, so showing it to students is an access control decision rather
+than a styling one. The course link points at a route that does not exist, and
+no syllabus record exists behind the syllabus button.
+
+---
+
+## 11. Suggested next steps
+
+1. Add frontend tests with Vitest.
+2. Decide whether a lecturer should have a teaching load limit. Nothing in the
+   platform caps how many sections one lecturer can hold, and no feature
+   document specifies a limit, so none was invented.
 3. Build the Python AI service, or agree that proctoring ships without it.
 4. Add a cron job so calendar reminders are actually delivered.
 5. Fill in real SMTP credentials so password reset works end to end.
+6. Decide whether the product name follows the brand. The interface says City
+   University Platform, while the repository, the shell before this redesign and
+   the seeded `university_name` setting say NextGen Smart University.
