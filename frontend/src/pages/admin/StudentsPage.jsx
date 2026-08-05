@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { GraduationCap, Search, Users } from 'lucide-react';
+import { Search, Users } from 'lucide-react';
 import { PageHeader } from '../../components/PageHeader';
 import { EmptyState } from '../../components/EmptyState';
 import { SkeletonRows } from '../../components/Skeleton';

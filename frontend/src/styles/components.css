@@ -161,7 +161,9 @@
 }
 
 .nsu-field__helper {
+    display: block;
     font-size: var(--text-sm);
+    font-weight: 400;
     color: var(--color-muted-foreground);
 }
 

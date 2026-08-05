@@ -2,7 +2,7 @@
 
 Working record for the NextGen Smart University Platform build.
 
-Last updated: 2026-08-04. All work merged into `main` on GitHub.
+Last updated: 2026-08-05. All work merged into `main` on GitHub.
 
 ---
 
@@ -30,7 +30,8 @@ cd ~/Desktop/nextgen-smart-university && git log --oneline && git status
 
 ## 1. Current state
 
-Phase 1 and Phase 2 are complete and tested. Student Activities, the first module beyond the two planned phases, is also built.
+Every module named in the requirement documents is now built, wired to the
+frontend and covered by tests.
 
 | Phase | Module | Backend | Frontend | Tests |
 |-------|--------|---------|----------|-------|
@@ -51,11 +52,13 @@ Phase 1 and Phase 2 are complete and tested. Student Activities, the first modul
 | 3 | Grade Approval | Done | Done | Yes |
 | 3 | Reset Examination | Done | Done | Yes |
 | 3 | Role Management | Done | Done | Yes |
+| 3 | Settings | Done | Done | Yes |
+| 3 | System | Done | Done | Yes |
 
-Totals: 67 database tables, 157 backend PHP files, 63 frontend files,
-223 tests with 401 assertions.
+Totals: 87 database tables, 211 backend PHP files, 87 frontend files,
+370 tests with 636 assertions.
 
-All work is merged into `main` on GitHub through pull request #1.
+All work is merged into `main` on GitHub through pull requests #1 to #11.
 
 ---
 
@@ -259,6 +262,32 @@ somebody renamed a role.
 **An administrator cannot change their own role.** Demoting yourself by accident
 would lock the platform out of its own administration.
 
+**Settings and System share one store.** The documents describe a
+`SystemSetting` table under Settings and a `SystemConfiguration` table under
+System, holding the same thing: a key, a value and a category. Building both
+would mean two tables answering the same question, and a maintenance flag that
+is true in one and false in the other. There is one `SystemSetting` table.
+Settings owns writing to it, System owns reading it back and reporting health.
+
+**Maintenance mode actually locks people out.** It is enforced in
+`AuthMiddleware`, which asks `SystemService::shouldBlock()` on every
+authenticated request and answers 503 with the stored message. Administrators
+are exempt, otherwise nobody could turn it off again. Both halves of that rule
+are pinned by tests, and both were mutation checked: removing the exemption and
+making the block a no-op each fail the suite.
+
+**The health check measures, it does not assume.** The database check times a
+real query and counts real tables, storage reads the real disk, and the AI and
+email checks report `not configured` when they are. Email in particular is only
+called configured when the host *and* the credentials are present, because a
+host on its own sends nothing and would hide a broken password reset behind a
+green tick.
+
+**There is no `BackupHistory` table and no backup endpoint that pretends.** A
+table of backup rows written by an application that never ran a backup is a
+table full of lies. `POST /system/backup` answers 501 and says backups are run
+outside the application.
+
 **A reset never deletes anything.** The original submission is stamped
 `reset_at` and the retake is a new attempt beside it, so the first sitting and
 the reason it was abandoned both survive. This needed a change to an existing
@@ -413,21 +442,26 @@ and each has a regression test.
 
 ## 8. Test suite
 
-183 tests, 341 assertions.
+370 tests, 636 assertions.
 
 ```bash
 cd backend && composer test
 ```
 
-- **Unit** — validation rules, Haversine distance, iCalendar export and parse
+- **Unit** — validation rules, Haversine distance, iCalendar export and parse,
+  grade scale boundaries, report export shape
 - **Integration** — enrolment, attendance, LMS, calendar sync, chat
-  membership, finance, food court, reports, download center
+  membership, finance, food court, reports, download center, examinations and
+  resets, notifications, assessment weighting, grade approval, role management,
+  settings and system health
 - **Security** — quiz answers never reaching students, enrolment scoped
   content access, cross lecturer denial, cross user isolation, SQL injection,
   and a class load check that `php -l` cannot perform
 
-The suite was checked by reintroducing two fixed bugs and confirming the
-matching tests failed, so a green run means something. Export tests assert real
+Every rule worth the name is mutation checked: the rule is removed, the suite is
+run, and the matching test has to fail before the rule goes back. That is how a
+weak test in the role management file was caught, where a system role guard
+appeared to be tested but a different guard was doing the work. Export tests assert real
 output: the PDF carries the PDF magic bytes and the spreadsheet is a valid zip
 archive.
 
@@ -444,22 +478,24 @@ archive.
   need no AI and work today.
 - **Reminders are never delivered.** Calendar reminders are stored and can be
   queried, but nothing dispatches them. Needs a cron job.
-- **Email is not configured.** Password reset and verification emails will send
-  once SMTP credentials are in `.env`. Until then they fail and are logged.
+- **Email is not configured.** `MAIL_HOST` points at Mailtrap but the username
+  and password in `.env` are empty, so nothing sends. The system health page
+  reports this rather than showing a green tick. Password reset and verification
+  emails start working the moment real credentials are filled in.
 - **No frontend tests.** The backend is covered, the React side is not.
-- **`docs/ARCHITECTURE/03-Backend-Architecture.md` still describes Node.js** and
-  contradicts the rest of the documentation.
-- **Settings and System modules** are documented but not built.
 - **Push and SMS notifications are not implemented.** Both endpoints exist and
   return 501 with a plain explanation rather than accepting a request and
   quietly doing nothing. Neither has a provider.
+- **Backups are not run from the application.** `POST /system/backup` returns
+  501 and points at `mysqldump`.
+- **Arabic is a stored preference only.** The interface is not translated.
 
 ---
 
 ## 10. Suggested next steps
 
-1. Correct the stale Node.js architecture document.
-2. Decide the Bootstrap question before building more frontend.
-3. Add frontend tests with Vitest.
-4. Build the Python AI service, or agree that proctoring ships without it.
-5. Add a cron job so calendar reminders are actually delivered.
+1. The UI redesign, which the owner will specify.
+2. Add frontend tests with Vitest.
+3. Build the Python AI service, or agree that proctoring ships without it.
+4. Add a cron job so calendar reminders are actually delivered.
+5. Fill in real SMTP credentials so password reset works end to end.
