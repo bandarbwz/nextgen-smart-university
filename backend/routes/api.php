@@ -38,6 +38,7 @@ use App\Controllers\LecturerController;
 use App\Controllers\ProgramController;
 use App\Controllers\ScheduleController;
 use App\Controllers\SectionController;
+use App\Controllers\SettingsController;
 use App\Controllers\SemesterController;
 use App\Controllers\StudentController;
 use App\Controllers\TranscriptController;
@@ -590,5 +591,18 @@ $router->put('/api/v1/roles/{id}', fn (string $id) => $roleManagement->update($i
 $router->delete('/api/v1/roles/{id}', fn (string $id) => $roleManagement->destroy($id));
 
 $router->put('/api/v1/users/{id}/role', fn (string $id) => $roleManagement->assignUserRole($id));
+
+
+$settings = new SettingsController();
+
+$router->get('/api/v1/settings', fn () => $settings->mine());
+$router->put('/api/v1/settings', fn () => $settings->updateMine());
+
+$router->get('/api/v1/system/settings', fn () => $settings->system());
+$router->put('/api/v1/system/settings', fn () => $settings->updateSystem());
+$router->get('/api/v1/system/health', fn () => $settings->health());
+$router->get('/api/v1/system/logs', fn () => $settings->logs());
+$router->put('/api/v1/system/maintenance', fn () => $settings->maintenance());
+$router->post('/api/v1/system/backup', fn () => $settings->backup());
 
 return $router;

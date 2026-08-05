@@ -35,6 +35,8 @@ import { ReportsPage } from './pages/ReportsPage';
 import { DownloadCenterPage } from './pages/DownloadCenterPage';
 import { ExamResetPage } from './pages/ExamResetPage';
 import { NotificationsPage } from './pages/NotificationsPage';
+import { SettingsPage } from './pages/SettingsPage';
+import { SystemPage } from './pages/admin/SystemPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import './styles/components.css';
@@ -66,6 +68,7 @@ export default function App() {
                                 <Route path="/downloads" element={<DownloadCenterPage />} />
                                 <Route path="/notifications" element={<NotificationsPage />} />
                                 <Route path="/profile" element={<ProfilePage />} />
+                                <Route path="/settings" element={<SettingsPage />} />
 
                                 <Route element={<ProtectedRoute allowedRoles={['Student']} />}>
                                     <Route path="/registration" element={<RegistrationPage />} />
@@ -95,6 +98,7 @@ export default function App() {
                                 <Route element={<ProtectedRoute allowedRoles={['Administrator']} />}>
                                     <Route path="/lecturers" element={<LecturersPage />} />
                                     <Route path="/roles" element={<RolesPage />} />
+                                    <Route path="/system" element={<SystemPage />} />
                                 </Route>
 
                                 <Route
