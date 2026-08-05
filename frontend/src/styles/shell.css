@@ -281,7 +281,18 @@
     align-items: flex-start;
     justify-content: space-between;
     gap: var(--space-md);
-    padding: var(--space-lg);
+}
+
+.nsu-grid--stats .nsu-card {
+    transition: transform var(--duration-fast) var(--ease-out),
+        box-shadow var(--duration-fast) var(--ease-out),
+        border-color var(--duration-fast) var(--ease-out);
+}
+
+.nsu-grid--stats .nsu-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: transparent;
 }
 
 .nsu-stat__label {
@@ -306,15 +317,17 @@
 .nsu-stat__icon {
     display: grid;
     place-items: center;
-    width: 44px;
-    height: 44px;
-    border-radius: var(--radius-md);
-    background: var(--color-info-surface);
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    background: var(--brand-red-light);
     color: var(--color-primary);
     flex-shrink: 0;
 }
 
 .nsu-section-title {
+    font-family: var(--font-heading);
+    font-weight: 600;
     font-size: var(--text-lg);
     margin-bottom: var(--space-md);
 }
