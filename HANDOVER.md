@@ -50,6 +50,7 @@ Phase 1 and Phase 2 are complete and tested. Student Activities, the first modul
 | 3 | Assessment System | Done | Done | Yes |
 | 3 | Grade Approval | Done | Done | Yes |
 | 3 | Reset Examination | Done | Done | Yes |
+| 3 | Role Management | Done | Done | Yes |
 
 Totals: 67 database tables, 157 backend PHP files, 63 frontend files,
 223 tests with 401 assertions.
@@ -239,6 +240,24 @@ proctor is never silently treated as a clean one.
 student who could pause their own timer could stop the clock at will. Pause and
 resume are Lecturer and Coordinator only, and resuming extends the deadline by
 exactly the time paused.
+
+**Role Management deliberately does not create the documented `UserRole`
+table.** The feature document lists one holding user_id, role_id, assigned_by
+and assigned_at. A user's role already lives in `User.role_id`, which every
+authentication query and the JWT payload read from. A second table holding the
+same fact would be two competing sources of truth, and the first time they
+disagreed somebody would be granted or denied access wrongly. The intent behind
+it, knowing who changed a role and when, is met by `AuthorizationLog`, which
+records role assignments alongside every other authorization change.
+
+**A system default role cannot be deleted or renamed**, but can be described
+differently, deactivated, and have its permissions changed. Renaming is blocked
+because code and seed data both refer to the six by name. An `is_system` flag
+carries this rather than hard coded names in PHP, which would break the moment
+somebody renamed a role.
+
+**An administrator cannot change their own role.** Demoting yourself by accident
+would lock the platform out of its own administration.
 
 **A reset never deletes anything.** The original submission is stamped
 `reset_at` and the retake is a new attempt beside it, so the first sitting and
@@ -430,8 +449,7 @@ archive.
 - **No frontend tests.** The backend is covered, the React side is not.
 - **`docs/ARCHITECTURE/03-Backend-Architecture.md` still describes Node.js** and
   contradicts the rest of the documentation.
-- **Settings, System and Role Management modules** are documented but not
-  built.
+- **Settings and System modules** are documented but not built.
 - **Push and SMS notifications are not implemented.** Both endpoints exist and
   return 501 with a plain explanation rather than accepting a request and
   quietly doing nothing. Neither has a provider.
