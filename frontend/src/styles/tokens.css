@@ -1,35 +1,50 @@
-@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600;700&display=swap');
+
+/*
+ * Brand primitives sampled from the City University Malaysia crest. These never
+ * change with the theme — the landing and login pages are light by design.
+ */
+:root {
+    --brand-white: #ffffff;
+    --brand-paper: #fbfaf8;
+    --brand-black: #171213;
+    --brand-red: #b5202e;
+    --brand-red-dark: #7e1420;
+    --brand-red-light: #f0d3d6;
+    --brand-muted: #837b7d;
+    --brand-line: rgba(23, 18, 19, 0.11);
+}
 
 :root {
-    --color-primary: #2563eb;
-    --color-primary-hover: #1d4ed8;
-    --color-on-primary: #ffffff;
-    --color-secondary: #3b82f6;
-    --color-accent: #059669;
-    --color-accent-hover: #047857;
+    --color-primary: var(--brand-red);
+    --color-primary-hover: var(--brand-red-dark);
+    --color-on-primary: var(--brand-white);
+    --color-secondary: #d9707c;
+    --color-accent: var(--brand-red);
+    --color-accent-hover: var(--brand-red-dark);
 
-    --color-background: #f8fafc;
-    --color-surface: #ffffff;
-    --color-surface-raised: #ffffff;
-    --color-foreground: #0f172a;
-    --color-muted: #f1f5fd;
-    --color-muted-foreground: #475569;
-    --color-border: #e4ecfc;
-    --color-border-strong: #cbd5e1;
+    --color-background: var(--brand-paper);
+    --color-surface: var(--brand-white);
+    --color-surface-raised: var(--brand-white);
+    --color-foreground: var(--brand-black);
+    --color-muted: #f6f2f2;
+    --color-muted-foreground: var(--brand-muted);
+    --color-border: rgba(23, 18, 19, 0.11);
+    --color-border-strong: rgba(23, 18, 19, 0.22);
 
-    --color-destructive: #dc2626;
-    --color-destructive-surface: #fef2f2;
-    --color-success: #059669;
-    --color-success-surface: #ecfdf5;
-    --color-warning: #b45309;
-    --color-warning-surface: #fffbeb;
-    --color-info-surface: #eff6ff;
+    --color-destructive: #b5202e;
+    --color-destructive-surface: #fdf2f3;
+    --color-success: #1f7a52;
+    --color-success-surface: #edf7f2;
+    --color-warning: #a15c11;
+    --color-warning-surface: #fdf6ec;
+    --color-info-surface: #faf4f4;
 
-    --color-ring: #2563eb;
-    --color-scrim: rgba(15, 23, 42, 0.5);
+    --color-ring: var(--brand-red);
+    --color-scrim: rgba(23, 18, 19, 0.5);
 
-    --font-heading: 'Lexend', system-ui, -apple-system, sans-serif;
-    --font-body: 'Source Sans 3', system-ui, -apple-system, sans-serif;
+    --font-heading: 'Fraunces', Georgia, serif;
+    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
 
     --text-xs: 0.75rem;
     --text-sm: 0.875rem;
@@ -49,9 +64,9 @@
     --radius-md: 10px;
     --radius-lg: 14px;
 
-    --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
-    --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
-    --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
+    --shadow-sm: 0 1px 2px rgba(23, 18, 19, 0.06);
+    --shadow-md: 0 4px 12px rgba(23, 18, 19, 0.08);
+    --shadow-lg: 0 12px 32px rgba(23, 18, 19, 0.12);
 
     --duration-fast: 150ms;
     --duration-base: 220ms;
@@ -67,32 +82,32 @@
 }
 
 :root[data-theme='dark'] {
-    --color-primary: #60a5fa;
-    --color-primary-hover: #93c5fd;
-    --color-on-primary: #0b1220;
-    --color-secondary: #7dd3fc;
-    --color-accent: #34d399;
-    --color-accent-hover: #6ee7b7;
+    --color-primary: #e2707b;
+    --color-primary-hover: #eb949c;
+    --color-on-primary: #1a0c0e;
+    --color-secondary: #f0d3d6;
+    --color-accent: #e2707b;
+    --color-accent-hover: #eb949c;
 
-    --color-background: #0b1220;
-    --color-surface: #131c2e;
-    --color-surface-raised: #1a2438;
-    --color-foreground: #e8eefc;
-    --color-muted: #1a2438;
-    --color-muted-foreground: #a3b2cc;
-    --color-border: #26324a;
-    --color-border-strong: #3a465f;
+    --color-background: #14100f;
+    --color-surface: #1e1817;
+    --color-surface-raised: #272020;
+    --color-foreground: #f4efec;
+    --color-muted: #272020;
+    --color-muted-foreground: #b3a7a6;
+    --color-border: #362c2c;
+    --color-border-strong: #4d4040;
 
-    --color-destructive: #f87171;
-    --color-destructive-surface: #2a1517;
-    --color-success: #34d399;
-    --color-success-surface: #0f2a20;
-    --color-warning: #fbbf24;
-    --color-warning-surface: #2a2110;
-    --color-info-surface: #14243f;
+    --color-destructive: #f08b93;
+    --color-destructive-surface: #2d1518;
+    --color-success: #5cc79a;
+    --color-success-surface: #10281e;
+    --color-warning: #e0a955;
+    --color-warning-surface: #2b2110;
+    --color-info-surface: #241a1a;
 
-    --color-ring: #60a5fa;
-    --color-scrim: rgba(2, 6, 16, 0.7);
+    --color-ring: #e2707b;
+    --color-scrim: rgba(10, 6, 6, 0.7);
 
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
     --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.45);
