@@ -1,656 +1,279 @@
 # NextGen Smart University Platform
 
-A comprehensive Smart University Management Platform designed to digitalize academic, administrative, and student services through a centralized web-based system.
+> A modern, integrated university management system that digitalizes academic, administrative, financial, and campus services through a centralized platform.
 
-The platform integrates academic management, attendance, learning management, communication, finance, artificial intelligence, and campus services into one secure and scalable solution.
-
----
-
-# Project Overview
-
-NextGen Smart University Platform is designed to simplify university operations by providing a unified digital ecosystem for students, lecturers, coordinators, administrators, STAD staff, and restaurant owners.
-
-Instead of using multiple independent systems, users access every university service through a single platform.
-
-The platform supports academic management, AI-powered examination monitoring, attendance tracking, learning management, student activities, campus food ordering, finance, notifications, reporting, and many other services.
+![React](https://img.shields.io/badge/React-Frontend-61DAFB?logo=react)
+![PHP](https://img.shields.io/badge/PHP-Backend-777BB4?logo=php)
+![MySQL](https://img.shields.io/badge/MySQL-Database-4479A1?logo=mysql)
+![Vite](https://img.shields.io/badge/Vite-Build-646CFF?logo=vite)
+![License](https://img.shields.io/badge/License-Educational-red)
 
 ---
 
-# Project Objectives
+## Overview
 
-The main objectives of this project are:
+The **NextGen Smart University Platform** is a full-stack university management system designed to replace fragmented manual processes with a centralized digital solution.
 
-- Digitize university services.
-- Improve communication between all university members.
-- Automate academic workflows.
-- Enhance learning through an integrated LMS.
-- Reduce paperwork.
-- Improve attendance accuracy using QR and AI technologies.
-- Provide secure online examinations.
-- Support data-driven decision making through reports.
-- Deliver a modern and scalable university platform.
+The platform integrates academic management, finance, attendance, learning management, student services, reporting, and campus activities into one secure system.
 
 ---
 
-# Key Features
+## Features
 
-The platform includes:
+### Authentication & Security
 
-- Authentication & Authorization
-- Student Portal
-- Lecturer Portal
-- Coordinator Portal
-- Administrator Portal
-- STAD Portal
-- Restaurant Portal
-- Academic Management
-- Attendance Management
-- Learning Management System (LMS)
-- Chat System
+- Secure Login System
+- Role-Based Access Control (RBAC)
+- Session Management
+- Password Encryption
+- Authorization Middleware
+
+### Student Portal
+
+Students can:
+
+- Register courses
+- View timetable
+- Check attendance
+- View grades
+- Download transcripts
+- Pay tuition fees
+- Join university clubs
+- Track activity points
+
+### Lecturer Portal
+
+Lecturers can:
+
+- Manage courses
+- Upload learning materials
+- Record attendance
+- Enter assessment marks
+- View teaching schedules
+
+### Coordinator Portal
+
+Coordinators can:
+
+- Approve registrations
+- Approve grades
+- Manage academic rules
+- Authorize repeat examinations
+
+### Administrator Portal
+
+Administrators manage:
+
+- Students
+- Lecturers
+- Faculties
+- Departments
+- Courses
+- Sections
+- User Accounts
+- System Configuration
+
+### STAD Module
+
+- Club Management
+- Event Management
 - Student Activities
-- Food Court
-- AI Examination System
-- Assessment Management
-- Finance Management
-- Calendar Management
-- Notification Center
-- Reports & Analytics
-- Download Center
-- Role Management
-- System Administration
+- Activity Points
+
+### Food Court Module
+
+- Vendor Management
+- Food Menu
+- Campus Orders
+
+### Reporting System
+
+Generate reports including:
+
+- Student Reports
+- Attendance Reports
+- GPA Reports
+- Financial Reports
+- Course Reports
+
+Export reports to:
+
+- PDF
+- CSV
+- Excel
 
 ---
 
-# User Roles
+## System Architecture
 
-The system supports the following user roles:
+The project follows a layered architecture.
 
-- Student
-- Lecturer
-- Coordinator
-- Administrator
-- STAD Staff
-- Restaurant Owner
-
-Each role has different permissions managed through Role-Based Access Control (RBAC).
+```
+Frontend (React + Vite)
+        │
+     REST API
+        │
+ Backend (PHP MVC)
+        │
+ Business Logic
+        │
+ MySQL Database
+```
 
 ---
 
-# Technology Stack
+## Technology Stack
 
-## Frontend
+### Frontend
 
+- React
+- Vite
+- JavaScript
 - HTML5
 - CSS3
-- JavaScript
-- Bootstrap 5
 
-## Backend
+### Backend
 
-- PHP 8
-- Laravel Framework (Planned)
+- PHP (MVC)
 
-## Database
+### Database
 
 - MySQL
 
-## AI Services
+### Development Tools
 
-- Python
-- OpenCV
-- MediaPipe
-- TensorFlow (Future)
-
-## APIs
-
-- REST API
-- JWT Authentication
-
-## Tools
-
-- Visual Studio Code
 - Git
 - GitHub
-- Figma
-- Draw.io
-
----
-
-# System Architecture
-
-The platform follows a modular architecture.
-
-```
-Presentation Layer
-        │
-REST API Layer
-        │
-Business Logic Layer
-        │
-Database Layer
-```
-
-Each module is independent while sharing the same authentication, database, and API infrastructure.
-
----
-
-# Documentation Structure
-
-```
-docs/
-│
-├── PROJECT/
-├── FEATURES/
-├── DATABASE/
-├── API/
-├── UI/
-├── ARCHITECTURE/
-├── DEPLOYMENT/
-└── README.md
-```
-
----
-
-# Project Structure
-
-The project is organized into multiple modules to improve maintainability, scalability, and collaboration among the development team.
-
-```
-nextgen-smart-university/
-│
-├── docs/
-│   ├── PROJECT/
-│   ├── FEATURES/
-│   ├── DATABASE/
-│   ├── API/
-│   ├── UI/
-│   ├── ARCHITECTURE/
-│   ├── DEPLOYMENT/
-│   └── README.md
-│
-├── backend/
-│
-├── frontend/
-│
-├── database/
-│
-├── public/
-│
-└── resources/
-```
-
----
-
-# Installation
-
-## Requirements
-
-Before running the project, ensure the following software is installed:
-
-- PHP 8+
-- Composer
-- MySQL 8+
-- Node.js
-- Git
 - Visual Studio Code
 
 ---
 
-## Clone Repository
+## Project Structure
 
-```bash
-git clone https://github.com/your-username/nextgen-smart-university.git
+```text
+nextgen-smart-university/
+
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   └── package.json
+│
+├── backend/
+│   ├── app/
+│   ├── controllers/
+│   ├── models/
+│   ├── services/
+│   └── routes/
+│
+├── database/
+├── docs/
+├── README.md
+└── LICENSE
 ```
 
 ---
 
-## Enter Project
+## Installation
+
+### Clone the Repository
 
 ```bash
+git clone https://github.com/yourusername/nextgen-smart-university.git
 cd nextgen-smart-university
 ```
 
----
-
-## Install Dependencies
-
-Install the backend dependencies.
+### Frontend
 
 ```bash
-cd backend && composer install
+cd frontend
+npm install
+npm run dev
 ```
 
-Install the frontend dependencies.
+### Backend
 
-```bash
-cd frontend && npm install
-```
-
----
-
-# Environment Configuration
-
-Copy the example environment file.
-
-```bash
-cp backend/.env.example backend/.env
-```
-
-Generate a JWT secret and add it to `backend/.env` as `JWT_SECRET`.
-
-```bash
-openssl rand -hex 32
-```
-
-Configure the database connection inside `backend/.env`.
+1. Configure your PHP server.
+2. Import the MySQL database.
+3. Update the database configuration.
+4. Start the backend server.
 
 ---
 
-# Database Setup
+## User Roles
 
-Create the schema.
-
-```bash
-mysql -u root -p < database/schema/01-authentication.sql
-```
-
-Seed the default roles and permissions.
-
-```bash
-mysql -u root -p < database/seed/01-authentication.sql
-```
+| Role | Responsibility |
+|------|----------------|
+| Student | Academic services |
+| Lecturer | Teaching and assessment |
+| Coordinator | Academic approvals |
+| Administrator | System administration |
+| STAD Staff | Clubs and activities |
+| Food Court Vendor | Food management |
 
 ---
 
-# Running the Project
-
-Start the backend API server.
-
-```bash
-php -S localhost:8000 -t backend/public
-```
-
-Start the frontend development server.
-
-```bash
-cd frontend && npm run dev
-```
-
-The API is available at `http://localhost:8000` and the frontend at `http://localhost:5173`.
-
----
-
-# Running Tests
-
-The backend test suite covers the unit, integration and security levels defined
-in `docs/PROJECT/013-Testing-Strategy.md`.
-
-```bash
-cd backend && composer test
-```
-
-Individual levels can be run on their own.
-
-```bash
-composer test:unit
-composer test:integration
-composer test:security
-```
-
-The suite builds its own `nextgen_university_test` database from the files in
-`database/schema/`, and drops and recreates it on every run. Development data in
-`nextgen_university` is never touched. Because the schema is rebuilt from the
-real SQL files, a change to a table that breaks a rule is caught by the tests.
-
----
-
-# API Documentation
-
-Complete REST API documentation is available in:
-
-```
-docs/API/
-```
-
-The APIs include:
+## Core Modules
 
 - Authentication
-- Academic
-- Attendance
-- LMS
-- Chat
-- Student Activities
-- Food Court
-- AI Examination
+- Student Management
+- Lecturer Management
+- Academic Management
+- Attendance System
+- Learning Management System
 - Finance
-- System
-- Calendar
-- Download Center
-- Assessment
-- Role Management
-- Notification
+- Reporting
+- STAD Management
+- Food Court Management
+- Notifications
 
 ---
 
-# Database Documentation
+## Security
 
-Database documentation is located in:
-
-```
-docs/DATABASE/
-```
-
-It includes:
-
-- Database Specification
-- Tables
-- Relationships
-- ERD
-- Calendar Database
+- Role-Based Access Control
+- Authentication Middleware
+- Password Encryption
+- Session Validation
+- Protected Routes
+- Input Validation
 
 ---
 
-# Features Documentation
+## Future Enhancements
 
-Feature specifications are located in:
-
-```
-docs/FEATURES/
-```
-
-Each module includes:
-
-- Objectives
-- Database Tables
-- Business Rules
-- Validation Rules
-- API Mapping
-- Future Expansion
-
----
-
-# Deployment
-
-Deployment documentation is available in:
-
-```
-docs/DEPLOYMENT/
-```
-
-The platform supports deployment on:
-
-- Linux
-- Docker
-- Cloud VPS
-- Nginx
-- Apache
-
----
-
-# Security
-
-The platform implements multiple security layers.
-
-Authentication
-
-- JWT Authentication
-- Password Hashing
-- Refresh Tokens
-
-Application Security
-
-- HTTPS
-- SQL Injection Protection
-- XSS Protection
-- CSRF Protection
-- Rate Limiting
-
-Authorization
-
-- Role-Based Access Control (RBAC)
-
-Audit
-
-- Authentication Logs
-- Activity Logs
-- System Logs
-
----
-
-# Future Improvements
-
-The NextGen Smart University Platform is designed to be scalable and continuously enhanced. Future versions may include:
-
-- Mobile application for Android and iOS
+- Mobile Application
 - AI Academic Advisor
-- AI Course Recommendation System
-- AI Student Performance Prediction
-- Face Recognition Campus Access
-- Digital Student ID
-- Library Management System
-- Hostel Management System
-- Smart Parking System
-- Transport Management
-- Parent Portal
-- Alumni Portal
-- Multi-Campus Support
-- Multi-Language Support
-- Cloud Storage Integration
-- Microsoft 365 Integration
-- Google Workspace Integration
-- Online Video Conferencing
-- AI Chatbot Assistant
+- AI Proctoring
+- Push Notifications
+- Online Payment Gateway
+- QR Attendance
+- Real-Time Chat
+- Analytics Dashboard
 
 ---
 
-# Development Roadmap
+## Academic Information
 
-## Phase 1
-
-- Documentation
-- Database Design
-- API Design
-- UI/UX Design
-
-Completed
+Developed for the **System Analysis and Design** course at **City University**.
 
 ---
 
-## Phase 2
+## Development Team
 
-- Backend Development
-- Database Implementation
-- Authentication System
-- Core Modules
-
-Planned
-
----
-
-## Phase 3
-
-- Frontend Development
-- Dashboard Development
-- User Interface Integration
-
-Planned
+- Bandar Khaled Salem
+- Ali Sharif Abdulkadir Sharif
+- Ahmed Mohammed Fadul Mohammed
+- Ali Yousef Jalal Abdo
+- Ali Ali Isak
 
 ---
 
-## Phase 4
+## License
 
-- AI Integration
-- Performance Optimization
-- Security Testing
-- User Acceptance Testing
-
-Planned
+This project is intended for educational purposes.
 
 ---
 
-## Phase 5
+## Acknowledgements
 
-- Production Deployment
-- Monitoring
-- Maintenance
-- Future Updates
-
-Planned
-
----
-
-# Contributing
-
-Contributions should follow the project standards.
-
-Development workflow:
-
-1. Create a new branch.
-2. Implement the feature.
-3. Test the implementation.
-4. Submit a Pull Request.
-5. Review and approve changes before merging.
-
----
-
-# Coding Standards
-
-The project follows:
-
-- REST API Best Practices
-- Clean Architecture
-- SOLID Principles
-- PSR Coding Standards
-- Database Normalization (3NF)
-- Modular Design
-
----
-
-# Documentation
-
-Complete project documentation is available inside:
-
-```
-docs/
-```
-
-Documentation includes:
-
-- Project Documentation
-- Features Documentation
-- Database Documentation
-- API Documentation
-- UI Documentation
-- Architecture Documentation
-- Deployment Documentation
-
----
-
-# Team Members
-
-Project
-
-**NextGen Smart University Platform**
-
-Developed as a university academic project.
-
-Team members may update this section with their names, student IDs, and responsibilities.
-
----
-
-# License
-
-This project is developed for educational purposes.
-
-Copyright © 2026
-
-All rights reserved.
-
----
-
-# Acknowledgements
-
-Special thanks to:
-
-- University Supervisor
-- Faculty Members
-- Open Source Community
-- Laravel Community
-- Bootstrap Community
-- Python Community
-
-Their resources and documentation greatly contributed to the development of this project.
-
----
-
-# Contact
-
-Project Repository
-
-```
-GitHub Repository
-```
-
-Project Documentation
-
-```
-docs/
-```
-
----
-
-# Project Status
-
-Current Status
-
-✅ Documentation Completed
-
-Project Documentation
-
-✅ Completed
-
-Feature Specifications
-
-✅ Completed
-
-Database Documentation
-
-✅ Completed
-
-REST API Documentation
-
-✅ Completed
-
-System Architecture
-
-✅ Completed
-
-Deployment Documentation
-
-✅ Completed
-
-Backend Development
-
-🟡 Planned
-
-Frontend Development
-
-🟡 Planned
-
-Testing
-
-🟡 Planned
-
-Production Deployment
-
-🟡 Planned
-
----
-
-# Conclusion
-
-The NextGen Smart University Platform is designed as a comprehensive, scalable, secure, and modular university management system.
-
-Its architecture integrates academic management, artificial intelligence, learning management, finance, communication, student activities, and campus services into a single platform.
-
-The project documentation establishes a solid foundation for future implementation while ensuring consistency across all modules and supporting long-term scalability and maintainability.
+Special thanks to the course instructor and all team members for their contributions to the development of this project.
